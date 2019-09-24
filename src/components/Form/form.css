@@ -1,0 +1,17 @@
+.content-form {
+    width: 100%;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+  
+.cutom-btn {
+    background: #131313 !important;
+    border-style: none !important;
+}
+  
+.form-container {
+    padding: 5rem;
+    background: #18264f;
+    border-radius: 1rem;
+    box-shadow: 0px 0px 10px 0px #000;
+}

@@ -1,0 +1,20 @@
+.imgStyle {
+    width: 75%;
+    margin-left: 30px;
+  }
+  
+  .MuiList-root a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 1);
+  }
+  .MuiAppBar-colorPrimary {
+    background-color: #18264f !important;
+}
+.expand {
+    cursor: pointer;
+}
+.MuiIconButton-root {
+    /* color: rgb(0,0,0) !important; */
+}
+
+
