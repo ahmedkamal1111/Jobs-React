@@ -155,7 +155,7 @@ export default function Dashboard() {
 
       </AppBar>
       
-      <BrowserRouter>
+     
       
       <Drawer
         variant="permanent"
@@ -298,7 +298,7 @@ export default function Dashboard() {
           <Route path='/drafts' />
         </Switch>
       
-      </BrowserRouter>
+    
       
       <main className={classes.content}>
       
