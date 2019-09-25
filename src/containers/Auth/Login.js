@@ -28,7 +28,8 @@ class Login extends Component {
         validators: [required, length({ min: 5 })]
       },
 
-      formIsValid: false
+      formIsValid: false,
+      companyName: 'Teqneia',
     
     }
 
@@ -92,7 +93,10 @@ class Login extends Component {
     return (
       
       <Auth>
-      
+        <div className="center">
+          <h1>Log In to { this.state.companyName } Jobs</h1>
+        </div>
+
         <form className="auth-form"
           onSubmit={ e =>
             this.props.onLogin(e, {
