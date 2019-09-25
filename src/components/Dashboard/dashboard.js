@@ -25,7 +25,9 @@ import logo from '../../logo.png';
 import NavbarBrand from 'react-bootstrap/NavbarBrand';
 import { BrowserRouter , Route, Link , Switch} from 'react-router-dom';
 import './dashboard.css';
-import Inbox from './inbox'
+import Inbox from './inbox';
+import DataTable from '../../containers/DataTable/Datatable';
+import MakeYourChoice from '../mkyourchoice/choice';
 
 const drawerWidth = 200;
 
@@ -248,8 +250,15 @@ export default function Dashboard() {
       </Drawer>
         <Switch>
           <Route path='/inbox' exact component={Inbox}  />
-          <Route path='/starred' />
-          <Route path='/sendmail' />
+          {/* <Route path='/starred' component={MakeYourChoice,DataTable} /> */}
+          <Route path='/starred' render={props =>
+                    <div>
+                      <MakeYourChoice />
+                      <DataTable />
+                    </div>
+          }/>
+
+          <Route path='/sendmail' component={MakeYourChoice} />
           <Route path='/drafts' />
         </Switch>
       </BrowserRouter>

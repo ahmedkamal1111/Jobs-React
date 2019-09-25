@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import MyForm from './form'
 
 export default class Action extends Component {
@@ -15,7 +15,7 @@ export default class Action extends Component {
             );
         }
         return (
-            <h1>nothing</h1>
+            <Fragment />
         )  
     }
 }
