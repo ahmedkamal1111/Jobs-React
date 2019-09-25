@@ -26,14 +26,11 @@ import logo from '../../logo.png';
 import NavbarBrand from 'react-bootstrap/NavbarBrand';
 
 import './dashboard.css';
-<<<<<<< HEAD
 import Inbox from './inbox';
 import DataTable from '../../containers/DataTable/Datatable';
 import MakeYourChoice from '../mkyourchoice/choice';
-=======
 
 import Inbox from './inbox'
->>>>>>> 7561d05cad1011d99f1a474743773bc6a563ce4f
 
 const drawerWidth = 200;
 
