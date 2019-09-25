@@ -1,12 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
+import { BrowserRouter , Route, Link , Switch} from 'react-router-dom';
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -23,11 +24,16 @@ import Collapse from '@material-ui/core/Collapse';
 import StarBorder from '@material-ui/icons/StarBorder';
 import logo from '../../logo.png';
 import NavbarBrand from 'react-bootstrap/NavbarBrand';
-import { BrowserRouter , Route, Link , Switch} from 'react-router-dom';
+
 import './dashboard.css';
+<<<<<<< HEAD
 import Inbox from './inbox';
 import DataTable from '../../containers/DataTable/Datatable';
 import MakeYourChoice from '../mkyourchoice/choice';
+=======
+
+import Inbox from './inbox'
+>>>>>>> 7561d05cad1011d99f1a474743773bc6a563ce4f
 
 const drawerWidth = 200;
 
@@ -99,10 +105,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Dashboard() {
+
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [open1, setOpen1] = React.useState(false);
+  const [ open, setOpen ] = React.useState(false);
+  const [ open1, setOpen1 ] = React.useState(false);
 
   function handleDrawerOpen() {
     setOpen(true);
@@ -116,15 +123,20 @@ export default function Dashboard() {
   }
 
   return (
+    
     <div className={classes.root}>
+    
       <CssBaseline />
+      
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
       >
+        
         <Toolbar>
+        
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -137,12 +149,17 @@ export default function Dashboard() {
          
             <MenuIcon />
           </IconButton>
+
           <NavbarBrand to="/home" >
-                    <img src={logo} className="imgStyle" />
-                </NavbarBrand>
+            <img src={logo} className="imgStyle" alt="Logo"/>
+          </NavbarBrand>
+
         </Toolbar>
+
       </AppBar>
+      
       <BrowserRouter>
+      
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -162,7 +179,9 @@ export default function Dashboard() {
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </div>
+
         <Divider />
+        
         <List>
           {[
             {
@@ -185,7 +204,7 @@ export default function Dashboard() {
               to:'/drafts'
             }
               ].map((link, index) => (
-                link.text == "Inbox"?
+                link.text === "Inbox"?
                 
                 <div >
                   <Link to={link.to} key={link.text + index}>
@@ -199,31 +218,42 @@ export default function Dashboard() {
                  <Collapse in={open1} timeout="auto" unmountOnExit>
                    
                  <List component="div" disablePadding>
+      
                  <Link to={link.nested.to} key={link.nested.text}> 
+             
                    <ListItem button className={classes.nested}>
                      <ListItemIcon>
                        <StarBorder />
                      </ListItemIcon>
+             
                      <ListItemText primary="Starred" />
+             
                    </ListItem>
+             
                    </Link>
+             
                  </List>
+      
                </Collapse>
+             
                </div>
-               
-                    :
+                  :
                 <Link to={link.to} key={link.text + index}>
+    
               <ListItem button >
+              
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              
                 <ListItemText primary={link.text} />
-                
-                
-                
+                          
               </ListItem>
-              </Link>
-            ))}
+              
+            </Link>
+          ))}
         </List>
+        
         <Divider />
+        
         <List>
           {[
             {
@@ -239,15 +269,24 @@ export default function Dashboard() {
               to:'/spam',
             },
           ].map((link, index) => (
+        
             <Link to={link.to} key={link.text + index}>
+            
               <ListItem button >
+            
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            
                 <ListItemText primary={link.text} />
+            
               </ListItem>
+            
             </Link>
           ))}
+
         </List>
+      
       </Drawer>
+      
         <Switch>
           <Route path='/inbox' exact component={Inbox}  />
           {/* <Route path='/starred' component={MakeYourChoice,DataTable} /> */}
@@ -261,11 +300,15 @@ export default function Dashboard() {
           <Route path='/sendmail' component={MakeYourChoice} />
           <Route path='/drafts' />
         </Switch>
+      
       </BrowserRouter>
+      
       <main className={classes.content}>
+      
         <div className={classes.toolbar} />
         
       </main>
+    
     </div>
   );
 }
