@@ -131,7 +131,7 @@ class App extends Component {
         //update state with initial errors
         this.setState({
 
-          isAuth: false,
+          isAuth: true,
           
           authLoading: false,
           
