@@ -12,10 +12,15 @@ class App extends Component {
     super(props)
     
     this.state = {
+
       isAuth: false,
+      
       token: null,
+      
       adminId: null,
+      
       authLoading: false,
+      
       error: null
     };
 
@@ -79,8 +84,8 @@ class App extends Component {
 
     //Post data authentication to login onto the system
     axios.post("URL Endpoint", { 
-        email: authData.email,
-        password: authData.password    
+      email: authData.email,
+      password: authData.password    
     })
       .then(res => {
         
@@ -107,6 +112,7 @@ class App extends Component {
 
         //Set data authentication onto localStorage
         localStorage.setItem('token', res.data.token);
+        
         localStorage.setItem('adminId', res.data.adminId);
 
         //set remaining time
@@ -124,13 +130,15 @@ class App extends Component {
         
         //update state with initial errors
         this.setState({
+
           isAuth: false,
+          
           authLoading: false,
+          
           error: err
         });
 
       })
-
   }
 
   render () {
@@ -158,9 +166,11 @@ class App extends Component {
       routes = (
        
         <Switch>
+
           <Route>
             { /* Dashboard */ }
           </Route>
+        
         </Switch>
 
       );

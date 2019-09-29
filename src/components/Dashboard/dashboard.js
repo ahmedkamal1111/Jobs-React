@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
-import { BrowserRouter , Route, Link , Switch} from 'react-router-dom';
+import { Route, Link , Switch} from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
   },
   nested: {
-    paddingLeft: theme.spacing(4),
+    paddingLeft: theme.spacing(4), 
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -102,8 +102,8 @@ export default function Dashboard() {
 
   const classes = useStyles();
   const theme = useTheme();
-  const [ open, setOpen ] = React.useState(false);
-  const [ open1, setOpen1 ] = React.useState(false);
+  const [ open, setOpen ] = useState(false);
+  const [ open1, setOpen1 ] = useState(false);
 
   function handleDrawerOpen() {
     setOpen(true);
@@ -124,9 +124,7 @@ export default function Dashboard() {
       
       <AppBar
         position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
+        className={clsx( classes.appBar, { [ classes.appBarShift ]: open })}
       >
         
         <Toolbar>
@@ -152,7 +150,6 @@ export default function Dashboard() {
 
       </AppBar>
       
-      <BrowserRouter>
       
       <Drawer
         variant="permanent"
@@ -288,7 +285,6 @@ export default function Dashboard() {
           <Route path='/drafts' />
         </Switch>
       
-      </BrowserRouter>
       
       <main className={classes.content}>
       
