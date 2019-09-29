@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Switch, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './containers/Auth/Login';
+import Dashboard from './components/Dashboard/dashboard';
+
 
 class App extends Component {
   
@@ -12,7 +14,7 @@ class App extends Component {
     super(props)
     
     this.state = {
-      isAuth: false,
+      isAuth: true,
       token: null,
       adminId: null,
       authLoading: false,
@@ -159,7 +161,7 @@ class App extends Component {
        
         <Switch>
           <Route>
-            { /* Dashboard */ }
+            <Dashboard />
           </Route>
         </Switch>
 
