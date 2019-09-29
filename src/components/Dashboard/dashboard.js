@@ -24,13 +24,14 @@ import Collapse from '@material-ui/core/Collapse';
 import StarBorder from '@material-ui/icons/StarBorder';
 import logo from '../../logo.png';
 import NavbarBrand from 'react-bootstrap/NavbarBrand';
-
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button'
 import './dashboard.css';
 import Inbox from './inbox';
 import DataTable from '../../containers/DataTable/Datatable';
 import MakeYourChoice from '../mkyourchoice/choice';
 
-import Inbox from './inbox'
+
 
 const drawerWidth = 200;
 
@@ -148,15 +149,16 @@ export default function Dashboard() {
           <NavbarBrand to="/home" >
             <img src={logo} className="imgStyle" alt="Logo"/>
           </NavbarBrand>
-
+          <Navbar.Collapse className="justify-content-end">
+            <Navbar.Text className="float-right">
+              Signed in as: <a href="#login">Mark Otto</a>
+            </Navbar.Text>
+        </Navbar.Collapse>
+        
+        {/* <Button variant="light" size="sm" className="w-25 p-3">Logout<i class="fa fa-sign-out" aria-hidden="true"></i></Button> */}
         </Toolbar>
 
       </AppBar>
-      
-<<<<<<< HEAD
-=======
-     
->>>>>>> 9c9a3172092ccc15b7772589006328a7774e933d
       
       <Drawer
         variant="permanent"
@@ -298,11 +300,6 @@ export default function Dashboard() {
           <Route path='/sendmail' component={MakeYourChoice} />
           <Route path='/drafts' />
         </Switch>
-      
-<<<<<<< HEAD
-=======
-    
->>>>>>> 9c9a3172092ccc15b7772589006328a7774e933d
       
       <main className={classes.content}>
       
