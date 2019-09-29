@@ -1,11 +1,12 @@
 .content {
     flex-grow: 1;
     padding: 25px;
+    text-align: center !important;
 }
 
 .toolbar {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 50px;
+    padding: 25px;
 }

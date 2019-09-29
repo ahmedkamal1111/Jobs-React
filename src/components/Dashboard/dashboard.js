@@ -26,6 +26,9 @@ import logo from '../../logo.png';
 import NavbarBrand from 'react-bootstrap/NavbarBrand';
 
 import './dashboard.css';
+import Inbox from './inbox';
+import DataTable from '../../containers/DataTable/Datatable';
+import MakeYourChoice from '../mkyourchoice/choice';
 
 import Inbox from './inbox'
 
@@ -150,6 +153,10 @@ export default function Dashboard() {
 
       </AppBar>
       
+<<<<<<< HEAD
+=======
+     
+>>>>>>> 9c9a3172092ccc15b7772589006328a7774e933d
       
       <Drawer
         variant="permanent"
@@ -280,11 +287,22 @@ export default function Dashboard() {
       
         <Switch>
           <Route path='/inbox' exact component={Inbox}  />
-          <Route path='/starred' />
-          <Route path='/sendmail' />
+          {/* <Route path='/starred' component={MakeYourChoice,DataTable} /> */}
+          <Route path='/starred' render={props =>
+                    <div>
+                      <MakeYourChoice />
+                      <DataTable />
+                    </div>
+          }/>
+
+          <Route path='/sendmail' component={MakeYourChoice} />
           <Route path='/drafts' />
         </Switch>
       
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 9c9a3172092ccc15b7772589006328a7774e933d
       
       <main className={classes.content}>
       

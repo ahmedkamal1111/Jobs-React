@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Container, ToggleButton, ButtonGroup } from 'react-bootstrap';
 import Action from './action';
-
+import './action.css'
 
 
 export default class MakeYourChoice extends Component {
@@ -24,9 +24,11 @@ export default class MakeYourChoice extends Component {
         console.log(this.state.type)
        
         return (
-            <Container style={{ width: 300 }}>
+            <main className="content" >
+             <div className="toolbar"/>
+            <Container style={{ width: 1300 }}>
                 <div className="d-flex flex-column">
-                    <ButtonGroup toggle className="mt-3">
+                    <ButtonGroup toggle className="mt-3" className="c-width">
 
                         <ToggleButton type="radio" name="radio" value="job" checked={this.state.type === 'job'} onChange={this.handleChange}>
                             Job
@@ -42,6 +44,7 @@ export default class MakeYourChoice extends Component {
                         handleChange={this.handleChange}
                 />
             </Container>
+             </main>
            
         );
     }
