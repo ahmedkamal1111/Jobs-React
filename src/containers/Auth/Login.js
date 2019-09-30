@@ -99,7 +99,9 @@ class Login extends Component {
       <Auth>
 
         <div className="center header">
+          
           <h2>Log In to Teqneia Jobs</h2>
+        
         </div>
 
         <form className="auth-form"
