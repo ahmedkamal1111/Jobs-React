@@ -10,13 +10,15 @@ export default class MakeYourChoice extends Component {
         super(props);
       
         this.state = {
-            type: '',
-            positionType: "-1",
-            positionName: "-2",
-            customDate: "-3",
-            intern: "-4",
-            startDate: null,
-            endDate: null,
+            search: {
+                type: '',
+                positionType: "-1",
+                positionName: "-2",
+                customDate: "-3",
+                intern: "-4",
+                startDate: null,
+                endDate: null,
+            }
         }
         
         this.handleChange = this.handleChange.bind(this)
@@ -24,10 +26,14 @@ export default class MakeYourChoice extends Component {
 
 
     handleChange(e) {
-        // e.preventDefault();
-        this.setState({
-            type: e.target.value
-        })
+        let v = e.target.value;
+        this.setState(prev => ({
+            ...prev,
+            search:{ 
+                ...prev.search,
+                type: v
+            }
+        }))
     }
 
     checkDate(event) {
@@ -43,178 +49,173 @@ export default class MakeYourChoice extends Component {
             event.preventDefault();
         
         }
-
-        // this.setState({
-        //     positionType: "-1",
-        //     recent: "-3",
-        //     positionName: "-2",
-        //     customDate: ""
-        // })
-       
     }
 
-    showDate(event){
-        if(event.target.name === "Date")
-        {   
-     
-            
-            // if(event.target.options[event.target.selectedIndex].text !== "pick a date") {
-            //     this.state.recent = event.target.options[event.target.selectedIndex].value
-            // }
-            // else {
-            //     this.state.customDate = event.target.options[event.target.selectedIndex].value
-            // }
-            this.setState({
-                customDate: event.target.options[event.target.selectedIndex].value
-            })
-
-            
-                
-        }
-            
+    showDate = e => {
+        let v = e.target.value;
+        this.setState(prev => ({
+            ...prev,
+            search:{ 
+                ...prev.search,
+                customDate: v
+            }
+        }))
     }
 
-    getJobDetails(e){
-        if(e.target.name === "positionType") {
-            // this.state.positionType = e.target.options[e.target.selectedIndex].value
-            this.setState({
-                positionType: e.target.options[e.target.selectedIndex].value
-            })   
-        }
-       
+    getJobType = e => {
+        let v = e.target.value;
+        this.setState(prev => ({
+            ...prev,
+            search:{ 
+                ...prev.search,
+                positionType: v
+            }
+        }));
     }
 
-    getJobPosition(e) {
-        if(e.target.name === "positionName")
-        {
-            // this.state.positionName = e.target.options[e.target.selectedIndex].value
-            this.setState({
-                 positionName: e.target.options[e.target.selectedIndex].value 
-            })
-        }
-        
+    getJobPosition = e => {
+        let v = e.target.value;
+        this.setState(prev => ({
+            ...prev,
+            search:{ 
+                ...prev.search,
+                positionName: v
+            }
+        }))
     }
 
-    getIntern(e) {
-        this.setState({
-            intern: e.target.options[e.target.selectedIndex].value
-        })
+    getIntern = e => {
+        let v = e.target.value;
+        this.setState(prev => ({
+            ...prev,
+            search:{ 
+                ...prev.search,
+                intern: v
+            }
+        }))
     }
 
-    getStartDate(e) {
-        this.setState({
-            startDate: e.target.value
-        })
+    getStartDate = e => {
+        let v = e.target.value;
+        this.setState(prev => ({
+            ...prev,
+            search:{ 
+                ...prev.search,
+                startDate: v
+            }
+        }))
     }
 
-    getEndDate(e) {
-        this.setState({
-            endDate: e.target.value
-        })
+    getEndDate = e => {
+        let v = e.target.value;
+        this.setState(prev => ({
+            ...prev,
+            search:{ 
+                ...prev.search,
+                endDate: v
+            }
+        }))
     }
 
-    resetState(e){
-        this.setState({
-            type: e.target.value,
-            positionType: "-1",
-            positionName: "-2",
-            customDate: "-3",
-            intern: "-4",
-            startDate: null,
-            endDate: null,
-        })
+    resetState = e => {
+        let v = e.target.value;
+        this.setState(prev => ({
+            ...prev,
+            search:{ 
+                ...prev.search,
+                type: v,
+                positionType: "-1",
+                positionName: "-2",
+                customDate: "-3",
+                intern: "-4",
+                startDate: null,
+                endDate: null,
+            }
+        }))
     }
 
     render() {
         
         let action;
 
-        if( this.state.type === "job" ) {
-            action =  <Container  className="respo" >
-               {
-                   console.log(this.state.positionType),
-                   console.log(this.state.positionName),
-                   console.log(this.state.customDate),
-                   console.log(this.state.startDate),
-                   console.log(this.state.endDate)
-               }
-             
+        if( this.state.search.type === "job" ) {
+            
+            action =  (<Container  className="respo" >
 
             <Form onSubmit={this.checkDate} >
                 <Form.Row>
                     
                     <Form.Group as={Col} controlId="formGridState">
                         <Form.Label>Job Type</Form.Label>
-                        <Form.Control as="select" onChange={this.getJobDetails.bind(this)} name="positionType">
-                            <option value ="-1"disabled selected={this.state.positionType === "-1"}>Choose type</option>
-                            <option value="0" selected={this.state.positionType === "0"}>Full time</option>
-                            <option value="1" selected={this.state.positionType === "1"}>Part time</option>
-                            <option value="2" selected={this.state.positionType === "2"}>Freelance</option>
-                            <option value="3" selected={this.state.positionType === "3"}>Project</option>
+                        <Form.Control as="select" onChange={this.getJobType} name="positionType">
+                            <option value ="-1" disabled selected={this.state.search.positionType === "-1"}>Choose type</option>
+                            <option value="0" selected={this.state.search.positionType === "0"}>Full time</option>
+                            <option value="1" selected={this.state.search.positionType === "1"}>Part time</option>
+                            <option value="2" selected={this.state.search.positionType === "2"}>Freelance</option>
+                            <option value="3" selected={this.state.search.positionType === "3"}>Project</option>
                             
                         </Form.Control>
                     </Form.Group>
                     
-                   {this.state.positionType == "0" && 
+                   {this.state.search.positionType === "0" && 
                    <Form.Group as={Col} controlId="formGridState"  id="full">
-                        <Form.Label>Full Time->Available Positions</Form.Label>
-                        <Form.Control as="select" onChange={this.getJobPosition.bind(this)} name = "positionName">
-                            <option value ="-2"disabled selected={this.state.positionName === "-2"}>Choose job</option>
-                           <option value="0-a" selected={this.state.positionName === "0-a"}>Front-End Developer(React)</option>
-                            <option value="0-b" selected={this.state.positionName === "0-b"}>Back-End Developer(Laravel)</option>
-                            <option value="0-c" selected={this.state.positionName === "0-c"}>UI/UX Designer</option>
+                        <Form.Label>Full Time -> Available Positions</Form.Label>
+                        <Form.Control as="select" onChange={this.getJobPosition} name = "positionName">
+                            <option value ="-2" disabled selected={this.state.search.positionName === "-2"}>Choose job</option>
+                           <option value="0-a" selected={this.state.search.positionName === "0-a"}>Front-End Developer(React)</option>
+                            <option value="0-b" selected={this.state.search.positionName === "0-b"}>Back-End Developer(Laravel)</option>
+                            <option value="0-c" selected={this.state.search.positionName === "0-c"}>UI/UX Designer</option>
                         </Form.Control>
                     </Form.Group>}
                 
                 
-                    {this.state.positionType == "1" && 
+                    {this.state.search.positionType === "1" && 
                     <Form.Group as={Col} controlId="formGridState"  id="part">
-                        <Form.Label>Part Time->Available Positions</Form.Label>
-                        <Form.Control as="select" onChange={this.getJobPosition.bind(this)} name = "positionName" >
-                            <option value ="-2"disabled selected={this.state.positionName === "-2"}>Choose job</option>
-                            <option value="1-a" selected={this.state.positionName === "1-a"}>Security Engineer</option>
-                            <option value="1-b" selected={this.state.positionName === "1-b"}>DevOps(Kubernetes)</option>
-                            <option value="1-c" selected={this.state.positionName === "1-c"}>ML Engineer</option>
+                        <Form.Label>Part Time -> Available Positions</Form.Label>
+                        <Form.Control as="select" onChange={this.getJobPosition} name = "positionName" >
+                            <option value ="-2"disabled selected={this.state.search.positionName === "-2"}>Choose job</option>
+                            <option value="1-a" selected={this.state.search.positionName === "1-a"}>Security Engineer</option>
+                            <option value="1-b" selected={this.state.search.positionName === "1-b"}>DevOps(Kubernetes)</option>
+                            <option value="1-c" selected={this.state.search.positionName === "1-c"}>ML Engineer</option>
                         </Form.Control>
                     </Form.Group>}
                 
                 
-                    {this.state.positionType == "2" && 
+                    {this.state.search.positionType === "2" && 
                     <Form.Group as={Col} controlId="formGridState"  id="free"> 
                         <Form.Label>Freelance->Available Positions</Form.Label>
-                        <Form.Control as="select" onChange={this.getJobPosition.bind(this)} name = "positionName" >
-                            <option value ="-2"disabled selected={this.state.positionName === "-2"}>Choose job</option>
-                            <option value="2-a" selected={this.state.positionName === "2-a"}>MERN Stack Developer</option>
-                            <option value="2-b" selected={this.state.positionName === "2-b"}>System Analyst</option>
-                            
+                        <Form.Control as="select" onChange={this.getJobPosition} name = "positionName" >
+                            <option value ="-2" disabled selected={this.state.search.positionName === "-2"}>Choose job</option>
+                            <option value="2-a" selected={this.state.search.positionName === "2-a"}>MERN Stack Developer</option>
+                            <option value="2-b" selected={this.state.search.positionName === "2-b"}>System Analyst</option>
                         </Form.Control>
                     </Form.Group>}
                 
              
-                    {this.state.positionType == "3" && 
+                    {this.state.search.positionType === "3" && 
                     <Form.Group as={Col} controlId="formGridState"  id="project">
-                        <Form.Label>Project->Available Positions</Form.Label>
-                        <Form.Control as="select" onChange={this.getJobPosition.bind(this)} name = "positionName" >
-                            <option value ="-2"disabled selected={this.state.positionName === "-2"}>Choose job</option>
-                            <option value="3-a" selected={this.state.positionName === "3-a"}>XY Developer</option>
-                            <option value="3-b" selected={this.state.positionName === "3-b"}>Add Developer</option>
+                        <Form.Label>Project -> Available Positions</Form.Label>
+                        <Form.Control as="select" onChange={this.getJobPosition} name = "positionName" >
+                            <option value ="-2"disabled selected={this.state.search.positionName === "-2"}>Choose job</option>
+                            <option value="3-a" selected={this.state.search.positionName === "3-a"}>XY Developer</option>
+                            <option value="3-b" selected={this.state.search.positionName === "3-b"}>Add Developer</option>
                         </Form.Control>
                     </Form.Group>}
                   
                     <Form.Group as={Col} controlId="formGridState" >
                         <Form.Label>Date</Form.Label>
-                        <Form.Control as="select" required onChange={this.showDate.bind(this)} name="Date" >
-                            <option disabled selected={this.state.customDate === "-3"}>Choose date</option>
-                            <option value="30" selected={this.state.customDate === "30"}>This month</option>
-                            <option value="60" selected={this.state.customDate === "60"}>Last 2 months</option>
-                            <option value="90" selected={this.state.customDate === "90"}>Last 3 months</option>
-                            <option value="customDate"  selected={this.state.customDate ==="customDate"}>Pick a date</option>
+                        <Form.Control as="select" required onChange={this.showDate} name="Date" >
+                            <option disabled selected={this.state.customDate === "-3"}> Choose date </option>
+                            <option value="30" selected={this.state.search.customDate === "30"}>This month </option>
+                            <option value="60" selected={this.state.search.customDate === "60"}>Last 2 months</option>
+                            <option value="90" selected={this.state.search.customDate === "90"}>Last 3 months</option>
+                            <option value="customDate"  selected={this.state.search.customDate ==="customDate"}>Pick a date</option>
                         </Form.Control>
 
                     </Form.Group>
 
-                    {this.state.customDate === "customDate" && 
-                    <Form.Group as={Row} onChange={this.checkDate.bind(this)}>
+                    {this.state.search.customDate === "customDate" && 
+                    <Form.Group as={Row} onChange={this}>
                         <Form.Group as={Col}  controlId="formGridState"  >
                             <Form.Label >Start Date</Form.Label>
                             <Form.Control type="date"  id="dateStart" required onChange={this.getStartDate.bind(this)}/>
@@ -232,35 +233,30 @@ export default class MakeYourChoice extends Component {
                     </Form.Row>
                     <div className="text-center pt-3" >
                         <Button variant="primary" type="submit"   >
-                             Search
+                            Search
                         </Button>
                     </div>
                 
             
             </Form>
 
-         </Container>;
-        }  else if ( this.state.type === "intern") {
-            action =  <Container  >
-                {
-                      console.log(this.state.intern),
-                      console.log(this.state.customDate),
-                      console.log(this.state.startDate),
-                      console.log(this.state.endDate)
-                }
-             
+         </Container>);
+
+        }  else if ( this.state.search.type === "intern" ) {
+            
+            action = (<Container  >
 
             <Form onSubmit={this.checkDate} >
                 <Form.Row>
                     
                     <Form.Group as={Col} controlId="formGridState">
                         <Form.Label>Specialities</Form.Label>
-                        <Form.Control as="select" name="internType" onChange={this.getIntern.bind(this)} >
-                            <option disabled value ="-4"disabled selected={this.state.intern === "-4"}>Choose Speciality</option>
-                            <option value="0" selected={this.state.intern === "0"}>React</option>
-                            <option value="1" selected={this.state.intern === "1"}>PHP Laravel</option>
-                            <option value="2" selected={this.state.intern === "2"}>UI/UX</option>
-                            <option value="3" selected={this.state.intern === "3"}>Testing</option>
+                        <Form.Control as="select" name="internType" onChange={this.getInternss} >
+                            <option disabled value ="-4"disabled selected={this.state.search.intern === "-4"}>Choose Speciality</option>
+                            <option value="0" selected={this.state.search.intern === "0"}>React</option>
+                            <option value="1" selected={this.state.search.intern === "1"}>PHP Laravel</option>
+                            <option value="2" selected={this.state.search.intern === "2"}>UI/UX</option>
+                            <option value="3" selected={this.state.search.intern === "3"}>Testing</option>
                             
                         </Form.Control>
                     </Form.Group>
@@ -269,15 +265,15 @@ export default class MakeYourChoice extends Component {
                     <Form.Group as={Col} controlId="formGridState">
                         <Form.Label>Date</Form.Label>
                         <Form.Control as="select" onChange={this.showDate.bind(this)} name="Date">
-                            <option disabled selected={this.state.customDate === "-3"}>Choose date</option>
-                            <option value="30" selected={this.state.customDate === "30"}>This month</option>
-                            <option value="60" selected={this.state.customDate === "60"}>Last 2 months</option>
-                            <option value="90" selected={this.state.customDate === "90"}>Last 3 months</option>
-                            <option value="customDate" selected={this.state.customDate ==="customDate"}>Pick a date</option>
+                            <option disabled selected={this.state.search.customDate === "-3"}>Choose date</option>
+                            <option value="30" selected={this.state.search.customDate === "30"}>This month</option>
+                            <option value="60" selected={this.state.search.customDate === "60"}>Last 2 months</option>
+                            <option value="90" selected={this.state.search.customDate === "90"}>Last 3 months</option>
+                            <option value="customDate" selected={this.state.search.customDate === "customDate"}>Pick a date</option>
                         </Form.Control>
 
                     </Form.Group>
-                    {this.state.customDate == "customDate" && 
+                    {this.state.search.customDate === "customDate" && 
                     <Form.Group as={Row} onChange={this.checkDate.bind(this)}>
                         <Form.Group as={Col}  controlId="formGridState"  >
                             <Form.Label >Start Date</Form.Label>
@@ -293,15 +289,14 @@ export default class MakeYourChoice extends Component {
                
                     </Form.Row>
                     <div className="text-center pt-3" >
-                        <Button variant="primary" type="submit"   >
-                             Search
+                        <Button variant="primary" type="submit">
+                            Search
                         </Button>
                     </div>
-                
             
             </Form>
 
-         </Container>;
+         </Container>);
         }
 
         return (
@@ -338,5 +333,3 @@ export default class MakeYourChoice extends Component {
         );
     }
 }
-
-
