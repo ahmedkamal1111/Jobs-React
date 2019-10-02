@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Form, Button, Row, Col, Container, ToggleButton, ButtonGroup } from 'react-bootstrap';
-import Action from './action';
+import { Container, ToggleButton, ButtonGroup } from 'react-bootstrap';
 import './action.css'
-
+import MyForm from './form';
 
 export default class MakeYourChoice extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+      
+        super(props);
+      
         this.state = {
             type: '',
         }
+        
         this.handleChange = this.handleChange.bind(this)
     }
 
@@ -20,30 +22,46 @@ export default class MakeYourChoice extends Component {
             type: e.target.value
         })
     }
+
     render() {
-        console.log(this.state.type)
-       
+        
+        let action;
+
+        if( this.state.type === "job" ) {
+            action = <MyForm Type={this.state.type} />;
+        }  else if ( this.state.type === "intern") {
+            action =  <MyForm Type={this.state.type} />;
+        }
+
         return (
+          
             <main className="content" >
-             <div className="toolbar"/>
-            <Container style={{ width: 1300 }}>
-                <div className="d-flex flex-column">
-                    <ButtonGroup toggle className="mt-3" className="c-width">
+                
+                <div className="toolbar"/>
+                
+                <Container style={{ width: 1300 }}>
 
-                        <ToggleButton type="radio" name="radio" value="job" checked={this.state.type === 'job'} onChange={this.handleChange}>
-                            Job
-                        </ToggleButton>
-                        <ToggleButton type="radio" name="radio" value="intern" checked={this.state.type === 'intern'} onChange={this.handleChange}>
-                            Internship
-                        </ToggleButton>
-                    </ButtonGroup>
+                    <div className="d-flex flex-column">
+                        
+                        <ButtonGroup toggle className="mt-3, c-width" >
 
-                </div>
-                <Action 
-                        Type={this.state.type}
-                        handleChange={this.handleChange}
-                />
-            </Container>
+                            <ToggleButton type="radio" name="radio" value="job" checked={ this.state.type === 'job' } onChange={ this.handleChange }>
+                                Job
+                            </ToggleButton>
+                            
+                            <ToggleButton type="radio" name="radio" value="intern" checked={this.state.type === 'intern'} onChange={this.handleChange}>
+                                Internship
+                            </ToggleButton>
+
+                        </ButtonGroup>
+
+                    </div>
+
+                    { action }
+                    
+
+                </Container>
+  
              </main>
            
         );

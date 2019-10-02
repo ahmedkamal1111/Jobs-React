@@ -10,30 +10,34 @@ import './Auth.css';
 
 class Login extends Component {
 
-  state = {
+  constructor(props) {
     
-    loginForm: {
+    super(props);
+
+    this.state = {
+    
+      loginForm: {
+        
+        email: {
+          value: '',
+          valid: false,
+          touched: false,
+          validators: [required, email]
+        },
+  
+        password: {
+          value: '',
+          valid: false,
+          touched: false,
+          validators: [required, length({ min: 5 })]
+        },
+  
+        formIsValid: false,
       
-      email: {
-        value: '',
-        valid: false,
-        touched: false,
-        validators: [required, email]
-      },
-
-      password: {
-        value: '',
-        valid: false,
-        touched: false,
-        validators: [required, length({ min: 5 })]
-      },
-
-      formIsValid: false,
-      companyName: 'Teqneia',
-    
-    }
-
-  };
+      }
+  
+    };
+  }
 
   inputChangeHandler = (input, value) => {
     
@@ -93,8 +97,11 @@ class Login extends Component {
     return (
       
       <Auth>
-        <div className="center">
-          <h1>Log In to { this.state.companyName } Jobs</h1>
+
+        <div className="center header">
+          
+          <h2>Log In to Teqneia Jobs</h2>
+        
         </div>
 
         <form className="auth-form"
@@ -105,11 +112,13 @@ class Login extends Component {
             })
           }
         >
+          
           <Input
             id="email"
             label="Email"
             type="email"
             control="input"
+            placeholder="what's your email..?"
             onChange={this.inputChangeHandler}
             onBlur={this.inputBlurHandler.bind(this, 'email')}
             value={this.state.loginForm['email'].value}
@@ -122,6 +131,7 @@ class Login extends Component {
             label="Password"
             type="password"
             control="input"
+            placeholder="password..?"
             onChange={this.inputChangeHandler}
             onBlur={this.inputBlurHandler.bind(this, 'password')}
             value={this.state.loginForm['password'].value}
