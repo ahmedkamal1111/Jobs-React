@@ -80,7 +80,7 @@ class App extends Component {
     this.setState({ authLoading: true });
 
     //Post data authentication to login onto the system
-    axios.post("URL Endpoint", { 
+    axios.post("https://joblaravel.tbv.cloud/login", { 
         email: authData.email,
         password: authData.password    
     })
