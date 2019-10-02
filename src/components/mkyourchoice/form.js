@@ -5,18 +5,17 @@ import './action.css';
 
 export default class MyForm extends Component {
 
-    constructor(props){
+    constructor(){
         super()
         this.state = {
             positionType: "-1",
-            recent: "-3",
             positionName: "-2",
-            customDate: ""
+            customDate: "-3",
+            intern: "-4",
+            startDate: null,
+            endDate: null,
         }
-        this.showDate = this.showDate.bind(this)
-        this.getJobDetails = this.getJobDetails.bind(this)
-        this.checkDate = this.checkDate.bind(this)
-        this.getJobPosition = this.getJobPosition.bind(this)
+       
     }
     checkDate(event) {
 
@@ -44,7 +43,7 @@ export default class MyForm extends Component {
     showDate(event){
         if(event.target.name === "Date")
         {   
-            console.log(event.target.name)
+     
             
             // if(event.target.options[event.target.selectedIndex].text !== "pick a date") {
             //     this.state.recent = event.target.options[event.target.selectedIndex].value
@@ -83,23 +82,53 @@ export default class MyForm extends Component {
         
     }
 
-    componentDidMount() {
+    getIntern(e) {
+        this.setState({
+            intern: e.target.options[e.target.selectedIndex].value
+        })
+    }
 
+    getStartDate(e) {
+        this.setState({
+            startDate: e.target.value
+        })
+    }
+
+    getEndDate(e) {
+        this.setState({
+            endDate: e.target.value
+        })
+    }
+
+    resetState(){
+        this.setState({
+            positionType: "-1",
+            positionName: "-2",
+            customDate: "-3",
+            intern: "-4",
+            startDate: null,
+            endDate: null,
+        })
     }
     
+    
     render() {
-        console.log(this.state.positionType)
-        console.log(this.state.recent)
-        console.log(this.state.positionName)
-        console.log(this.state.customDate)
+       
         if (this.props.Type === "job") {
+            console.log(this.state.positionType)
+     
+            console.log(this.state.positionName)
+            console.log(this.state.customDate)
+            console.log(this.state.startDate)
+            console.log(this.state.endDate)
+            
             return (
 
 
-                <Container style={{ width: 1200 }} >
+                <Container  className="respo" >
              
 
-                    <Form onSubmit={this.checkDate}>
+                    <Form onSubmit={this.checkDate} onChange={this.resetState.bind(this)}>
                         <Form.Row>
                             
                             <Form.Group as={Col} controlId="formGridState">
@@ -162,25 +191,25 @@ export default class MyForm extends Component {
                           
                             <Form.Group as={Col} controlId="formGridState" >
                                 <Form.Label>Date</Form.Label>
-                                <Form.Control as="select" onChange={this.showDate.bind(this)} name="Date">
-                                    <option disabled selected={this.state.recent === "-3"}>Choose date</option>
-                                    <option value="30" selected={this.state.recent === "30"}>This month</option>
-                                    <option value="60" selected={this.state.recent === "60"}>Last 2 months</option>
-                                    <option value="90" selected={this.state.recent === "90"}>Last 3 months</option>
+                                <Form.Control as="select" required onChange={this.showDate.bind(this)} name="Date" >
+                                    <option disabled selected={this.state.customDate === "-3"}>Choose date</option>
+                                    <option value="30" selected={this.state.customDate === "30"}>This month</option>
+                                    <option value="60" selected={this.state.customDate === "60"}>Last 2 months</option>
+                                    <option value="90" selected={this.state.customDate === "90"}>Last 3 months</option>
                                     <option value="customDate"  selected={this.state.customDate ==="customDate"}>Pick a date</option>
                                 </Form.Control>
       
                             </Form.Group>
 
                             {this.state.customDate === "customDate" && 
-                            <Form.Group as={Row} onChange={this.checkDate}>
+                            <Form.Group as={Row} onChange={this.checkDate.bind(this)}>
                                 <Form.Group as={Col}  controlId="formGridState"  >
                                     <Form.Label >Start Date</Form.Label>
-                                    <Form.Control type="date"  id="dateStart"/>
+                                    <Form.Control type="date"  id="dateStart" required onChange={this.getStartDate.bind(this)}/>
                                 </Form.Group>
                                 <Form.Group as={Col}  controlId="formGridState"  >
                                     <Form.Label >End Date</Form.Label>
-                                    <Form.Control type="date"   id="dateEnd"/>
+                                    <Form.Control type="date"   id="dateEnd" required onChange={this.getEndDate.bind(this)}/>
                                 </Form.Group>
                             </Form.Group>}
                             
@@ -203,21 +232,28 @@ export default class MyForm extends Component {
             );
         }
         if(this.props.Type == "intern") {
+         
+     
+            console.log(this.state.intern)
+            console.log(this.state.customDate)
+            console.log(this.state.startDate)
+            console.log(this.state.endDate)
+          
             return (
                 <Container style={{ width: 1200 }} >
              
 
-                    <Form onSubmit={this.checkDate}>
+                    <Form onSubmit={this.checkDate} onChange={this.resetState.bind(this)}>
                         <Form.Row>
                             
                             <Form.Group as={Col} controlId="formGridState">
                                 <Form.Label>Specialities</Form.Label>
-                                <Form.Control as="select" name="internType" >
-                                    <option disabled value ="-1"disabled selected={this.state.positionType === "-1"}>Choose Speciality</option>
-                                    <option value="0" selected={this.state.positionType === "0"}>React</option>
-                                    <option value="1" selected={this.state.positionType === "1"}>PHP Laravel</option>
-                                    <option value="2" selected={this.state.positionType === "2"}>UI/UX</option>
-                                    <option value="3" selected={this.state.positionType === "3"}>Testing</option>
+                                <Form.Control as="select" name="internType" onChange={this.getIntern.bind(this)} >
+                                    <option disabled value ="-4"disabled selected={this.state.intern === "-4"}>Choose Speciality</option>
+                                    <option value="0" selected={this.state.intern === "0"}>React</option>
+                                    <option value="1" selected={this.state.intern === "1"}>PHP Laravel</option>
+                                    <option value="2" selected={this.state.intern === "2"}>UI/UX</option>
+                                    <option value="3" selected={this.state.intern === "3"}>Testing</option>
                                     
                                 </Form.Control>
                             </Form.Group>
@@ -226,23 +262,23 @@ export default class MyForm extends Component {
                             <Form.Group as={Col} controlId="formGridState">
                                 <Form.Label>Date</Form.Label>
                                 <Form.Control as="select" onChange={this.showDate.bind(this)} name="Date">
-                                <option disabled selected={this.state.recent === "-3"}>Choose date</option>
-                                    <option>This month</option>
-                                    <option>Last 2 months</option>
-                                    <option>Last 3 months</option>
+                                    <option disabled selected={this.state.customDate === "-3"}>Choose date</option>
+                                    <option value="30" selected={this.state.customDate === "30"}>This month</option>
+                                    <option value="60" selected={this.state.customDate === "60"}>Last 2 months</option>
+                                    <option value="90" selected={this.state.customDate === "90"}>Last 3 months</option>
                                     <option value="customDate" selected={this.state.customDate ==="customDate"}>Pick a date</option>
                                 </Form.Control>
       
                             </Form.Group>
                             {this.state.customDate == "customDate" && 
-                            <Form.Group as={Row} onChange={this.checkDate}>
+                            <Form.Group as={Row} onChange={this.checkDate.bind(this)}>
                                 <Form.Group as={Col}  controlId="formGridState"  >
                                     <Form.Label >Start Date</Form.Label>
-                                    <Form.Control type="date" id="dateStart" />
+                                    <Form.Control type="date" id="dateStart" onChange={this.getStartDate.bind(this)} />
                                 </Form.Group>
                                 <Form.Group as={Col}  controlId="formGridState"  >
                                     <Form.Label >End Date</Form.Label>
-                                    <Form.Control type="date" id="dateEnd"  />
+                                    <Form.Control type="date" id="dateEnd" onChange={this.getEndDate.bind(this)} />
                                 </Form.Group>
                               </Form.Group>
                             }

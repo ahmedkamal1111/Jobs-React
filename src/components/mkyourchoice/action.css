@@ -8,3 +8,10 @@
 .form-row {
     margin-top: 15px;
 }
+
+@media(max-width:1200px) {
+    .respo{
+        /* background-color: black !important; */
+        /* width: 540px; */
+    }
+}

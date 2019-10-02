@@ -17,6 +17,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MailIcon from '@material-ui/icons/Mail';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -209,7 +210,7 @@ export default function Dashboard() {
                 <div >
                   <Link to={link.to} key={link.text + index}>
                     <ListItem button onClick={handleClick} >
-                      <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                      <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"large"}/> : <MailIcon fontSize={"large"}/>}</ListItemIcon>
                       <ListItemText primary={link.text} />
                       {open1 ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
@@ -223,7 +224,7 @@ export default function Dashboard() {
              
                    <ListItem button className={classes.nested}>
                      <ListItemIcon>
-                       <StarBorder />
+                       <StarBorder fontSize={"large"}/>
                      </ListItemIcon>
              
                      <ListItemText primary="Starred" />
@@ -242,7 +243,7 @@ export default function Dashboard() {
     
               <ListItem button >
               
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"large"}/> : <MailIcon fontSize={"large"}/>}</ListItemIcon>
               
                 <ListItemText primary={link.text} />
                           
@@ -265,16 +266,29 @@ export default function Dashboard() {
               to:'/trash',
             },
             {
-              text:'Spam',
-              to:'/spam',
+              text:'Logout',
+              to:'/logout',
             },
           ].map((link, index) => (
-        
+            link.text === "Logout" ? 
+            
             <Link to={link.to} key={link.text + index}>
             
               <ListItem button >
             
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemIcon><ExitToAppIcon color={"secondary"} fontSize={"large"}/></ListItemIcon>
+            
+                <ListItemText primary={link.text} />
+            
+              </ListItem>
+            
+            </Link>
+            :
+            <Link to={link.to} key={link.text + index}>
+            
+              <ListItem button >
+            
+                <ListItemIcon >{index % 2 === 0 ? <InboxIcon fontSize={"large"}/> : <MailIcon fontSize={"large"}/>}</ListItemIcon>
             
                 <ListItemText primary={link.text} />
             
