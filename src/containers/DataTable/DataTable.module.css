@@ -5,8 +5,7 @@
     grid-template-areas: 'header header header header'
     'body body body body';
     padding: 10px 25px 10px;
-    margin-left: 80px;
-
+    margin-left: 45px; 
 }
 
 .body {

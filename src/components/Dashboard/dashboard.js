@@ -26,7 +26,6 @@ import StarBorder from '@material-ui/icons/StarBorder';
 import logo from '../../logo.png';
 import NavbarBrand from 'react-bootstrap/NavbarBrand';
 import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button'
 import './dashboard.css';
 import Inbox from './inbox';
 import DataTable from '../../containers/DataTable/Datatable';
