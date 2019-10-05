@@ -10,12 +10,57 @@ export default class MakeYourChoice extends Component {
             isLoading: false,
             search: {
                 type: '',
-                positionType: "-1",
-                positionName: "-2",
+                positionType: "disabled",
+                positionName: "disabled",
                 customDate: "-3",
-                intern: "-4",
+                intern: "disabled",
                 startDate: "",
                 endDate: "",
+            },
+            jobType: [
+                { value: 'disabled', name: 'Choose Type'},
+                { value:  0, name: 'Full Time'},
+                { value:  1, name: 'Part Time'},
+                { value:  2, name: 'Freelance'},
+                { value:  3, name: 'Project'},
+            ],
+            pickDate: [
+                { value: 'disabled', name: 'Choose Date'},
+                { value:  30, name: 'Last month'},
+                { value:  60, name: 'Last 2 months'},
+                { value:  90, name: 'Last 3 months'},
+                { value:  'customDate', name: 'Pick a Range Date'},
+            ],
+            internName: [
+                { value: 'disabled', name: 'Choose Speciality'},
+                { value:  0, name: 'React'},
+                { value:  1, name: 'PHP Laravel'},
+                { value:  2, name: 'UI/UX'},
+                { value:  3, name: 'Testing'},
+            ],
+            JobName: {
+                0 : [
+                    { value: 'disabled', name: 'Choose Job'},
+                    { value: 'a-0', name: 'Front-End Developer(React)'},
+                    { value: 'a-1', name: 'Back-End Developer(Laravel)'},
+                    { value: 'a-2', name: 'UI/UX Designer'},
+                ],
+                1 : [
+                    { value: 'disabled', name: 'Choose Job'},
+                    { value: 'b-0', name: 'Security Engineer'},
+                    { value: 'b-1', name: 'DevOps(Kubernetes)'},
+                    { value: 'b-2', name: 'ML Engineer'},
+                ],
+                2 : [
+                    { value: 'disabled', name: 'Choose Job'},
+                    { value: 'c-0', name: 'MERN Stack Developer'},
+                    { value: 'c-1', name: 'System Analyst'},
+                ], 
+                3 : [
+                    { value: 'disabled', name: 'Choose Job'},
+                    { value: 'd-0', name: 'XY Developer'},
+                    { value: 'd-1', name: 'Add Developer'},
+                ],
             }
         }
     }
@@ -51,300 +96,144 @@ export default class MakeYourChoice extends Component {
             search:{ 
                 ...prev.search,
                 type: v,
-                positionType: "-1",
-                positionName: "-2",
+                positionType: "disabled",
+                positionName: "disabled",
                 customDate: "-3",
                 intern: "-4",
                 startDate: null,
                 endDate: null,
             }
-        }))
+        }));
     }
 
     //render submit button
-    renderSubmitButton = () => {
-        return (
-            <div className="text-center pt-3" >
-                <Button variant="primary" type="submit"> Search </Button>
-            </div>
-        );
-    }
+    renderSubmitButton = () => (
+        <div className="text-center pt-3" >
+            <Button variant="primary" type="submit"> Search </Button>
+        </div>
+    );
 
+    //render options debpend on form control selection name
+    renderOptions = ( options ) => (
+        options.map((option, index) => (
+            <option 
+                key={`${Math.random()}-${index}`} 
+                value={option.value} 
+                disabled={ option.value === 'disabled' ? true : null } 
+            > 
+                { option.name } 
+            </option>
+        ))
+    );
+
+    //render Form Group
+    renderFormGroup = ( label, value, name, options ) => (
+        <Form.Group as={Col} controlId="formGridState">
+            <Form.Label> { label } </Form.Label>
+            <Form.Control 
+                as="select" 
+                value={ value } 
+                onChange={ this.handleSelectionChange.bind(this, name) } 
+                name= { name }
+            >
+                { this.renderOptions( options ) }          
+            </Form.Control>
+        </Form.Group>    
+    );
+
+    //render start and end date fields
+    renderPickDateRange = () => (
+        <Form.Group as={Row} >
+            { this.renderDateFieldGroup('Start Date', 'startDate')}
+            { this.renderDateFieldGroup('End Date', 'endDate') }
+        </Form.Group>
+    );
+
+    renderDateFieldGroup = (label , id) => (
+        <Form.Group as={Col}  controlId="formGridState"  >
+            <Form.Label > { label } </Form.Label>
+            <Form.Control 
+                type="date"   
+                controlid={id} 
+                required
+                onChange={this.handleSelectionChange.bind(this, id)} 
+            />
+        </Form.Group>
+    );
     
+    //Render the inter and job toggle buttons
+    renderToggleButton = ( type ) => (
+        <div className="d-flex flex-column">
+            <ButtonGroup toggle className="mt-3, c-width" >
+                { this.renderButton("job", "Job", type) }
+                { this.renderButton("intern", "Internship", type) }
+            </ButtonGroup>
+        </div>
+    )
+
+    renderButton = (value, name, type) => (
+        <ToggleButton 
+            type="radio" 
+            name="radio" 
+            value={value}
+            checked={type === value} 
+            onChange={ this.choiceHanlde.bind(this) }
+        >
+            { name }
+        </ToggleButton>    
+    )
 
     render() {
-        
-        console.log(this.state);
 
         let action;
+        //distruct state
+        const { jobType, pickDate, internName, JobName } = this.state;
+        const { type, positionType, positionName, customDate, intern } = this.state.search;
 
-        if( this.state.search.type === "job" ) {
-            
-            action =  (<Container  className="respo" >
-
-            <Form onSubmit={this.checkDate.bind(this)} >
-
-                <Form.Row>
+        if( type === "job" ) {
+            action =  (
+                <Container  className="respo" >
+                    <Form onSubmit={this.checkDate.bind(this)} >
+                        <Form.Row>
+                            { this.renderFormGroup( 'Job Type', positionType, 'positionType', jobType) }
+                            { positionType === "0" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName[0]) : null }
+                            { positionType === "1" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName[1]) : null }
+                            { positionType === "2" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName[2]) : null }
+                            { positionType === "3" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName[3]) : null }
+              
+                            { this.renderFormGroup( 'Date', customDate, 'customDate', pickDate) }
+              
+                            {  customDate === "customDate" ? this.renderPickDateRange() : null }    
+                        </Form.Row>
                     
-                    <Form.Group as={Col} controlId="formGridState">
-                        
-                        <Form.Label>Job Type</Form.Label>
-                        
-                        <Form.Control 
-                            as="select" 
-                            value={ this.state.search.positionType } 
-                            onChange={ this.handleSelectionChange.bind(this, 'positionType') } 
-                            name="positionType"
-                        >
-                            <option value ="-1" disabled > Choose type </option>
-                            <option value="0" > Full time </option>
-                            <option value="1" > Part time </option>
-                            <option value="2" > Freelance </option>
-                            <option value="3" > Project </option>
-                        </Form.Control>
-                    
-                    </Form.Group>
-                    
-                {  
-                    this.state.search.positionType === "0" && 
-                    <Form.Group as={Col} controlId="formGridState"  id="full">
-                       
-                        <Form.Label>Full Time -> Available Positions</Form.Label>
-                       
-                        <Form.Control 
-                            as="select" 
-                            value={this.state.search.positionName} 
-                            onChange={ this.handleSelectionChange.bind(this, 'positionName') }  
-                            name = "positionName"
-                        >
-                            <option value ="-2" disabled > Choose job </option>
-                            <option value="0-a" > Front-End Developer(React) </option>
-                            <option value="0-b" > Back-End Developer(Laravel) </option>
-                            <option value="0-c" > UI/UX Designer </option>
-                        </Form.Control>
-                    
-                    </Form.Group>
-                }
-                
-                {
-                    this.state.search.positionType === "1" && 
-                    <Form.Group as={Col} controlId="formGridState"  id="part">
-                        <Form.Label>Part Time -> Available Positions</Form.Label>
-                        <Form.Control 
-                            as="select" 
-                            value={ this.state.search.positionName } 
-                            onChange={ this.handleSelectionChange.bind(this, 'positionName') }   
-                            name = "positionName" 
-                        >
-                            <option value ="-2" > Choose job</option>
-                            <option value="1-a" > Security Engineer </option>
-                            <option value="1-b" > DevOps(Kubernetes) </option>
-                            <option value="1-c" > ML Engineer </option>
-                        </Form.Control>
-                    </Form.Group>
-                }
-                
-                
-                {
-                    this.state.search.positionType === "2" && 
-                    <Form.Group as={Col} controlId="formGridState"  id="free"> 
-                        <Form.Label>Freelance->Available Positions</Form.Label>
-                        <Form.Control 
-                            as="select" 
-                            value={ this.state.search.positionName } 
-                            onChange={ this.handleSelectionChange.bind(this, 'positionName') }   
-                            name = "positionName" 
-                        >
-                            <option value ="-2" > Choose job </option>
-                            <option value="2-a" > MERN Stack Developer </option>
-                            <option value="2-b" > System Analyst </option>
-                        </Form.Control>
-                    </Form.Group>
-                }
-                
-             
-                {   
-                    this.state.search.positionType === "3" && 
-                    <Form.Group as={Col} controlId="formGridState"  id="project">
-                        <Form.Label> Project -> Available Positions </Form.Label>
-                        <Form.Control 
-                            as="select" 
-                            value={ this.state.search.positionName } 
-                            onChange={ this.handleSelectionChange.bind(this, 'positionName') }  
-                            name="positionName" 
-                        >
-                            <option value ="-2" disabled > Choose job </option>
-                            <option value="3-a" > XY Developer </option>
-                            <option value="3-b" > Add Developer </option>
-                        </Form.Control>
-                    </Form.Group>
-                }
-                  
-                    <Form.Group as={Col} controlId="formGridState" >
-                        <Form.Label>Date</Form.Label>
-                        <Form.Control 
-                            as="select" 
-                            value={ this.state.search.customDate } 
-                            required 
-                            onChange={ this.handleSelectionChange.bind(this, 'customDate') }   
-                            name="Date" 
-                        >
-                            <option disabled > Choose date </option>
-                            <option value="30" > This month </option>
-                            <option value="60" > Last 2 months </option>
-                            <option value="90" > Last 3 months </option>
-                            <option value="customDate" > Pick a date </option>
-                        </Form.Control>
+                        { this.renderSubmitButton() }
+                    </Form>
+                </Container>
+            );
+        }  else if ( type === "intern" ) {
+            action = (
+                <Container>
+                    <Form onSubmit={this.checkDate.bind(this)}>
+                        <Form.Row>  
+                            { this.renderFormGroup("Specialities", intern, "intern", internName) } 
+                            { this.renderFormGroup( 'Date',  customDate, 'customDate', pickDate) }
+                            { customDate === "customDate" ? this.renderPickDateRange() : null }  
+                        </Form.Row>
 
-                    </Form.Group>
-
-                {   
-                    this.state.search.customDate === "customDate" && 
-                    <Form.Group as={Row} >
-                        <Form.Group as={Col}  controlId="formGridState"  >
-                            <Form.Label > Start Date </Form.Label>
-                            <Form.Control 
-                                type="date"  
-                                controlid="dateStart" 
-                                required
-                                onChange={this.handleSelectionChange.bind(this, 'startDate')}
-                            />
-                        </Form.Group>
-                        <Form.Group as={Col}  controlId="formGridState"  >
-                            <Form.Label > End Date </Form.Label>
-                            <Form.Control 
-                                type="date"   
-                                controlid="dateEnd" 
-                                required
-                                onChange={this.handleSelectionChange.bind(this, 'endDate')} 
-                            />
-                        </Form.Group>
-                    </Form.Group>
-                }
-                    
-                </Form.Row>
-                   
-                { this.renderSubmitButton() }
-        
-            </Form>
-
-         </Container>);
-
-        }  else if ( this.state.search.type === "intern" ) {
-            
-            action = (<Container  >
-
-            <Form onSubmit={this.checkDate.bind(this)}>
-                
-                <Form.Row>  
-
-                    <Form.Group as={Col} controlId="formGridState">
-                        <Form.Label>Specialities</Form.Label>
-                        <Form.Control 
-                            as="select" 
-                            value={ this.state.search.intern } 
-                            name="internType" 
-                            onChange={ this.handleSelectionChange.bind(this, 'intern') }
-                        >
-                            <option disabled value ="-4" > Choose Speciality </option>
-                            <option value="0" > React </option>
-                            <option value="1" > PHP Laravel </option>
-                            <option value="2" > UI/UX </option>
-                            <option value="3" > Testing </option>
-                        </Form.Control>
-                    </Form.Group>
-                    
-                  
-                    <Form.Group as={Col} controlId="formGridState">
-                        <Form.Label>Date</Form.Label>
-                        <Form.Control 
-                            as="select"
-                            value={ this.state.search.customDate }
-                            onChange={this.handleSelectionChange.bind(this, 'customDate')} 
-                            name="Date"
-                        >
-                            <option disabled value="-3" > Choose date</option>
-                            <option value="30" > This month</option>
-                            <option value="60" > Last 2 months</option>
-                            <option value="90" > Last 3 months</option>
-                            <option value="customDate" > Pick a date</option>
-                        </Form.Control>
-
-                    </Form.Group>
-                    
-                    {
-                        this.state.search.customDate === "customDate" && 
-                        <Form.Group as={Row}>
-                            <Form.Group as={Col}  controlId="formGridState"  >
-                                <Form.Label >Start Date</Form.Label>
-                                <Form.Control 
-                                    type="date" 
-                                    controlid="dateStart"  
-                                    onChange={this.handleSelectionChange.bind(this, 'startDate')} 
-                                />
-                            </Form.Group>
-                            <Form.Group as={Col}  controlId="formGridState"  >
-                                <Form.Label >End Date</Form.Label>
-                                <Form.Control 
-                                    type="date"  
-                                    controlid="dateEnd"  
-                                    onChange={this.handleSelectionChange.bind(this, 'endDate')}
-                                />
-                            </Form.Group>
-                        </Form.Group>
-                    }
-                  
-                    </Form.Row>
-                    
-                    { this.renderSubmitButton() }
-            
-            </Form>
-
-         </Container>);
+                        { this.renderSubmitButton() }
+                    </Form>
+                </Container>
+            );
         }
 
         return (
-          
             <main className="content" >
-                
                 <div className="toolbar"/>
-                
                 <Container >
-
-                    <div className="d-flex flex-column">
-                        
-                        <ButtonGroup toggle className="mt-3, c-width" >
-
-                            <ToggleButton 
-                                type="radio" 
-                                name="radio" 
-                                value="job" 
-                                checked={ this.state.search.type === 'job' } 
-                                onChange={this.choiceHanlde.bind(this)}
-                            >
-                                Job
-                            </ToggleButton>
-                            
-                            <ToggleButton 
-                                type="radio" 
-                                name="radio" 
-                                value="intern" 
-                                checked={this.state.search.type === 'intern'} 
-                                onChange={this.choiceHanlde.bind(this)}
-                            >
-                                Internship
-                            </ToggleButton>
-
-                        </ButtonGroup>
-
-                    </div>
-
+                    { this.renderToggleButton( type ) }
                     { action }
-                    
                 </Container>
-  
-             </main>
-           
+            </main>          
         );
     }
 }
