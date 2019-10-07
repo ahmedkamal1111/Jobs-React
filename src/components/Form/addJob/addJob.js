@@ -4,14 +4,13 @@ import "../form.css";
 
 export default class AddJob extends Component {
     
-    state = {
-        jobtype: []
-    };
+   
 
     constructor(props) {
         super(props);
         this.state = {
-            val: { type: "-1" }
+            val: { type: "-1" },
+            jobtype: [],
         };
     }
 
