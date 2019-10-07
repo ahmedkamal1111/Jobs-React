@@ -4,6 +4,10 @@ import "../form.css";
 
 export default class AddJob extends Component {
     
+    state = {
+        jobtype: []
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -20,11 +24,21 @@ export default class AddJob extends Component {
             });
         }
     }
+    generaterjobtype(jobtype) {
+        return (
+            <option value={jobtype.id}>{jobtype.name}</option>
+        );
+      }
     componentDidMount() {
         axios.get("https://joblaravel.tbv.cloud/interview_status").then(response => {
-            console.log(response.data);});
+            console.log(response.data);
+        });
             axios.get("https://joblaravel.tbv.cloud/jobtypes").then(response => {
-                console.log(response.data);});
+                console.log(response.data);
+                this.setState({
+                    jobtype: response.data
+                   })
+            });
         document.getElementById("myForm").addEventListener("submit", function(e) {
           e.stopPropagation();
           e.preventDefault();
@@ -44,6 +58,10 @@ export default class AddJob extends Component {
       })
     }
     render() {
+        const { jobtype } = this.state;
+        const jobtypeoption = jobtype.map(njobtype => {
+             return this.generaterjobtype(njobtype);
+        });
         return (
             <div className="content-form">
                 <div className="container">
@@ -71,11 +89,7 @@ export default class AddJob extends Component {
                             {this.state.val.type === "0" && (
                                 <div>
                                 <select id="Job_Type" name="Job_Type" className="form-control mb-3" onChange={this.handleSelect.bind(this)}>
-                                    <option value="-1"></option>
-                                    <option value="0">Full time</option>
-                                    <option value="1">Part Time</option>
-                                    <option value="1">Project</option>
-                                    <option value="1">Freelance</option>
+                                    {jobtypeoption}
                                 </select>
                                 <input
                                     placeholder="Name"
