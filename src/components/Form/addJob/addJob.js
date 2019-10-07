@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import axios from "axios";
 import "../form.css";
 
@@ -57,6 +57,7 @@ export default class AddJob extends Component {
       })
     }
     render() {
+        console.log(this.state.jobtype[4])
         const { jobtype } = this.state;
         const jobtypeoption = jobtype.map(njobtype => {
              return this.generaterjobtype(njobtype);
@@ -118,12 +119,18 @@ export default class AddJob extends Component {
                                 </div>
                             )}{" "}
                             {this.state.val.type === "1" && (
+                                <Fragment>
                                 <input
                                 placeholder="Title"
+                                name="Name"
+                                id="Name"
                                 className="form-control  mb-3"
                                 type="text"
                                 onChange={this.handleSelect.bind(this)}
                                 />
+                                <input hidden id="Job_Type" name="Job_Type" onChange={this.handleSelect.bind(this)} value={this.state.jobtype[4].id}/>
+                             
+                              </Fragment>
                             )}
                             <button
                                 type="submit"
