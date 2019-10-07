@@ -30,7 +30,7 @@ import './dashboard.css';
 import Inbox from './inbox';
 import DataTable from '../../containers/DataTable/Datatable';
 import MakeYourChoice from '../mkyourchoice/choice';
-
+import Addjob from '../Form/addJob/addJob';
 
 
 const drawerWidth = 200;
@@ -310,7 +310,7 @@ export default function Dashboard() {
                     </div>
           }/>
 
-          <Route path='/sendmail' component={MakeYourChoice} />
+          <Route path='/sendmail' component={Addjob} />
           <Route path='/drafts' />
         </Switch>
       

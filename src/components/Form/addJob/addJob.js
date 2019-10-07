@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import "../from.css";
+import axios from "axios";
+import "../form.css";
 
 export default class AddJob extends Component {
     
@@ -19,6 +20,29 @@ export default class AddJob extends Component {
             });
         }
     }
+    componentDidMount() {
+        axios.get("https://joblaravel.tbv.cloud/interview_status").then(response => {
+            console.log(response.data);});
+            axios.get("https://joblaravel.tbv.cloud/jobtypes").then(response => {
+                console.log(response.data);});
+        document.getElementById("myForm").addEventListener("submit", function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          const data= new FormData(document.getElementById("myForm"));
+          axios.post("https://joblaravel.tbv.cloud/storeJob/1",data)
+          .then(response => {
+            console.log(response.data);
+            if(response.data)
+            {
+             
+            // this.props.history.push('/dashboard', { logged: 1 })
+              
+            }
+            
+          })
+          .catch (error=>{console.log(error.message)})
+      })
+    }
     render() {
         return (
             <div className="content-form">
@@ -27,7 +51,7 @@ export default class AddJob extends Component {
                         <div className="col-sm-3"></div>
                         <div className="col-sm-6">
                         <div className="form-group">
-                            <form className="form-container">
+                            <form  id="myForm" encType="multipart/form-data" className="form-container">
                             <select
                                 className="form-control mb-3"
                                 name="kind"
@@ -44,9 +68,9 @@ export default class AddJob extends Component {
                                 Internship
                                 </option>
                             </select>{" "}
-                            {this.state.val.type === 0 && (
+                            {this.state.val.type === "0" && (
                                 <div>
-                                <select className="form-control mb-3">
+                                <select id="Job_Type" name="Job_Type" className="form-control mb-3" onChange={this.handleSelect.bind(this)}>
                                     <option value="-1"></option>
                                     <option value="0">Full time</option>
                                     <option value="1">Part Time</option>
@@ -54,27 +78,38 @@ export default class AddJob extends Component {
                                     <option value="1">Freelance</option>
                                 </select>
                                 <input
-                                    placeholder="Title"
+                                    placeholder="Name"
+                                    name="Name"
+                                    id="Name"
                                     className="form-control mb-3"
                                     type="text"
+                                    onChange={this.handleSelect.bind(this)}
                                 />
                                 <input
+
                                     placeholder="Skills"
+                                    name="Skills"
+                                    id="Skills"
                                     className="form-control mb-3"
                                     type="text"
+                                    onChange={this.handleSelect.bind(this)}
                                 />
                                 <input
                                     placeholder="Responsibilities"
+                                    id="Respo"
+                                    name="Respo"
                                     className="form-control mb-3"
                                     type="text"
+                                    onChange={this.handleSelect.bind(this)}
                                 />
                                 </div>
                             )}{" "}
-                            {this.state.val.type === 1 && (
+                            {this.state.val.type === "1" && (
                                 <input
                                 placeholder="Title"
                                 className="form-control  mb-3"
                                 type="text"
+                                onChange={this.handleSelect.bind(this)}
                                 />
                             )}
                             <button
