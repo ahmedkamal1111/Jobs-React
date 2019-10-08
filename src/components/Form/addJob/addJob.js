@@ -98,6 +98,7 @@ export default class AddJob extends Component {
                                     className="form-control mb-3"
                                     type="text"
                                     onChange={this.handleSelect.bind(this)}
+                                    required
                                 />
                                 <input
 
@@ -107,6 +108,7 @@ export default class AddJob extends Component {
                                     className="form-control mb-3"
                                     type="text"
                                     onChange={this.handleSelect.bind(this)}
+                                    required
                                 />
                                 <input
                                     placeholder="Responsibilities"
@@ -115,6 +117,7 @@ export default class AddJob extends Component {
                                     className="form-control mb-3"
                                     type="text"
                                     onChange={this.handleSelect.bind(this)}
+                                    required
                                 />
                                 </div>
                             )}{" "}
@@ -127,6 +130,7 @@ export default class AddJob extends Component {
                                 className="form-control  mb-3"
                                 type="text"
                                 onChange={this.handleSelect.bind(this)}
+                                required
                                 />
                                 <input hidden id="Job_Type" name="Job_Type" onChange={this.handleSelect.bind(this)} value={this.state.jobtype[4].id}/>
                              
