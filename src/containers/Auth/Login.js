@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router-dom'
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/Button/Button';
 
-import { required, length, email } from '../../util/validators';
+import { required, email } from '../../util/validators';
 
 import Auth from './Auth';
 import './Auth.css';
@@ -15,25 +15,15 @@ class Login extends Component {
     super(props);
 
     this.state = {
-    
+      companyName: "Teqneia",
       loginForm: {
-        
         email: {
           value: '',
           valid: false,
           touched: false,
           validators: [required, email]
         },
-  
-        password: {
-          value: '',
-          valid: false,
-          touched: false,
-          validators: [required, length({ min: 5 })]
-        },
-  
-        formIsValid: false,
-      
+        formIsValid: false,    
       }
   
     };
@@ -45,7 +35,7 @@ class Login extends Component {
       
       let isValid = true;
       
-      for (const validator of prevState.loginForm[input].validators) {
+      for (var validator of prevState.loginForm[input].validators) {
         isValid = isValid && validator(value);
       }
       
@@ -60,7 +50,7 @@ class Login extends Component {
 
       let formIsValid = true;
 
-      for (const inputName in updatedForm) {
+      for (var inputName in updatedForm) {
         formIsValid = formIsValid && updatedForm[inputName].valid;
       }
       
@@ -72,12 +62,9 @@ class Login extends Component {
     });
   };
 
-  inputBlurHandler = input => {
-    
+  inputBlurHandler = input => {    
     this.setState(prevState => {
-      
       return {
-        
         loginForm: {
           ...prevState.loginForm,
           [input]: {
@@ -85,11 +72,8 @@ class Login extends Component {
             touched: true
           }
         }
-
       };
-
     });
-
   };
 
   render() {
@@ -98,17 +82,14 @@ class Login extends Component {
       
       <Auth>
 
-        <div className="center header">
-          
-          <h2>Log In to Teqneia Jobs</h2>
-        
+        <div className="center header">      
+          <h2>Log In to { this.state.companyName } Dashboard</h2>
         </div>
 
         <form className="auth-form"
           onSubmit={ e =>
             this.props.onLogin(e, {
-              email: this.state.loginForm.email.value,
-              password: this.state.loginForm.password.value
+              email: this.state.loginForm.email.value
             })
           }
         >
@@ -125,38 +106,17 @@ class Login extends Component {
             valid={this.state.loginForm['email'].valid}
             touched={this.state.loginForm['email'].touched}
           />
-
-          <Input
-            id="password"
-            label="Password"
-            type="password"
-            control="input"
-            placeholder="password..?"
-            onChange={this.inputChangeHandler}
-            onBlur={this.inputBlurHandler.bind(this, 'password')}
-            value={this.state.loginForm['password'].value}
-            valid={this.state.loginForm['password'].valid}
-            touched={this.state.loginForm['password'].touched}
-          />
          
           <div className="center">
-            
-            <div className="forget">
-              <Button design="flat" type="submit" loading={ this.props.loading } >
-                Forget your password?
-              </Button>
-            </div>
-            
             <div>
+            <Link to="/confirmLogin">
               <Button design="raised" type="submit" loading={ this.props.loading } style ={{width: '160px', fontSize: '18px'}} >
                 Login
               </Button>
+            </Link> 
             </div>
-          
-          </div>
-        
+          </div> 
         </form>
-
       </Auth>
     );
 

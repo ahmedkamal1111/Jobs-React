@@ -4,23 +4,22 @@ import axios from 'axios';
 import { Switch, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './containers/Auth/Login';
+import PinLogin from './containers/Auth/PinLogin';
 import Dashboard from './components/Dashboard/dashboard';
 
 
 class App extends Component {
   
   constructor(props) {
-    
     super(props)
-    
     this.state = {
-      isAuth: true,
+      isAuth: false,
       token: null,
       adminId: null,
       authLoading: false,
-      error: null
+      error: null,
+      authorize: false
     };
-
   }
 
   componentDidMount() {
@@ -72,7 +71,7 @@ class App extends Component {
   }
 
   //Login Func
-  login = (event, authData) => {
+  confirmlogin = (event, authData) => {
 
     event.preventDefault();
 
@@ -81,22 +80,17 @@ class App extends Component {
 
     //Post data authentication to login onto the system
     axios.post("https://joblaravel.tbv.cloud/login", { 
-        email: authData.email,
-        password: authData.password    
+      password: authData.password    
     })
       .then(res => {
         
         //Handle Response Status
         if( res.status === 422 ) {
-          
           throw new Error("Validation Failed.");
-        
         } 
         
         if ( res.status !== 200 || res.status !== 201 ) {
-
           throw new Error("Could not authenticate yet, you should input the right password or email");
-        
         }
         
         //udpate state with initial data
@@ -132,7 +126,6 @@ class App extends Component {
         });
 
       })
-
   }
 
   render () {
@@ -152,7 +145,19 @@ class App extends Component {
             />
           )}
         />
-      
+
+        <Route
+          path="/confirmLogin"
+          exact
+          render={props => (
+            <PinLogin
+              {...props}
+              onLogin={ this.state.authorize ? this.confirmlogin : this.createPass }
+              loading={this.state.authLoading}
+            />
+          )}
+        />
+
       </Switch>
     );
 
@@ -170,11 +175,8 @@ class App extends Component {
     return (
       
       <Fragment>
-      
         {routes}
-      
       </Fragment>
-
     );
   }
 
