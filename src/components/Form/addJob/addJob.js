@@ -42,7 +42,7 @@ export default class AddJob extends Component {
           e.stopPropagation();
           e.preventDefault();
           const data= new FormData(document.getElementById("myForm"));
-          axios.post("https://joblaravel.tbv.cloud/storeJob/1",data)
+          axios.post("https://joblaravel.tbv.cloud/storeJob/1", data)
           .then(response => {
             console.log(response.data);
             if(response.data)

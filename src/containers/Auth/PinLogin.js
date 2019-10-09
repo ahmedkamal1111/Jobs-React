@@ -96,7 +96,7 @@ class PinLogin extends Component {
 
     let authorize;
 
-    if (this.props.authorize) {
+    if (this.props.authorize === 0 || this.props.authorize === 1) {
         authorize = (
             <form className="auth-form"
               onSubmit={ e =>
@@ -135,11 +135,11 @@ class PinLogin extends Component {
               </div> 
             </form>
         )
-    } else {
+    } else if (this.props.authorize === 2){
         authorize = (
             <form className="auth-form"
                 onSubmit={ e =>
-                    this.props.createpass(e, {
+                    this.props.confirmlogin(e, {
                         pin: this.state.loginForm.pin.value,
                         password: this.state.loginForm.password.value
                     })

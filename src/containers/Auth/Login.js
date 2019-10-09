@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/Button/Button';
 
@@ -89,7 +88,8 @@ class Login extends Component {
         <form className="auth-form"
           onSubmit={ e =>
             this.props.onLogin(e, {
-              email: this.state.loginForm.email.value
+              email: this.state.loginForm.email.value,
+              CID: 1
             })
           }
         >
@@ -98,6 +98,7 @@ class Login extends Component {
             id="email"
             label="Email"
             type="email"
+            name="email"
             control="input"
             placeholder="what's your email..?"
             onChange={this.inputChangeHandler}
@@ -109,11 +110,14 @@ class Login extends Component {
          
           <div className="center">
             <div>
-            <Link to="/confirmLogin">
-              <Button design="raised" type="submit" loading={ this.props.loading } style ={{width: '160px', fontSize: '18px'}} >
+              <Button 
+                  design="raised" 
+                  type="submit" 
+                  loading={ this.props.loading } 
+                  style ={{width: '160px', fontSize: '18px'}} 
+              >
                 Login
               </Button>
-            </Link> 
             </div>
           </div> 
         </form>

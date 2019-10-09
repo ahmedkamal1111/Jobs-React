@@ -18,7 +18,7 @@ class App extends Component {
       adminId: null,
       authLoading: false,
       error: null,
-      authorize: false
+      authorize: null,
     };
   }
 
@@ -70,6 +70,18 @@ class App extends Component {
     setTimeout( this.logout() , remainingMilliseconds );
   }
 
+  login = (e , authData) => {
+    e.preventDefault();
+    console.log(authData);
+    ///
+    console.log("MO");
+    axios.post('https://joblaravel.tbv.cloud/entermail', authData).then(res => {
+      console.log("MO");
+      console.log(res.data);
+    })
+    .catch(err => console.log(err));
+  }
+
   //Login Func
   confirmlogin = (event, authData) => {
 
@@ -79,7 +91,7 @@ class App extends Component {
     this.setState({ authLoading: true });
 
     //Post data authentication to login onto the system
-    axios.post("https://joblaravel.tbv.cloud/login", { 
+    axios.post("URL", { 
       password: authData.password    
     })
       .then(res => {
@@ -133,7 +145,6 @@ class App extends Component {
     let routes = (
       
       <Switch>
-
         <Route
           path="/"
           exact
@@ -145,14 +156,13 @@ class App extends Component {
             />
           )}
         />
-
         <Route
           path="/confirmLogin"
           exact
           render={props => (
             <PinLogin
-              {...props}
-              onLogin={ this.state.authorize ? this.confirmlogin : this.createPass }
+              authorize={this.state.authorize}
+              confirmlogin={ this.state.authorize ? this.confirmlogin : this.createPass }
               loading={this.state.authLoading}
             />
           )}
@@ -163,13 +173,11 @@ class App extends Component {
 
     if (this.state.isAuth) {
       routes = (
-       
         <Switch>
           <Route>
             <Dashboard />
           </Route>
         </Switch>
-
       );
     }
     return (
