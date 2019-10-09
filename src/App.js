@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './containers/Auth/Login';
 import PinLogin from './containers/Auth/PinLogin';
+import ConfirmLogin from './containers/Auth/ConfirmLogin';
 import Dashboard from './components/Dashboard/dashboard';
 
 
@@ -45,7 +46,12 @@ class App extends Component {
     const remainingMilliseconds = new Date(expiryDate).getTime() - new Date().getTime();
 
     //update state
-    this.setState({ setAuth: true, token: token, adminId: adminId});
+    this.setState(prev => ({ 
+        ...prev, 
+        setAuth: true, 
+        token: token, 
+        adminId: adminId
+      }));
 
     //set auto Logout depend on time remaining
     this.autoLogout(remainingMilliseconds);
@@ -56,7 +62,9 @@ class App extends Component {
   logout = () => {
     
     //update state
-    this.setState({isAuth: false ,token: null, adminId: null});
+    this.setState(prev => (
+      {...prev, isAuth: false ,token: null, adminId: null}
+    ));
 
     //Remove date authentication from localstorage
     localStorage.removeItem('token');
@@ -70,21 +78,38 @@ class App extends Component {
     setTimeout( this.logout() , remainingMilliseconds );
   }
 
-  login = (e , authData) => {
+  login = (e ,authData) => {
+    
     e.preventDefault();
-    console.log(authData);
-    ///
-    console.log("MO");
-    axios.post('https://joblaravel.tbv.cloud/entermail', authData).then(res => {
-      console.log("MO");
-      console.log(res.data);
-    })
-    .catch(err => console.log(err));
+    
+    axios.post('https://joblaravel.tbv.cloud/entermail', authData)
+      .then(res => {
+        //Handle Response Status
+        if( res.status === 422 ) {
+          throw new Error("Validation Failed.");
+        } 
+        //Response is success      
+        if ( res.status === 200 ) {
+          this.setState(prev => ({
+            ...prev,
+            authorize: res.data
+          }));
+        }
+      }) 
+      .catch(err => 
+         //update state with initial errors
+        this.setState(prev => ({
+          ...prev,
+          isAuth: false,
+          authLoading: false,
+          error: err,
+          authorize: null
+        }))
+      );
   }
 
   //Login Func
   confirmlogin = (event, authData) => {
-
     event.preventDefault();
 
     //Update state to fire spinner
@@ -143,8 +168,7 @@ class App extends Component {
   render () {
 
     let routes = (
-      
-      <Switch>
+       <Switch>
         <Route
           path="/"
           exact
@@ -156,22 +180,40 @@ class App extends Component {
             />
           )}
         />
-        <Route
-          path="/confirmLogin"
-          exact
-          render={props => (
-            <PinLogin
-              authorize={this.state.authorize}
-              confirmlogin={ this.state.authorize ? this.confirmlogin : this.createPass }
-              loading={this.state.authLoading}
-            />
-          )}
-        />
-
       </Switch>
     );
 
-    if (this.state.isAuth) {
+    if ( (!this.isAuth) && (this.state.authorize === 0 || this.state.authorize === 1)) {
+      routes = (
+        <Switch>
+          <Route
+            path="/"
+            render={props => (
+              <ConfirmLogin
+                {...props}
+                confirmlogin={this.confirmlogin}
+                loading={this.state.authLoading}
+              />
+            )}
+          />
+        </Switch>
+      );
+    } else if ( (!this.isAuth) && this.state.authorize === 2 ) {
+      routes = (
+        <Switch>
+          <Route
+            path="/"
+            render={props => (
+              <PinLogin
+                {...props}
+                createAcc={this.confirmlogin}
+                loading={this.state.authLoading}
+              />
+            )}
+          />
+        </Switch>
+      );   
+    } else if (this.state.isAuth) {
       routes = (
         <Switch>
           <Route>
@@ -181,7 +223,6 @@ class App extends Component {
       );
     }
     return (
-      
       <Fragment>
         {routes}
       </Fragment>

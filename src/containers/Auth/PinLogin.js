@@ -37,7 +37,6 @@ class PinLogin extends Component {
         },
         formIsValid: false,    
       }
-  
     };
   }
 
@@ -49,8 +48,8 @@ class PinLogin extends Component {
       
       for (var validator of prevState.loginForm[input].validators) {
         if(validator === 'equalTo') {
-            const equalValue = this.state.loginForm.password.value;
-            isValid = isValid && validator(value, equalValue);
+          const equalValue = this.state.loginForm.password.value;
+          isValid = isValid && validator(value, equalValue);
         }
         isValid = isValid && validator(value);
       }
@@ -94,18 +93,35 @@ class PinLogin extends Component {
 
   render() {
 
-    let authorize;
+    return ( 
+      <Auth>
 
-    if (this.props.authorize === 0 || this.props.authorize === 1) {
-        authorize = (
-            <form className="auth-form"
-              onSubmit={ e =>
-                this.props.confirmlogin(e, {
+        <div className="center header">      
+          <h2>Confirm Login to { this.state.companyName } Dashboard</h2>
+        </div>
+        
+          <form className="auth-form"
+            onSubmit={ e =>
+                this.props.createAcc(e, {
+                  pin: this.state.loginForm.pin.value,
                   password: this.state.loginForm.password.value
                 })
-              }
-            >
+            }
+          >
                 
+              <Input
+                id="pin"
+                label="Pin Code"
+                type="number"
+                control="input"
+                placeholder="Check your email .."
+                onChange={this.inputChangeHandler}
+                onBlur={this.inputBlurHandler.bind(this, 'pin')}
+                value={this.state.loginForm['pin'].value}
+                valid={this.state.loginForm['pin'].valid}
+                touched={this.state.loginForm['pin'].touched}
+              />
+  
               <Input
                 id="password"
                 label="Password"
@@ -118,94 +134,29 @@ class PinLogin extends Component {
                 valid={this.state.loginForm['password'].valid}
                 touched={this.state.loginForm['password'].touched}
               />
-    
-              <div className="center">
-                  
-                <div className="forget">
-                  <Button design="flat" type="submit" loading={ this.props.loading } >
-                    Forget your password?
-                  </Button>
-                </div>
-                
-                <div>
-                  <Button design="raised" type="submit" loading={ this.props.loading } style ={{width: '160px', fontSize: '18px'}} >
-                    Login
-                  </Button>
-                </div>
-              </div> 
-            </form>
-        )
-    } else if (this.props.authorize === 2){
-        authorize = (
-            <form className="auth-form"
-                onSubmit={ e =>
-                    this.props.confirmlogin(e, {
-                        pin: this.state.loginForm.pin.value,
-                        password: this.state.loginForm.password.value
-                    })
-                }
-            >
-                
-                <Input
-                id="pin"
-                label="Pin Code"
-                type="number"
-                control="input"
-                placeholder="Check your email .."
-                onChange={this.inputChangeHandler}
-                onBlur={this.inputBlurHandler.bind(this, 'pin')}
-                value={this.state.loginForm['pin'].value}
-                valid={this.state.loginForm['pin'].valid}
-                touched={this.state.loginForm['pin'].touched}
-                />
-    
-                <Input
-                id="password"
-                label="Password"
+  
+              <Input
+                id="confirmPassword"
+                label="Confirm Password"
                 type="password"
                 control="input"
-                placeholder="password..?"
+                placeholder=" Confirm password..?"
                 onChange={this.inputChangeHandler}
-                onBlur={this.inputBlurHandler.bind(this, 'password')}
-                value={this.state.loginForm['password'].value}
-                valid={this.state.loginForm['password'].valid}
-                touched={this.state.loginForm['password'].touched}
-                />
-    
-                <Input
-                  id="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  control="input"
-                  placeholder=" Confirm password..?"
-                  onChange={this.inputChangeHandler}
-                  onBlur={this.inputBlurHandler.bind(this, 'confirmPassword')}
-                  value={this.state.loginForm['confirmPassword'].value}
-                  valid={this.state.loginForm['confirmPassword'].valid}
-                  touched={this.state.loginForm['confirmPassword'].touched}
-                />
-            
-                <div className="center">
-                
-                <div>
-                  <Button design="raised" type="submit" loading={ this.props.loading } style ={{width: '160px', fontSize: '18px'}} >
-                    Login
-                  </Button>
-                </div>
-                </div> 
-            </form>
-        );
-    }
-
-    return (
-      
-      <Auth>
-
-        <div className="center header">      
-          <h2>Confirm Login to { this.state.companyName } Dashboard</h2>
-        </div>
-        
-        { authorize }
+                onBlur={this.inputBlurHandler.bind(this, 'confirmPassword')}
+                value={this.state.loginForm['confirmPassword'].value}
+                valid={this.state.loginForm['confirmPassword'].valid}
+                touched={this.state.loginForm['confirmPassword'].touched}
+              />
+          
+              <div className="center">
+              
+              <div>
+                <Button design="raised" type="submit" loading={ this.props.loading } style ={{width: '160px', fontSize: '18px'}} >
+                  Create
+                </Button>
+              </div>
+              </div> 
+          </form>
        
       </Auth>
     );
