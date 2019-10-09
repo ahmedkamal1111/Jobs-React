@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Container, ToggleButton, ButtonGroup } from 'react-bootstrap';
-import './action.css'
+import './action.css';
+import axios from "axios";
 
 export default class MakeYourChoice extends Component {
 
@@ -18,11 +19,11 @@ export default class MakeYourChoice extends Component {
                 endDate: "",
             },
             jobType: [
-                { value: 'disabled', name: 'Choose Type'},
-                { value:  0, name: 'Full Time'},
-                { value:  1, name: 'Part Time'},
-                { value:  2, name: 'Freelance'},
-                { value:  3, name: 'Project'},
+                // { value: 'disabled', name: 'Choose Type'},
+                // { value:  0, name: 'Full Time'},
+                // { value:  1, name: 'Part Time'},
+                // { value:  2, name: 'Freelance'},
+                // { value:  3, name: 'Project'},
             ],
             pickDate: [
                 { value: 'disabled', name: 'Choose Date'},
@@ -32,37 +33,65 @@ export default class MakeYourChoice extends Component {
                 { value:  'customDate', name: 'Pick a Range Date'},
             ],
             internName: [
-                { value: 'disabled', name: 'Choose Speciality'},
-                { value:  0, name: 'React'},
-                { value:  1, name: 'PHP Laravel'},
-                { value:  2, name: 'UI/UX'},
-                { value:  3, name: 'Testing'},
+                // { value: 'disabled', name: 'Choose Speciality'},
+                // { value:  0, name: 'React'},
+                // { value:  1, name: 'PHP Laravel'},
+                // { value:  2, name: 'UI/UX'},
+                // { value:  3, name: 'Testing'},
             ],
             JobName: {
-                0 : [
-                    { value: 'disabled', name: 'Choose Job'},
-                    { value: 'a-0', name: 'Front-End Developer(React)'},
-                    { value: 'a-1', name: 'Back-End Developer(Laravel)'},
-                    { value: 'a-2', name: 'UI/UX Designer'},
-                ],
-                1 : [
-                    { value: 'disabled', name: 'Choose Job'},
-                    { value: 'b-0', name: 'Security Engineer'},
-                    { value: 'b-1', name: 'DevOps(Kubernetes)'},
-                    { value: 'b-2', name: 'ML Engineer'},
-                ],
-                2 : [
-                    { value: 'disabled', name: 'Choose Job'},
-                    { value: 'c-0', name: 'MERN Stack Developer'},
-                    { value: 'c-1', name: 'System Analyst'},
-                ], 
-                3 : [
-                    { value: 'disabled', name: 'Choose Job'},
-                    { value: 'd-0', name: 'XY Developer'},
-                    { value: 'd-1', name: 'Add Developer'},
-                ],
+              
             }
         }
+    }
+
+    componentDidMount() {
+        axios.get("https://joblaravel.tbv.cloud/jobtypes").then(response => {
+                // console.log(response.data);
+                this.setState({
+                    jobType: response.data.filter(positionType => positionType.id !== 5),
+                   })
+            });
+        axios.get("https://joblaravel.tbv.cloud/jobs",{
+            params: {
+                cid: "1"
+              }
+        })
+            .then(response => {
+                // console.log(response.data)
+                this.setState({
+                    internName: response.data.filter(intern => {
+                        return intern.Job_Type === 5
+                    }),
+                    JobName: response.data.filter(job => {
+                        return job.Job_Type !== 5
+                    }),
+                    // search: {
+                    //     positionType
+                    // }
+                })
+            })  
+            document.getElementById("myForm").addEventListener("submit", function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                const data= new FormData(document.getElementById("myForm"));
+                axios.post("https://joblaravel.tbv.cloud/filter", data,{
+                    params: {
+                        cid: "1"
+                      }
+                })
+                .then(response => {
+                  console.log(response.data);
+                  if(response.data)
+                  {
+                   
+                  // this.props.history.push('/dashboard', { logged: 1 })
+                    
+                  }
+                  
+                })
+                .catch (error=>{console.log(error.message)})
+            })  
     }
 
     //Handle all selections 
@@ -79,11 +108,12 @@ export default class MakeYourChoice extends Component {
 
     //check the date period
     checkDate = e => {
-        const start = this.state.search.startDate;
-        const end = this.state.search.endDate;
+        const start = new Date (this.state.search.startDate);
+        const end = new Date (this.state.search.endDate);
         let diffTime = Math.abs( end.getTime() - start.getTime() );
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         if(diffDays > 90) {
+            alert("لا")
             e.preventDefault();
         }
     }
@@ -109,7 +139,7 @@ export default class MakeYourChoice extends Component {
     //render submit button
     renderSubmitButton = () => (
         <div className="text-center pt-3" >
-            <Button variant="primary" type="submit"> Search </Button>
+            <button variant="primary" type="submit"> Search </button>
         </div>
     );
 
@@ -122,6 +152,7 @@ export default class MakeYourChoice extends Component {
                 disabled={ option.value === 'disabled' ? true : null } 
             > 
                 { option.name } 
+                { option.Name } 
             </option>
         ))
     );
@@ -189,17 +220,21 @@ export default class MakeYourChoice extends Component {
         //distruct state
         const { jobType, pickDate, internName, JobName } = this.state;
         const { type, positionType, positionName, customDate, intern } = this.state.search;
-
+        // console.log(this.state.internName)
+        console.log(this.state.search.positionType)
+        // console.log(this.state.internName)
+        console.log(this.state.JobName)
+        console.log(positionName)
         if( type === "job" ) {
             action =  (
                 <Container  className="respo" >
                     <Form onSubmit={this.checkDate.bind(this)} >
                         <Form.Row>
                             { this.renderFormGroup( 'Job Type', positionType, 'positionType', jobType) }
-                            { positionType === "0" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName[0]) : null }
-                            { positionType === "1" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName[1]) : null }
-                            { positionType === "2" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName[2]) : null }
-                            { positionType === "3" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName[3]) : null }
+                            { positionType === "Full Time" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName.filter(jobs => jobs.Job_Type == 1)) : null }
+                            { positionType === "Project" ? this.renderFormGroup('Project -> Available Positions', positionName, 'positionName', JobName.filter(jobs => jobs.Job_Type == 2)) : null }
+                            { positionType === "Part Time" ? this.renderFormGroup('Part Time -> Available Positions', positionName, 'positionName', JobName.filter(jobs => jobs.Job_Type == 3)) : null }
+                            { positionType === "Freelance" ? this.renderFormGroup('Freelance -> Available Positions', positionName, 'positionName', JobName.filter(jobs => jobs.Job_Type == 4)) : null }
               
                             { this.renderFormGroup( 'Date', customDate, 'customDate', pickDate) }
               
@@ -231,7 +266,9 @@ export default class MakeYourChoice extends Component {
                 <div className="toolbar"/>
                 <Container >
                     { this.renderToggleButton( type ) }
+                   <form  id="myForm" encType="multipart/form-data">
                     { action }
+                    </form>
                 </Container>
             </main>          
         );

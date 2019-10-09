@@ -13,7 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isAuth: false,
+      isAuth: true,
       token: null,
       adminId: null,
       authLoading: false,
