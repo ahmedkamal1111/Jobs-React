@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/Button/Button';
-import { required, email } from '../../util/validators';
-//import { Link } from 'react-router-dom';
+
+import { required, length } from '../../util/validators';
+
 import Auth from './Auth';
 import './Auth.css';
 
-class Login extends Component {
+class ConfirmLogin extends Component {
 
   constructor(props) {
     
@@ -15,11 +17,11 @@ class Login extends Component {
     this.state = {
       companyName: "Teqneia",
       loginForm: {
-        email: {
+        password: {
           value: '',
           valid: false,
           touched: false,
-          validators: [required, email]
+          validators: [required, length({ min: 5 })]
         },
         formIsValid: false,    
       }
@@ -75,50 +77,48 @@ class Login extends Component {
   };
 
   render() {
-
-    return (
-      
+    
+    return ( 
       <Auth>
-
         <div className="center header">      
-          <h2>Log In to { this.state.companyName } Dashboard</h2>
+          <h2>Confirm Login to { this.state.companyName } Dashboard</h2>
         </div>
 
         <form className="auth-form"
-          onSubmit={ e => {
-            this.props.onLogin(e, {
-              email: this.state.loginForm.email.value,
-              CID: 1
-            }) 
-          }}
+            onSubmit={ e =>
+            this.props.confirmlogin(e, {
+                password: this.state.loginForm.password.value
+            })
+            }
         >
-          
-          <Input
-            id="email"
-            label="Email"
-            type="email"
-            name="email"
+                
+            <Input
+            id="password"
+            label="Password"
+            type="password"
             control="input"
-            placeholder="what's your email..?"
+            placeholder="password..?"
             onChange={this.inputChangeHandler}
-            onBlur={this.inputBlurHandler.bind(this, 'email')}
-            value={this.state.loginForm['email'].value}
-            valid={this.state.loginForm['email'].valid}
-            touched={this.state.loginForm['email'].touched}
-          />
-         
-          <div className="center">
-            <div>
-                <Button 
-                  design="raised" 
-                  type="submit" 
-                  loading={ this.props.loading } 
-                  style ={{width: '160px', fontSize: '18px'}} 
-                >
-                  Login 
-                </Button> 
-            </div>
-          </div> 
+            onBlur={this.inputBlurHandler.bind(this, 'password')}
+            value={this.state.loginForm['password'].value}
+            valid={this.state.loginForm['password'].valid}
+            touched={this.state.loginForm['password'].touched}
+            />
+
+            <div className="center">
+                
+                <div className="forget">
+                    <Button design="flat" type="submit" loading={ this.props.loading } >
+                    Forget your password?
+                    </Button>
+                </div>
+                
+                <div>
+                    <Button design="raised" type="submit" loading={ this.props.loading } style ={{width: '160px', fontSize: '18px'}} >
+                      Confirm
+                    </Button>
+                </div>
+            </div> 
         </form>
       </Auth>
     );
@@ -126,4 +126,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default ConfirmLogin;
