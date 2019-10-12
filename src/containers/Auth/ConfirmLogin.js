@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/Button/Button';
 
-import { required, length } from '../../util/validators';
+import validate from '../../util/validation';
 
 import Auth from './Auth';
 import './Auth.css';
@@ -21,7 +21,9 @@ class ConfirmLogin extends Component {
           value: '',
           valid: false,
           touched: false,
-          validators: [required, length({ min: 5 })]
+          validationRules: {
+            minLength: 6
+          },
         },
         formIsValid: false,    
       }
@@ -29,46 +31,19 @@ class ConfirmLogin extends Component {
     };
   }
 
-  inputChangeHandler = (input, value) => {
-    
-    this.setState(prevState => {
-      
-      let isValid = true;
-      
-      for (var validator of prevState.loginForm[input].validators) {
-        isValid = isValid && validator(value);
-      }
-      
-      const updatedForm = {
-        ...prevState.loginForm,
-        [input]: {
-          ...prevState.loginForm[input],
-          valid: isValid,
-          value: value
-        }
-      };
-
-      let formIsValid = true;
-
-      for (var inputName in updatedForm) {
-        formIsValid = formIsValid && updatedForm[inputName].valid;
-      }
-      
-      return {
-        loginForm: updatedForm,
-        formIsValid: formIsValid
-      };
-
-    });
-  };
-
-  inputBlurHandler = input => {    
+  inputChangeHandler = (key, value) => {
     this.setState(prevState => {
       return {
+        ...prevState,
         loginForm: {
           ...prevState.loginForm,
-          [input]: {
-            ...prevState.loginForm[input],
+          [key]: {
+            ...prevState.loginForm[key],
+            value: value,
+            valid: validate(
+              value,
+              prevState.loginForm[key].validationRules,
+            ),
             touched: true
           }
         }
@@ -85,41 +60,38 @@ class ConfirmLogin extends Component {
         </div>
 
         <form className="auth-form"
-            onSubmit={ e =>
-            this.props.confirmlogin(e, {
-                password: this.state.loginForm.password.value
-            })
-            }
-        >
-                
-            <Input
+          onSubmit={ e =>
+          this.props.confirmlogin(e, {
+            password: this.state.loginForm.password.value
+          })
+          }
+        >            
+          <Input
             id="password"
             label="Password"
             type="password"
             control="input"
             placeholder="password..?"
             onChange={this.inputChangeHandler}
-            onBlur={this.inputBlurHandler.bind(this, 'password')}
             value={this.state.loginForm['password'].value}
             valid={this.state.loginForm['password'].valid}
             touched={this.state.loginForm['password'].touched}
-            />
+          />
 
             <div className="center">
                 
-                <div className="forget">
-                    <Button design="flat" type="submit" loading={ this.props.loading } >
-                    Forget your password?
-                    </Button>
-                </div>
-                
                 <div>
-                    <Button design="raised" type="submit" loading={ this.props.loading } style ={{width: '160px', fontSize: '18px'}} >
-                      Confirm
-                    </Button>
+                  <Button design="raised" type="submit" loading={ this.props.loading } style ={{width: '160px', fontSize: '18px'}} >
+                    Confirm
+                  </Button>
                 </div>
             </div> 
         </form>
+        <div className="forget">
+          <Button design="flat" onClick={this.props.createPin} loading={ this.props.loading } >
+            Forget your password?
+          </Button>
+        </div>
       </Auth>
     );
 

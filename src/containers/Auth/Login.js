@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/Button/Button';
-import { required, email } from '../../util/validators';
-//import { Link } from 'react-router-dom';
+import validate from '../../util/validation';
 import Auth from './Auth';
 import './Auth.css';
 
 class Login extends Component {
 
   constructor(props) {
-    
     super(props);
-
     this.state = {
       companyName: "Teqneia",
       loginForm: {
@@ -19,54 +16,28 @@ class Login extends Component {
           value: '',
           valid: false,
           touched: false,
-          validators: [required, email]
+          validationRules: {
+            isEmail: true
+          },
         },
         formIsValid: false,    
       }
-  
     };
   }
 
-  inputChangeHandler = (input, value) => {
-    
-    this.setState(prevState => {
-      
-      let isValid = true;
-      
-      for (var validator of prevState.loginForm[input].validators) {
-        isValid = isValid && validator(value);
-      }
-      
-      const updatedForm = {
-        ...prevState.loginForm,
-        [input]: {
-          ...prevState.loginForm[input],
-          valid: isValid,
-          value: value
-        }
-      };
-
-      let formIsValid = true;
-
-      for (var inputName in updatedForm) {
-        formIsValid = formIsValid && updatedForm[inputName].valid;
-      }
-      
-      return {
-        loginForm: updatedForm,
-        formIsValid: formIsValid
-      };
-
-    });
-  };
-
-  inputBlurHandler = input => {    
+  inputChangeHandler = (key, value) => {
     this.setState(prevState => {
       return {
+        ...prevState,
         loginForm: {
           ...prevState.loginForm,
-          [input]: {
-            ...prevState.loginForm[input],
+          [key]: {
+            ...prevState.loginForm[key],
+            value: value,
+            valid: validate(
+              value,
+              prevState.loginForm[key].validationRules,
+            ),
             touched: true
           }
         }
@@ -81,15 +52,12 @@ class Login extends Component {
       <Auth>
 
         <div className="center header">      
-          <h2>Log In to { this.state.companyName } Dashboard</h2>
+          <h2> Log In to { this.state.companyName } Dashboard </h2>
         </div>
 
         <form className="auth-form"
           onSubmit={ e => {
-            this.props.onLogin(e, {
-              email: this.state.loginForm.email.value,
-              CID: 1
-            }) 
+            this.props.onLogin(e, { email: this.state.loginForm.email.value }) 
           }}
         >
           
@@ -101,7 +69,6 @@ class Login extends Component {
             control="input"
             placeholder="what's your email..?"
             onChange={this.inputChangeHandler}
-            onBlur={this.inputBlurHandler.bind(this, 'email')}
             value={this.state.loginForm['email'].value}
             valid={this.state.loginForm['email'].valid}
             touched={this.state.loginForm['email'].touched}
@@ -109,20 +76,19 @@ class Login extends Component {
          
           <div className="center">
             <div>
-                <Button 
-                  design="raised" 
-                  type="submit" 
-                  loading={ this.props.loading } 
-                  style ={{width: '160px', fontSize: '18px'}} 
-                >
-                  Login 
-                </Button> 
+              <Button 
+                design="raised" 
+                type="submit"
+                loading={ this.props.loading } 
+                style ={{width: '160px', fontSize: '18px'}} 
+              >
+                Sign In 
+              </Button> 
             </div>
           </div> 
         </form>
       </Auth>
     );
-
   }
 }
 

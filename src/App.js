@@ -1,4 +1,3 @@
-
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { Switch, Route } from 'react-router-dom';
@@ -8,55 +7,56 @@ import PinLogin from './containers/Auth/PinLogin';
 import ConfirmLogin from './containers/Auth/ConfirmLogin';
 import Dashboard from './components/Dashboard/dashboard';
 
-
 class App extends Component {
   
   constructor(props) {
     super(props)
     this.state = {
-      isAuth: true,
+      isAuth: false,
       token: null,
-      adminId: null,
+      userId: null,
       authLoading: false,
       error: null,
       authorize: null,
+      email: "",
+      CID: 1
     };
   }
 
-  componentDidMount() {
+  // componentDidMount() {
 
-    //Get data authentication from localStorage
-    const token = localStorage.getItem('token');
-    const expiryDate = localStorage.getItem('expiryDate');
-    const adminId = localStorage.getItem('adminId');
+  //   //Get data authentication from localStorage
+  //   const token = localStorage.getItem('token');
+  //   const expiryDate = localStorage.getItem('expiryDate');
+  //   const adminId = localStorage.getItem('adminId');
 
-    //Check in data existing
-    if ( !token && !expiryDate ) {
-      return;
-    }
+  //   //Check in data existing
+  //   if ( !token && !expiryDate ) {
+  //     return;
+  //   }
 
-    //Check in expiry Date if expiry data is 0 or less than 0 
-    //It return true and logout else skip
-    if ( new Date(expiryDate) <= new Date() ) {
-      this.logout(); //logout
-      return;
-    }
+  //   //Check in expiry Date if expiry data is 0 or less than 0 
+  //   //It return true and logout else skip
+  //   if ( new Date( expiryDate ) <= new Date() ) {
+  //     this.logout(); //logout
+  //     return;
+  //   }
     
-    //Get the time remaining in seconds
-    const remainingMilliseconds = new Date(expiryDate).getTime() - new Date().getTime();
+  //   //Get the time remaining in seconds
+  //   const remainingMilliseconds = new Date(expiryDate).getTime() - new Date().getTime();
 
-    //update state
-    this.setState(prev => ({ 
-        ...prev, 
-        setAuth: true, 
-        token: token, 
-        adminId: adminId
-      }));
+  //   //update state
+  //   this.setState(prev => ({ 
+  //       ...prev, 
+  //       setAuth: true, 
+  //       token: token, 
+  //       adminId: adminId
+  //     }));
 
-    //set auto Logout depend on time remaining
-    this.autoLogout(remainingMilliseconds);
+  //   //set auto Logout depend on time remaining
+  //   this.autoLogout(remainingMilliseconds);
 
-  }
+  // }
 
   //Logout Func
   logout = () => {
@@ -78,11 +78,19 @@ class App extends Component {
     setTimeout( this.logout() , remainingMilliseconds );
   }
 
-  login = (e ,authData) => {
+  login = (event ,authData) => {
     
-    e.preventDefault();
+    event.preventDefault();
     
-    axios.post('https://joblaravel.tbv.cloud/entermail', authData)
+    //Update state to fire spinner
+    this.setState(prev => ({...prev, email: authData.email, authLoading: true }));
+
+    axios.post('https://joblaravel.tbv.cloud/entermail',
+      {
+        email: authData.email, 
+        CID: this.state.CID
+      }
+    )
       .then(res => {
         //Handle Response Status
         if( res.status === 422 ) {
@@ -92,7 +100,8 @@ class App extends Component {
         if ( res.status === 200 ) {
           this.setState(prev => ({
             ...prev,
-            authorize: res.data
+            authorize: res.data,
+            authLoading: false
           }));
         }
       }) 
@@ -110,65 +119,179 @@ class App extends Component {
 
   //Login Func
   confirmlogin = (event, authData) => {
+
     event.preventDefault();
 
     //Update state to fire spinner
     this.setState({ authLoading: true });
 
     //Post data authentication to login onto the system
-    axios.post("URL", { 
-      password: authData.password    
-    })
+    axios.post("https://joblaravel.tbv.cloud/login", 
+      { 
+        CID: this.state.CID,
+        email: this.state.email,
+        pw: authData.password    
+      }
+    )
       .then(res => {
         
+        console.log(res);
         //Handle Response Status
-        if( res.status === 422 ) {
-          throw new Error("Validation Failed.");
-        } 
+        // if( res.status === 422 ) {
+        //   throw new Error("Validation Failed.");
+        // } 
         
-        if ( res.status !== 200 || res.status !== 201 ) {
-          throw new Error("Could not authenticate yet, you should input the right password or email");
-        }
-        
+        // if ( res.status !== 200 || res.status !== 201 ) {
+        //   throw new Error("Could not authenticate yet, you should input the right password or email");
+        // }
+        console.log(res);
         //udpate state with initial data
-        this.setState({
+        this.setState(prev => ({
+          ...prev,
           isAuth: true,
           authLoading: false,
-          token: res.data.token,
-          adminId: res.data.adminId,
-        });
+          token: res.data[0].api_token,
+          userId: res.data[0].usr_id,
+          authorize: null,
+          CID: res.data[0].CID
+        }));
+        console.log(this.state);
 
         //Set data authentication onto localStorage
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('adminId', res.data.adminId);
+        //localStorage.setItem('token', res.data.token);
+        //localStorage.setItem('adminId', res.data.adminId);
 
         //set remaining time
-        const remainingMilliseconds = 60 * 60 * 1000; //Minutes * seconds * Milliseconds
+        //const remainingMilliseconds = 60 * 60 * 1000; //Minutes * seconds * Milliseconds
         
         //Set expiryDate in localStorage
-        const expiryDate = new Date( new Date().getTime() + remainingMilliseconds );
-        localStorage.setItem('expiryDate', expiryDate.toISOString());
+        //const expiryDate = new Date( new Date().getTime() + remainingMilliseconds );
+        //localStorage.setItem('expiryDate', expiryDate.toISOString());
 
         //auto logout depend on time remaining
-        this.autoLogout(remainingMilliseconds);
+        //this.autoLogout(remainingMilliseconds);
 
       })
       .catch(err => {
         
         //update state with initial errors
+        this.setState(prev => ({
+          ...prev,
+          isAuth: false,
+          authLoading: false,
+          error: err,
+          email: "",
+          authorize: null
+        }));
+      })
+  }
+
+    //Login Func
+    createPass = (event, authData) => {
+
+      event.preventDefault();
+  
+      //Update state to fire spinner
+      this.setState({ authLoading: true });
+
+      console.log(authData, this.state.email);
+      
+      //Post data authentication to login onto the system
+      axios.post("https://joblaravel.tbv.cloud/ResetPassword", { 
+        email:  this.state.email,
+        PIN: authData.pin,
+        pw: authData.password,
+        CID: 1    
+      })
+        .then(res => {
+          console.log(res);
+          
+          // //Handle Response Status
+          // if( res.status === 422 ) {
+          //   throw new Error("Validation Failed.");
+          // } 
+          
+          // if ( res.status !== 200 || res.status !== 201 ) {
+          //   throw new Error("Could not authenticate yet, you should input the right password or email");
+          // }
+          console.log(res.data[0].api_token);
+          console.log(res.data[0].usr_id);
+          //udpate state with initial data
+          this.setState(prev => ({
+            ...prev,
+            isAuth: true,
+            authLoading: false,
+            token: res.data[0].api_token,
+            userId: res.data[0].usr_id,
+            authorize: null,
+            CID: res.data[0].CID
+          }));
+           
+          console.log(this.state);
+          //Set data authentication onto localStorage
+          //localStorage.setItem('token', res.data.token);
+          //localStorage.setItem('adminId', res.data.adminId);
+  
+          //set remaining time
+          //const remainingMilliseconds = 60 * 60 * 1000; //Minutes * seconds * Milliseconds
+          
+          //Set expiryDate in localStorage
+          //const expiryDate = new Date( new Date().getTime() + remainingMilliseconds );
+          //localStorage.setItem('expiryDate', expiryDate.toISOString());
+  
+          //auto logout depend on time remaining
+          //this.autoLogout(remainingMilliseconds);
+  
+        })
+        .catch(err => {
+          
+          //update state with initial errors
+          this.setState({
+            isAuth: false,
+            authLoading: false,
+            error: err,
+            email: "",
+            authorize: null
+          });
+      })
+  }
+
+  //Login Func
+  createPin = ( event ) => {
+
+    event.preventDefault();
+
+    //Update state to fire spinner
+    this.setState(prev => ({...prev, authLoading: true }));
+    
+    //Post data authentication to login onto the system
+    axios.post("https://joblaravel.tbv.cloud/createPin", { 
+      email:  this.state.email,
+      CID: this.state.CID
+    })
+      .then(res => {
+        this.setState(prev => ({
+          ...prev,
+          authLoading: false,
+          authorize: res.data
+        }));
+      })
+      .catch(err => {
+        //update state with initial errors
         this.setState({
           isAuth: false,
           authLoading: false,
-          error: err
+          error: err,
+          email: "",
+          authorize: null
         });
-
-      })
+    })
   }
 
   render () {
 
     let routes = (
-       <Switch>
+      <Switch>
         <Route
           path="/"
           exact
@@ -193,6 +316,7 @@ class App extends Component {
                 {...props}
                 confirmlogin={this.confirmlogin}
                 loading={this.state.authLoading}
+                createPin={this.createPin}
               />
             )}
           />
@@ -206,14 +330,14 @@ class App extends Component {
             render={props => (
               <PinLogin
                 {...props}
-                createAcc={this.confirmlogin}
+                createAcc={this.createPass}
                 loading={this.state.authLoading}
               />
             )}
           />
         </Switch>
       );   
-    } else if (this.state.isAuth) {
+    } else if ( this.state.isAuth && this.state.userId) {
       routes = (
         <Switch>
           <Route>
@@ -228,7 +352,6 @@ class App extends Component {
       </Fragment>
     );
   }
-
 }
 
 export default App;
