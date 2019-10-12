@@ -9,7 +9,9 @@ export default class MakeYourChoice extends Component {
         super(props);
         this.state = {
             isLoading: false,
+            jobId: null,
             search: {
+                
                 type: '',
                 positionType: "disabled",
                 positionName: "disabled",
@@ -18,38 +20,83 @@ export default class MakeYourChoice extends Component {
                 startDate: "",
                 endDate: "",
             },
-            jobType: [
-                // { value: 'disabled', name: 'Choose Type'},
-                // { value:  0, name: 'Full Time'},
-                // { value:  1, name: 'Part Time'},
-                // { value:  2, name: 'Freelance'},
-                // { value:  3, name: 'Project'},
+            jobType: [],
+            JobName: [],
+            internName: [
+               
             ],
             pickDate: [
                 { value: 'disabled', name: 'Choose Date'},
-                { value:  30, name: 'Last month'},
-                { value:  60, name: 'Last 2 months'},
-                { value:  90, name: 'Last 3 months'},
+                { value:  1, name: 'Last month'},
+                { value:  2, name: 'Last 2 months'},
+                { value:  3, name: 'Last 3 months'},
                 { value:  'customDate', name: 'Pick a Range Date'},
             ],
-            internName: [
-                // { value: 'disabled', name: 'Choose Speciality'},
-                // { value:  0, name: 'React'},
-                // { value:  1, name: 'PHP Laravel'},
-                // { value:  2, name: 'UI/UX'},
-                // { value:  3, name: 'Testing'},
-            ],
-            JobName: {
-              
-            }
+            
         }
     }
+
+    handleSubmit(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log(this.state.JobName)
+        this.state.JobName.map((N, I) => {
+            // console.log(N.Job_Type)
+            // console.log(this.state.search.positionName);
+            // console.log(N.Job_Type)
+            // console.log(this.state.search.jobId)
+            if( this.state.search.positionName === N.Name) {
+                // console.log(this.state.search.positionName);
+                
+                
+                // this.setState(prev=>({
+                    // ...prev,
+                   
+                        this.state.jobId = N.Job_Type
+                      
+                        
+                    
+                // }))
+
+                
+            }
+           
+
+        })
+
+        // this.checkDate();
+        // const data= new FormData(document.getElementById("myForm"));
+        axios.post("https://joblaravel.tbv.cloud/filter", 
+        this.state.search.type === "intern" && {
+            jobType:  5,
+            jobName: this.state.search.intern,
+            startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
+            endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
+        },
+        {
+            params: {
+                CID: "1",
+              }
+        })
+        .then(response => {
+          console.log(response.data);
+          if(response.data)
+          {
+           
+          // this.props.history.push('/dashboard', { logged: 1 })
+            
+          }
+          
+        })
+        .catch (error=>{console.log(error.message)})
+    } 
 
     componentDidMount() {
         axios.get("https://joblaravel.tbv.cloud/jobtypes").then(response => {
                 // console.log(response.data);
                 this.setState({
-                    jobType: response.data.filter(positionType => positionType.id !== 5),
+                    jobType:  response.data.filter(positionType => positionType.id !== 5)
+                    // jobType: response.data.filter(positionType => positionType.id !== 5),
                    })
             });
         axios.get("https://joblaravel.tbv.cloud/jobs",{
@@ -66,32 +113,29 @@ export default class MakeYourChoice extends Component {
                     JobName: response.data.filter(job => {
                         return job.Job_Type !== 5
                     }),
-                    // search: {
-                    //     positionType
-                    // }
                 })
             })  
-            document.getElementById("myForm").addEventListener("submit", function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                const data= new FormData(document.getElementById("myForm"));
-                axios.post("https://joblaravel.tbv.cloud/filter", data,{
-                    params: {
-                        cid: "1"
-                      }
-                })
-                .then(response => {
-                  console.log(response.data);
-                  if(response.data)
-                  {
+            // document.getElementById("myForm").addEventListener("submit", function(e) {
+            //     e.stopPropagation();
+            //     e.preventDefault();
+            //     const data= new FormData(document.getElementById("myForm"));
+            //     axios.post("https://joblaravel.tbv.cloud/filter", data,{
+            //         params: {
+            //             cid: "1",
+            //           }
+            //     })
+            //     .then(response => {
+            //       console.log(response.data);
+            //       if(response.data)
+            //       {
                    
-                  // this.props.history.push('/dashboard', { logged: 1 })
+            //       // this.props.history.push('/dashboard', { logged: 1 })
                     
-                  }
+            //       }
                   
-                })
-                .catch (error=>{console.log(error.message)})
-            })  
+            //     })
+            //     .catch (error=>{console.log(error.message)})
+            // })  
     }
 
     //Handle all selections 
@@ -107,16 +151,20 @@ export default class MakeYourChoice extends Component {
     }
 
     //check the date period
-    checkDate = e => {
-        const start = new Date (this.state.search.startDate);
-        const end = new Date (this.state.search.endDate);
-        let diffTime = Math.abs( end.getTime() - start.getTime() );
-        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        if(diffDays > 90) {
-            alert("لا")
-            e.preventDefault();
-        }
-    }
+    // checkDate = e => {
+    //     const start = document.getElementById("startDate");
+    //     const end = document.getElementById("endDate");
+    //     console.log(end.getTime(),start.getTime())
+    //     let diffTime = Math.abs( end - start );
+    //     let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        
+    //     console.log(diffDays)
+    //     if(diffDays > 90) {
+    //         // alert(diffDays)
+    //         e.preventDefault();
+    //     }
+    // }
 
     //toggle between intern and job
     choiceHanlde = e => {
@@ -139,20 +187,22 @@ export default class MakeYourChoice extends Component {
     //render submit button
     renderSubmitButton = () => (
         <div className="text-center pt-3" >
-            <button variant="primary" type="submit"> Search </button>
+            <Button variant="primary" type="submit" > Search </Button>
         </div>
     );
 
     //render options debpend on form control selection name
     renderOptions = ( options ) => (
+        
         options.map((option, index) => (
             <option 
                 key={`${Math.random()}-${index}`} 
                 value={option.value} 
                 disabled={ option.value === 'disabled' ? true : null } 
             > 
-                { option.name } 
-                { option.Name } 
+                { option.name }  
+                { option.Name }
+                 
             </option>
         ))
     );
@@ -221,14 +271,21 @@ export default class MakeYourChoice extends Component {
         const { jobType, pickDate, internName, JobName } = this.state;
         const { type, positionType, positionName, customDate, intern } = this.state.search;
         // console.log(this.state.internName)
-        console.log(this.state.search.positionType)
+        // console.log(this.state.search.positionType)
         // console.log(this.state.internName)
-        console.log(this.state.JobName)
-        console.log(positionName)
+        // console.log(this.state.search.intern)
+        // console.log(this.state.JobName)
+        // console.log(JobName.filter(jobs => jobs.Job_Type == 1).map(op => op.Name))
+        // console.log(jobType)
+        // console.log(this.state.search.startDate,"//",this.state.search.endDate)
+        // console.log(customDate)
+        // console.log(this.state.search.positionType)
+        // console.log(this.state.search.positionName)
+        // console.log(this.state.internName)
         if( type === "job" ) {
             action =  (
                 <Container  className="respo" >
-                    <Form onSubmit={this.checkDate.bind(this)} >
+                    <Form  id="myForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
                         <Form.Row>
                             { this.renderFormGroup( 'Job Type', positionType, 'positionType', jobType) }
                             { positionType === "Full Time" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName.filter(jobs => jobs.Job_Type == 1)) : null }
@@ -248,7 +305,7 @@ export default class MakeYourChoice extends Component {
         }  else if ( type === "intern" ) {
             action = (
                 <Container>
-                    <Form onSubmit={this.checkDate.bind(this)}>
+                    <Form  id="myForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
                         <Form.Row>  
                             { this.renderFormGroup("Specialities", intern, "intern", internName) } 
                             { this.renderFormGroup( 'Date',  customDate, 'customDate', pickDate) }
@@ -266,9 +323,9 @@ export default class MakeYourChoice extends Component {
                 <div className="toolbar"/>
                 <Container >
                     { this.renderToggleButton( type ) }
-                   <form  id="myForm" encType="multipart/form-data">
+                   {/* <form  id="myForm" encType="multipart/form-data"> */}
                     { action }
-                    </form>
+                    {/* </form> */}
                 </Container>
             </main>          
         );
