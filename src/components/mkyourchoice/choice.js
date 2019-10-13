@@ -35,8 +35,7 @@ export default class MakeYourChoice extends Component {
                 { value:  2, name: 'Last 2 months'},
                 { value:  3, name: 'Last 3 months'},
                 { value:  'customDate', name: 'Pick a Range Date'},
-            ],
-            
+            ],            
         }
     }
 
@@ -263,10 +262,17 @@ export default class MakeYourChoice extends Component {
                     <Form  id="myForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
                         <Form.Row>
                             { this.renderFormGroup( 'Job Type', positionType, 'positionType', jobType) }
+<<<<<<< HEAD
                             { positionType === "Full Time" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', this.state.Positions.FullTime) : null }
                             { positionType === "Project" ? this.renderFormGroup('Project -> Available Positions', positionName, 'positionName', this.state.Positions.Project) : null }
                             { positionType === "Part Time" ? this.renderFormGroup('Part Time -> Available Positions', positionName, 'positionName',this.state.Positions.PartTime) : null }
                             { positionType === "Freelance" ? this.renderFormGroup('Freelance -> Available Positions', positionName, 'positionName', this.state.Positions.Freelance) : null }
+=======
+                            { positionType === "Full Time" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 1)) : null }
+                            { positionType === "Project" ? this.renderFormGroup('Project -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 2)) : null }
+                            { positionType === "Part Time" ? this.renderFormGroup('Part Time -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 3)) : null }
+                            { positionType === "Freelance" ? this.renderFormGroup('Freelance -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 4)) : null }
+>>>>>>> 80c831f807803473624ad0eec807d904491bf8b3
               
                             { this.renderFormGroup( 'Date', customDate, 'customDate', pickDate) }
               

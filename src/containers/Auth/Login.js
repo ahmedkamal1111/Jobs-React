@@ -47,27 +47,30 @@ class Login extends Component {
 
   render() {
 
+    const mailValid =this.state.loginForm.email.valid;
+    
     return (
       
       <Auth>
 
         <div className="center header">      
-          <h2> Log In to { this.state.companyName } Dashboard </h2>
+          <h2> Log Into My Account </h2>
         </div>
+          
 
         <form className="auth-form"
           onSubmit={ e => {
             this.props.onLogin(e, { email: this.state.loginForm.email.value }) 
           }}
         >
-          
+
           <Input
             id="email"
             label="Email"
             type="email"
             name="email"
             control="input"
-            placeholder="what's your email..?"
+            placeholder="ex. johan@gmail.com"
             onChange={this.inputChangeHandler}
             value={this.state.loginForm['email'].value}
             valid={this.state.loginForm['email'].valid}
@@ -77,12 +80,13 @@ class Login extends Component {
           <div className="center">
             <div>
               <Button 
+                disabled={ mailValid ? false : true}
                 design="raised" 
                 type="submit"
                 loading={ this.props.loading } 
-                style ={{width: '160px', fontSize: '18px'}} 
+                style ={{width: '333px', fontSize: '18px', marginTop: '16px'}} 
               >
-                Sign In 
+                Log In
               </Button> 
             </div>
           </div> 

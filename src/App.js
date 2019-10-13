@@ -135,26 +135,27 @@ class App extends Component {
     )
       .then(res => {
         
+
+        if( res.status === 422 ) {
+          throw new Error("Validation Failed.");
+        }
         console.log(res);
-        //Handle Response Status
-        // if( res.status === 422 ) {
-        //   throw new Error("Validation Failed.");
-        // } 
-        
-        // if ( res.status !== 200 || res.status !== 201 ) {
-        //   throw new Error("Could not authenticate yet, you should input the right password or email");
-        // }
-        console.log(res);
-        //udpate state with initial data
-        this.setState(prev => ({
-          ...prev,
-          isAuth: true,
-          authLoading: false,
-          token: res.data[0].api_token,
-          userId: res.data[0].usr_id,
-          authorize: null,
-          CID: res.data[0].CID
-        }));
+        if ( res.status === 200 || res.status === 201 ) {
+          if (res.data === -1 ) {
+            throw new Error("Not authenticated."); 
+          }
+          //udpate state with initial data
+          this.setState(prev => ({
+            ...prev,
+            isAuth: true,
+            authLoading: false,
+            token: res.data[0].api_token,
+            userId: res.data[0].usr_id,
+            authorize: null,
+            CID: res.data[0].CID
+          }));
+        }
+
         console.log(this.state);
 
         //Set data authentication onto localStorage
