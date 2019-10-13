@@ -36,7 +36,7 @@ export default class MakeYourChoice extends Component {
     handleSubmit(e) {
         e.stopPropagation();
         e.preventDefault();
-        console.log(this.state.JobName)
+        // console.log(this.state.JobName)
         this.state.JobName.map((N, I) => {
             // console.log(N.Job_Type)
             // console.log(this.state.search.positionName);
@@ -63,19 +63,19 @@ export default class MakeYourChoice extends Component {
 
         // this.checkDate();
         // const data= new FormData(document.getElementById("myForm"));
-        axios.post("https://joblaravel.tbv.cloud/filter", 
-        this.state.search.type === "intern" && {
-            jobType:  5,
-            jobName: this.state.search.intern,
-            startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
-            endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
-        },
-        {
-            params: {
-                CID: "1",
-              }
-        })
-        .then(response => {
+        if(this.state.search.type === "job") {
+            axios.post("https://joblaravel.tbv.cloud/filter",{
+                jobType: this.state.jobId,
+                jobName: this.state.search.positionName,
+                startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
+                endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
+
+            },{
+                params:{
+                    CID: "1",
+                  }
+            })
+               .then(response => {
           console.log(response.data);
           if(response.data)
           {
@@ -85,7 +85,53 @@ export default class MakeYourChoice extends Component {
           }
           
         })
-        .catch (error=>{console.log(error.message)})
+        }
+        if(this.state.search.type === "intern") {
+            axios.post("https://joblaravel.tbv.cloud/filter",{
+                jobType:  5,
+                jobName: this.state.search.intern,
+                startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
+                endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
+            },  {
+                params: {
+                    CID: "1",
+                  }
+            })
+               .then(response => {
+          console.log(response.data);
+          if(response.data)
+          {
+           
+          // this.props.history.push('/dashboard', { logged: 1 })
+            
+          }
+          
+        })
+            
+        }
+        // axios.post("https://joblaravel.tbv.cloud/filter", 
+        // this.state.search.type === "intern" && {
+        //     jobType:  5,
+        //     jobName: this.state.search.intern,
+        //     startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
+        //     endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
+        // },
+        // {
+        //     params: {
+        //         CID: "1",
+        //       }
+        // })
+        // .then(response => {
+        //   console.log(response.data);
+        //   if(response.data)
+        //   {
+           
+        //   // this.props.history.push('/dashboard', { logged: 1 })
+            
+        //   }
+          
+        // })
+        // .catch (error=>{console.log(error.message)})
     } 
 
     componentDidMount() {
