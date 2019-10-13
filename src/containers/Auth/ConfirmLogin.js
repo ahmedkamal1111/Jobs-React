@@ -52,18 +52,19 @@ class ConfirmLogin extends Component {
   };
 
   render() {
+
+    const passValid = this.state.loginForm.password.valid;  
     
     return ( 
+
       <Auth>
         <div className="center header">      
-          <h2>Confirm Login to { this.state.companyName } Dashboard</h2>
+          <h2>Confirm Login</h2>
         </div>
 
         <form className="auth-form"
           onSubmit={ e =>
-          this.props.confirmlogin(e, {
-            password: this.state.loginForm.password.value
-          })
+            this.props.confirmlogin(e, { password: this.state.loginForm.password.value })
           }
         >            
           <Input
@@ -81,17 +82,21 @@ class ConfirmLogin extends Component {
             <div className="center">
                 
                 <div>
-                  <Button design="raised" type="submit" loading={ this.props.loading } style ={{width: '160px', fontSize: '18px'}} >
+                  <Button
+                    disabled={passValid ? false : true} 
+                    design="raised" 
+                    type="submit" 
+                    loading={ this.props.loading } 
+                    style ={{width: '333px', fontSize: '18px', marginTop: '16px'}} 
+                  >
                     Confirm
                   </Button>
                 </div>
             </div> 
+            <div className="forget">
+              <p className="forg" onClick={this.props.createPin}> Forget your password? </p>
+            </div>
         </form>
-        <div className="forget">
-          <Button design="flat" onClick={this.props.createPin} loading={ this.props.loading } >
-            Forget your password?
-          </Button>
-        </div>
       </Auth>
     );
 

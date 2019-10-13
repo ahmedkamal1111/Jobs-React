@@ -32,7 +32,7 @@ class PinLogin extends Component {
           touched: false
         },
         confirmPassword: {
-          value: '',
+          value: "",
           valid: false,
           touched: false,
           validationRules: {
@@ -93,15 +93,17 @@ class PinLogin extends Component {
       };
 
   render() {
-
+    const pinValid = this.state.loginForm.pin.valid;
+    const passValid = this.state.loginForm.password.valid;
+    const confirmValid = this.state.loginForm.confirmPassword.valid;
     return ( 
     
       <Auth>
 
         <div className="center header">      
-          <h2>Confirm Login to { this.state.companyName } Dashboard</h2>
-        </div>
-        
+          <h2>Reset New Password</h2>
+          <p>Enter The pin that we have sent in your mail and new password.</p>
+        </div>       
           <form className="auth-form"
             onSubmit={ e =>
               this.props.createAcc(e, {
@@ -116,7 +118,7 @@ class PinLogin extends Component {
               label="Pin Code"
               type="number"
               control="input"
-              placeholder="Check your email .."
+              placeholder="ex. 416523"
               onChange={ this.inputChangeHandler}
               value={this.state.loginForm['pin'].value}
               valid={this.state.loginForm['pin'].valid}
@@ -128,7 +130,7 @@ class PinLogin extends Component {
               label="Password"
               type="password"
               control="input"
-              placeholder="password..?"
+              placeholder="*********"
               onChange={ this.inputChangeHandler}
               value={this.state.loginForm['password'].value}
               valid={this.state.loginForm['password'].valid}
@@ -140,7 +142,7 @@ class PinLogin extends Component {
               label="Confirm Password"
               type="password"
               control="input"
-              placeholder=" Confirm password..?"
+              placeholder="*********"
               onChange={this.inputChangeHandler}
               value={this.state.loginForm['confirmPassword'].value}
               valid={this.state.loginForm['confirmPassword'].valid}
@@ -150,15 +152,16 @@ class PinLogin extends Component {
             <div className="center">  
               <div>
                 <Button 
+                  disabled={pinValid && passValid && confirmValid ? false : true}
                   design="raised" 
                   type="submit" 
                   loading={ this.props.loading } 
-                  style ={{width: '160px', fontSize: '18px'}} 
+                  style ={{width: '333px', fontSize: '18px', marginTop: '16px'}} 
                 >
                   Confirm
                 </Button>
               </div>
-          </div>
+            </div>
         </form>
       </Auth>
     );
