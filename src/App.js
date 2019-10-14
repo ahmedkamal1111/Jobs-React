@@ -12,9 +12,9 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isAuth: false,
+      isAuth: true,
       token: null,
-      userId: null,
+      userId: 1,
       authLoading: false,
       error: null,
       authorize: null,

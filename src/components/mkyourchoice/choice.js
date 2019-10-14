@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Button, Row, Col, Container, ToggleButton, ButtonGroup } from 'react-bootstrap';
 import './action.css';
 import axios from "axios";
+import DataTable from '../../containers/DataTable/Datatable';
 
 export default class MakeYourChoice extends Component {
 
@@ -10,6 +11,8 @@ export default class MakeYourChoice extends Component {
         this.state = {
             isLoading: false,
             jobId: null,
+            searchResults:[],
+            response: false,
             search: {
                 
                 type: '',
@@ -35,7 +38,7 @@ export default class MakeYourChoice extends Component {
                 { value:  2, name: 'Last 2 months'},
                 { value:  3, name: 'Last 3 months'},
                 { value:  'customDate', name: 'Pick a Range Date'},
-            ],            
+            ],
         }
     }
 
@@ -63,7 +66,11 @@ export default class MakeYourChoice extends Component {
                   }
             })
                .then(response => {
-                console.log(response.data);
+                // console.log(response.data);
+                this.setState({
+                    searchResults: response.data,
+                    response: true,
+                })
             })
             .catch (error=>{console.log(error.message)})
             
@@ -80,7 +87,11 @@ export default class MakeYourChoice extends Component {
                   }
             })
                .then(response => {
-          console.log(response.data);
+        //   console.log(response.data);
+                    this.setState({
+                        searchResults: response.data,
+                        response: true,
+                    })
             })
             .catch (error=>{console.log(error.message)})
             
@@ -102,7 +113,7 @@ export default class MakeYourChoice extends Component {
               }
         })
             .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 this.setState({
                     internName: response.data.filter(intern => {
                         return intern.Job_Type === 5
@@ -256,23 +267,17 @@ export default class MakeYourChoice extends Component {
         //distruct state
         const { jobType, pickDate, internName, JobName } = this.state;
         const { type, positionType, positionName, customDate, intern } = this.state.search;
+        console.log(this.state.searchResults)
         if( type === "job" ) {
             action =  (
                 <Container  className="respo" >
                     <Form  id="myForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
                         <Form.Row>
                             { this.renderFormGroup( 'Job Type', positionType, 'positionType', jobType) }
-<<<<<<< HEAD
                             { positionType === "Full Time" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', this.state.Positions.FullTime) : null }
                             { positionType === "Project" ? this.renderFormGroup('Project -> Available Positions', positionName, 'positionName', this.state.Positions.Project) : null }
                             { positionType === "Part Time" ? this.renderFormGroup('Part Time -> Available Positions', positionName, 'positionName',this.state.Positions.PartTime) : null }
                             { positionType === "Freelance" ? this.renderFormGroup('Freelance -> Available Positions', positionName, 'positionName', this.state.Positions.Freelance) : null }
-=======
-                            { positionType === "Full Time" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 1)) : null }
-                            { positionType === "Project" ? this.renderFormGroup('Project -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 2)) : null }
-                            { positionType === "Part Time" ? this.renderFormGroup('Part Time -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 3)) : null }
-                            { positionType === "Freelance" ? this.renderFormGroup('Freelance -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 4)) : null }
->>>>>>> 80c831f807803473624ad0eec807d904491bf8b3
               
                             { this.renderFormGroup( 'Date', customDate, 'customDate', pickDate) }
               
@@ -307,6 +312,7 @@ export default class MakeYourChoice extends Component {
                    {/* <form  id="myForm" encType="multipart/form-data"> */}
                     { action }
                     {/* </form> */}
+                    {this.state.response && <DataTable data={this.state.searchResults} />}
                 </Container>
             </main>          
         );
