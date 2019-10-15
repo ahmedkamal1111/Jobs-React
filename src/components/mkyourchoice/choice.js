@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Button, Row, Col, Container, ToggleButton, ButtonGroup } from 'react-bootstrap';
 import './action.css';
 import axios from "axios";
+import DataTable from '../../containers/DataTable/Datatable';
 
 export default class MakeYourChoice extends Component {
 
@@ -10,6 +11,8 @@ export default class MakeYourChoice extends Component {
         this.state = {
             isLoading: false,
             jobId: null,
+            searchResults:[],
+            response: false,
             search: {
                 
                 type: '',
@@ -20,6 +23,12 @@ export default class MakeYourChoice extends Component {
                 startDate: "",
                 endDate: "",
             },
+            Positions:{
+                FullTime:[],
+                Project:[],
+                PartTime:[],
+                Freelance:[],
+            },
             jobType: [],
             JobName: [],
             internName: [],
@@ -29,7 +38,7 @@ export default class MakeYourChoice extends Component {
                 { value:  2, name: 'Last 2 months'},
                 { value:  3, name: 'Last 3 months'},
                 { value:  'customDate', name: 'Pick a Range Date'},
-            ],            
+            ],
         }
     }
 
@@ -38,31 +47,12 @@ export default class MakeYourChoice extends Component {
         e.preventDefault();
         // console.log(this.state.JobName)
         this.state.JobName.map((N, I) => {
-            // console.log(N.Job_Type)
-            // console.log(this.state.search.positionName);
-            // console.log(N.Job_Type)
-            // console.log(this.state.search.jobId)
-            if( this.state.search.positionName === N.Name) {
-                // console.log(this.state.search.positionName);
-                
-                
-                // this.setState(prev=>({
-                    // ...prev,
-                   
+            if( this.state.search.positionName === N.Name) {    
                         this.state.jobId = N.Job_Type
-                      
-                        
-                    
-                // }))
-
-                
             }
-           
-
         })
 
         // this.checkDate();
-        // const data= new FormData(document.getElementById("myForm"));
         if(this.state.search.type === "job") {
             axios.post("https://joblaravel.tbv.cloud/filter",{
                 jobType: this.state.jobId,
@@ -76,15 +66,14 @@ export default class MakeYourChoice extends Component {
                   }
             })
                .then(response => {
-          console.log(response.data);
-          if(response.data)
-          {
-           
-          // this.props.history.push('/dashboard', { logged: 1 })
+                // console.log(response.data);
+                this.setState({
+                    searchResults: response.data,
+                    response: true,
+                })
+            })
+            .catch (error=>{console.log(error.message)})
             
-          }
-          
-        })
         }
         if(this.state.search.type === "intern") {
             axios.post("https://joblaravel.tbv.cloud/filter",{
@@ -98,40 +87,15 @@ export default class MakeYourChoice extends Component {
                   }
             })
                .then(response => {
-          console.log(response.data);
-          if(response.data)
-          {
-           
-          // this.props.history.push('/dashboard', { logged: 1 })
-            
-          }
-          
-        })
+        //   console.log(response.data);
+                    this.setState({
+                        searchResults: response.data,
+                        response: true,
+                    })
+            })
+            .catch (error=>{console.log(error.message)})
             
         }
-        // axios.post("https://joblaravel.tbv.cloud/filter", 
-        // this.state.search.type === "intern" && {
-        //     jobType:  5,
-        //     jobName: this.state.search.intern,
-        //     startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
-        //     endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
-        // },
-        // {
-        //     params: {
-        //         CID: "1",
-        //       }
-        // })
-        // .then(response => {
-        //   console.log(response.data);
-        //   if(response.data)
-        //   {
-           
-        //   // this.props.history.push('/dashboard', { logged: 1 })
-            
-        //   }
-          
-        // })
-        // .catch (error=>{console.log(error.message)})
     } 
 
     componentDidMount() {
@@ -141,6 +105,7 @@ export default class MakeYourChoice extends Component {
                     jobType:  response.data.filter(positionType => positionType.id !== 5)
                     // jobType: response.data.filter(positionType => positionType.id !== 5),
                    })
+                   this.state.jobType.unshift({ value: 'disabled', name: 'Choose Job type'})
             });
         axios.get("https://joblaravel.tbv.cloud/jobs",{
             params: {
@@ -156,29 +121,19 @@ export default class MakeYourChoice extends Component {
                     JobName: response.data.filter(job => {
                         return job.Job_Type !== 5
                     }),
+                    Positions: {
+                        FullTime: response.data.filter(jobs => jobs.Job_Type == 1),
+                        Project: response.data.filter(jobs => jobs.Job_Type == 2),
+                        PartTime: response.data.filter(jobs => jobs.Job_Type == 3),
+                        Freelance: response.data.filter(jobs => jobs.Job_Type == 4)
+                    }
                 })
+                this.state.internName.unshift({ value: 'disabled', name: 'Choose specialization'})
+                this.state.Positions.FullTime.unshift({ value: 'disabled', name: 'Choose Job position'})
+                this.state.Positions.Project.unshift({ value: 'disabled', name: 'Choose Job position'})
+                this.state.Positions.PartTime.unshift({ value: 'disabled', name: 'Choose Job position'})
+                this.state.Positions.Freelance .unshift({ value: 'disabled', name: 'Choose Job position'})
             })  
-            // document.getElementById("myForm").addEventListener("submit", function(e) {
-            //     e.stopPropagation();
-            //     e.preventDefault();
-            //     const data= new FormData(document.getElementById("myForm"));
-            //     axios.post("https://joblaravel.tbv.cloud/filter", data,{
-            //         params: {
-            //             cid: "1",
-            //           }
-            //     })
-            //     .then(response => {
-            //       console.log(response.data);
-            //       if(response.data)
-            //       {
-                   
-            //       // this.props.history.push('/dashboard', { logged: 1 })
-                    
-            //       }
-                  
-            //     })
-            //     .catch (error=>{console.log(error.message)})
-            // })  
     }
 
     //Handle all selections 
@@ -236,7 +191,6 @@ export default class MakeYourChoice extends Component {
 
     //render options debpend on form control selection name
     renderOptions = ( options ) => (
-        
         options.map((option, index) => (
             <option 
                 key={`${Math.random()}-${index}`} 
@@ -313,28 +267,17 @@ export default class MakeYourChoice extends Component {
         //distruct state
         const { jobType, pickDate, internName, JobName } = this.state;
         const { type, positionType, positionName, customDate, intern } = this.state.search;
-        // console.log(this.state.internName)
-        // console.log(this.state.search.positionType)
-        // console.log(this.state.internName)
-        // console.log(this.state.search.intern)
-        // console.log(this.state.JobName)
-        // console.log(JobName.filter(jobs => jobs.Job_Type == 1).map(op => op.Name))
-        // console.log(jobType)
-        // console.log(this.state.search.startDate,"//",this.state.search.endDate)
-        // console.log(customDate)
-        // console.log(this.state.search.positionType)
-        // console.log(this.state.search.positionName)
-        // console.log(this.state.internName)
+        console.log(this.state.searchResults)
         if( type === "job" ) {
             action =  (
                 <Container  className="respo" >
                     <Form  id="myForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
                         <Form.Row>
                             { this.renderFormGroup( 'Job Type', positionType, 'positionType', jobType) }
-                            { positionType === "Full Time" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 1)) : null }
-                            { positionType === "Project" ? this.renderFormGroup('Project -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 2)) : null }
-                            { positionType === "Part Time" ? this.renderFormGroup('Part Time -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 3)) : null }
-                            { positionType === "Freelance" ? this.renderFormGroup('Freelance -> Available Positions', positionName, 'positionName', JobName.filter(job => job.Job_Type === 4)) : null }
+                            { positionType === "Full Time" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', this.state.Positions.FullTime) : null }
+                            { positionType === "Project" ? this.renderFormGroup('Project -> Available Positions', positionName, 'positionName', this.state.Positions.Project) : null }
+                            { positionType === "Part Time" ? this.renderFormGroup('Part Time -> Available Positions', positionName, 'positionName',this.state.Positions.PartTime) : null }
+                            { positionType === "Freelance" ? this.renderFormGroup('Freelance -> Available Positions', positionName, 'positionName', this.state.Positions.Freelance) : null }
               
                             { this.renderFormGroup( 'Date', customDate, 'customDate', pickDate) }
               
@@ -369,6 +312,7 @@ export default class MakeYourChoice extends Component {
                    {/* <form  id="myForm" encType="multipart/form-data"> */}
                     { action }
                     {/* </form> */}
+                    {this.state.response && <DataTable data={this.state.searchResults} />}
                 </Container>
             </main>          
         );

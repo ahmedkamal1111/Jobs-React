@@ -304,21 +304,21 @@ export default function Dashboard(props) {
           <Route path='/inbox' exact component={Inbox}  />
           {/* <Route path='/starred' component={MakeYourChoice,DataTable} /> */}
           <Route path='/starred' render={props =>
-                    <div>
+                    // <div>
                       <MakeYourChoice />
-                      <DataTable />
-                    </div>
+                      // <DataTable />
+                    // </div>
           }/>
 
           <Route path='/sendmail' component={Addjob} />
           <Route path='/drafts' />
         </Switch>
       
-      <main className={classes.content}>
+      {/* <main className={classes.content}>
       
         <div className={classes.toolbar} />
         
-      </main>
+      </main> */}
     
     </div>
   );

@@ -17,7 +17,7 @@ class App extends Component {
       showBackdrop: false,
       isAuth: false,
       token: null,
-      userId: null,
+      userId: 1,
       authLoading: false,
       error: null,
       admin: "",

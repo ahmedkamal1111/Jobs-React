@@ -55,38 +55,12 @@ class DataTable extends Component {
         }
       ],
       
-      data: [
-        { 
-          id: 1,
-          name: 'Mohamed',  
-          date: "20-8-1987", 
-          status: 1 
-        },
-        { 
-          id: 2,
-          name: 'Zerya etül',  
-          date: "11-7-2017", 
-          status: 2 
-        },
-        { 
-          id: 3,
-          name: 'Zer Betül', 
-          surname: 'Baran', 
-          date: "15-5-2017", 
-          status: 2 
-        },
-        { 
-          id: 4,
-          name: 'Zery ü',  
-          date: "17-8-2017", 
-          status: 2 
-        },
-      ]
+      data: props.data
     }
   }
 
   render () {
-
+    console.log(this.state.data)
     let hide = false;
     
     if ( this.state.selected ) {
