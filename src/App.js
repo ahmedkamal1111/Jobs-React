@@ -17,6 +17,7 @@ class App extends Component {
       userId: null,
       authLoading: false,
       error: null,
+      admin: "",
       authorize: null,
       email: "",
       CID: 1
@@ -25,27 +26,27 @@ class App extends Component {
 
   // componentDidMount() {
 
-  //   //Get data authentication from localStorage
+  //   Get data authentication from localStorage
   //   const token = localStorage.getItem('token');
   //   const expiryDate = localStorage.getItem('expiryDate');
   //   const adminId = localStorage.getItem('adminId');
 
-  //   //Check in data existing
+  //   Check in data existing
   //   if ( !token && !expiryDate ) {
   //     return;
   //   }
 
-  //   //Check in expiry Date if expiry data is 0 or less than 0 
-  //   //It return true and logout else skip
+  //   Check in expiry Date if expiry data is 0 or less than 0 
+  //   It return true and logout else skip
   //   if ( new Date( expiryDate ) <= new Date() ) {
   //     this.logout(); //logout
   //     return;
   //   }
     
-  //   //Get the time remaining in seconds
+  //   Get the time remaining in seconds
   //   const remainingMilliseconds = new Date(expiryDate).getTime() - new Date().getTime();
 
-  //   //update state
+  //   update state
   //   this.setState(prev => ({ 
   //       ...prev, 
   //       setAuth: true, 
@@ -53,7 +54,7 @@ class App extends Component {
   //       adminId: adminId
   //     }));
 
-  //   //set auto Logout depend on time remaining
+  //   set auto Logout depend on time remaining
   //   this.autoLogout(remainingMilliseconds);
 
   // }
@@ -89,8 +90,7 @@ class App extends Component {
       {
         email: authData.email, 
         CID: this.state.CID
-      }
-    )
+      })
       .then(res => {
         //Handle Response Status
         if( res.status === 422 ) {
@@ -135,7 +135,8 @@ class App extends Component {
     )
       .then(res => {
         
-
+        console.log(res);
+        
         if( res.status === 422 ) {
           throw new Error("Validation Failed.");
         }
@@ -156,7 +157,7 @@ class App extends Component {
           }));
         }
 
-        console.log(this.state);
+        console.log(res);
 
         //Set data authentication onto localStorage
         //localStorage.setItem('token', res.data.token);
@@ -207,7 +208,7 @@ class App extends Component {
         .then(res => {
           console.log(res);
           
-          // //Handle Response Status
+          // Handle Response Status
           // if( res.status === 422 ) {
           //   throw new Error("Validation Failed.");
           // } 
@@ -342,7 +343,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route>
-            <Dashboard />
+            <Dashboard admin={this.state.admin}/>
           </Route>
         </Switch>
       );

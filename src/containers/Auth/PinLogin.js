@@ -19,7 +19,7 @@ class PinLogin extends Component {
           valid: false,
           touched: false,
           validationRules: {
-            menLength: 6,
+            minLength: 6,
             maxLength: 6
           },
         },
@@ -27,7 +27,7 @@ class PinLogin extends Component {
           value: "",
           valid: false,
           validationRules: {
-            menLength: 6
+            minLength: 6
           },
           touched: false
         },
