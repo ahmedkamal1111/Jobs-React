@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Switch, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './containers/Auth/Login';
+import ErrorHandler from './components/ErrorHandler/ErrorHandler';
+import Backdrop from './components/Backdrop/Backdrop';
 import PinLogin from './containers/Auth/PinLogin';
 import ConfirmLogin from './containers/Auth/ConfirmLogin';
 import Dashboard from './components/Dashboard/dashboard';
@@ -12,6 +14,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      showBackdrop: false,
       isAuth: false,
       token: null,
       userId: null,
@@ -92,10 +95,12 @@ class App extends Component {
         CID: this.state.CID
       })
       .then(res => {
+        
         //Handle Response Status
         if( res.status === 422 ) {
           throw new Error("Validation Failed.");
         } 
+
         //Response is success      
         if ( res.status === 200 ) {
           this.setState(prev => ({
@@ -110,6 +115,8 @@ class App extends Component {
         this.setState(prev => ({
           ...prev,
           isAuth: false,
+          token: null,
+          userId: null,
           authLoading: false,
           error: err,
           authorize: null
@@ -135,15 +142,14 @@ class App extends Component {
     )
       .then(res => {
         
-        console.log(res);
-        
         if( res.status === 422 ) {
           throw new Error("Validation Failed.");
         }
-        console.log(res);
+         console.log(res);
+
         if ( res.status === 200 || res.status === 201 ) {
-          if (res.data === -1 ) {
-            throw new Error("Not authenticated."); 
+          if (res.data === -1) {
+            throw new Error("Invalid email or Password");
           }
           //udpate state with initial data
           this.setState(prev => ({
@@ -156,8 +162,6 @@ class App extends Component {
             CID: res.data[0].CID
           }));
         }
-
-        console.log(res);
 
         //Set data authentication onto localStorage
         //localStorage.setItem('token', res.data.token);
@@ -180,12 +184,14 @@ class App extends Component {
         this.setState(prev => ({
           ...prev,
           isAuth: false,
+          token: null,
+          userId: null,
           authLoading: false,
           error: err,
-          email: "",
           authorize: null
         }));
       })
+      console.log(this.state.error);
   }
 
     //Login Func
@@ -228,8 +234,7 @@ class App extends Component {
             authorize: null,
             CID: res.data[0].CID
           }));
-           
-          console.log(this.state);
+          
           //Set data authentication onto localStorage
           //localStorage.setItem('token', res.data.token);
           //localStorage.setItem('adminId', res.data.adminId);
@@ -247,15 +252,17 @@ class App extends Component {
         })
         .catch(err => {
           
-          //update state with initial errors
-          this.setState({
+          //update state with initial error
+          this.setState(prev => ({
+            ...prev,
             isAuth: false,
+            token: null,
+            userId: null,
             authLoading: false,
             error: err,
-            email: "",
             authorize: null
-          });
-      })
+          }));
+        })
   }
 
   //Login Func
@@ -280,15 +287,24 @@ class App extends Component {
       })
       .catch(err => {
         //update state with initial errors
-        this.setState({
+        this.setState(prev => ({
+          ...prev,
           isAuth: false,
           authLoading: false,
           error: err,
           email: "",
           authorize: null
-        });
+        }));
     })
   }
+
+  errorHandler = () => {
+    this.setState( prev => ({ ...prev, error: null }) );
+  };
+
+  backdropClickHandler = () => {
+    this.setState({ showBackdrop: false, error: null });
+  };
 
   render () {
 
@@ -350,7 +366,15 @@ class App extends Component {
     }
     return (
       <Fragment>
+
+        { this.state.showBackdrop && (
+          <Backdrop onClick={ this.backdropClickHandler } />
+        )}
+      
+        <ErrorHandler error={ this.state.error } handleError={ this.errorHandler } />
+
         {routes}
+
       </Fragment>
     );
   }
