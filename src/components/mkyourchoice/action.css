@@ -1,3 +1,7 @@
+.container {
+    width: 850px !important;
+}
+
 .mt-3, .my-3 {
     margin-top: -1rem !important;
 }

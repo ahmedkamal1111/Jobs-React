@@ -15,13 +15,13 @@ class App extends Component {
     super(props)
     this.state = {
       showBackdrop: false,
-      isAuth: false,
+      isAuth: true,
       token: null,
       userId: 1,
       authLoading: false,
       error: null,
       admin: "",
-      authorize: null,
+      authorize: "1",
       email: "",
       CID: 1
     };
@@ -222,6 +222,7 @@ class App extends Component {
           // if ( res.status !== 200 || res.status !== 201 ) {
           //   throw new Error("Could not authenticate yet, you should input the right password or email");
           // }
+          
           console.log(res.data[0].api_token);
           console.log(res.data[0].usr_id);
           //udpate state with initial data
@@ -359,7 +360,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route>
-            <Dashboard admin={this.state.admin}/>
+            <Dashboard admin={this.state.admin} logout={this.logout} />
           </Route>
         </Switch>
       );

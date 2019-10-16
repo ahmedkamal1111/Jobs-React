@@ -48,8 +48,9 @@ export default class MakeYourChoice extends Component {
         // console.log(this.state.JobName)
         this.state.JobName.map((N, I) => {
             if( this.state.search.positionName === N.Name) {    
-                        this.state.jobId = N.Job_Type
+                this.state.jobId = N.Job_Type;
             }
+            return true;
         })
 
         // this.checkDate();
@@ -110,7 +111,7 @@ export default class MakeYourChoice extends Component {
         axios.get("https://joblaravel.tbv.cloud/jobs",{
             params: {
                 cid: "1"
-              }
+            }
         })
             .then(response => {
                 // console.log(response.data)
@@ -122,17 +123,17 @@ export default class MakeYourChoice extends Component {
                         return job.Job_Type !== 5
                     }),
                     Positions: {
-                        FullTime: response.data.filter(jobs => jobs.Job_Type == 1),
-                        Project: response.data.filter(jobs => jobs.Job_Type == 2),
-                        PartTime: response.data.filter(jobs => jobs.Job_Type == 3),
-                        Freelance: response.data.filter(jobs => jobs.Job_Type == 4)
+                        FullTime: response.data.filter(jobs => jobs.Job_Type === 1),
+                        Project: response.data.filter(jobs => jobs.Job_Type === 2),
+                        PartTime: response.data.filter(jobs => jobs.Job_Type === 3),
+                        Freelance: response.data.filter(jobs => jobs.Job_Type === 4)
                     }
                 })
                 this.state.internName.unshift({ value: 'disabled', name: 'Choose specialization'})
                 this.state.Positions.FullTime.unshift({ value: 'disabled', name: 'Choose Job position'})
                 this.state.Positions.Project.unshift({ value: 'disabled', name: 'Choose Job position'})
                 this.state.Positions.PartTime.unshift({ value: 'disabled', name: 'Choose Job position'})
-                this.state.Positions.Freelance .unshift({ value: 'disabled', name: 'Choose Job position'})
+                this.state.Positions.Freelance.unshift({ value: 'disabled', name: 'Choose Job position'})
             })  
     }
 
@@ -159,7 +160,7 @@ export default class MakeYourChoice extends Component {
         
     //     console.log(diffDays)
     //     if(diffDays > 90) {
-    //         // alert(diffDays)
+    //         alert(diffDays)
     //         e.preventDefault();
     //     }
     // }
@@ -265,7 +266,7 @@ export default class MakeYourChoice extends Component {
 
         let action;
         //distruct state
-        const { jobType, pickDate, internName, JobName } = this.state;
+        const { jobType, pickDate, internName } = this.state;
         const { type, positionType, positionName, customDate, intern } = this.state.search;
         console.log(this.state.searchResults)
         if( type === "job" ) {
@@ -309,7 +310,7 @@ export default class MakeYourChoice extends Component {
                 <div className="toolbar"/>
                 <Container >
                     { this.renderToggleButton( type ) }
-                   {/* <form  id="myForm" encType="multipart/form-data"> */}
+                    {/* <form  id="myForm" encType="multipart/form-data"> */}
                     { action }
                     {/* </form> */}
                     {this.state.response && <DataTable data={this.state.searchResults} />}

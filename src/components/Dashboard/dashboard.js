@@ -28,7 +28,6 @@ import NavbarBrand from 'react-bootstrap/NavbarBrand';
 import Navbar from 'react-bootstrap/Navbar';
 import './dashboard.css';
 import Inbox from './inbox';
-import DataTable from '../../containers/DataTable/Datatable';
 import MakeYourChoice from '../mkyourchoice/choice';
 import Addjob from '../Form/addJob/addJob';
 
@@ -86,13 +85,6 @@ const useStyles = makeStyles(theme => ({
       width: theme.spacing(9) + 1,
     },
   },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -102,7 +94,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Dashboard(props) {
+export default function Dashboard( props ) {
 
   const classes = useStyles();
   const theme = useTheme();
@@ -144,6 +136,7 @@ export default function Dashboard(props) {
           >
          
             <MenuIcon />
+
           </IconButton>
 
           <NavbarBrand to="/home" >
@@ -263,11 +256,7 @@ export default function Dashboard(props) {
             {
               text:'Trash',
               to:'/trash',
-            },
-            {
-              text:'Logout',
-              to:'/logout',
-            },
+            },    
           ].map((link, index) => (
             link.text === "Logout" ? 
             
@@ -287,7 +276,7 @@ export default function Dashboard(props) {
             
               <ListItem button >
             
-                <ListItemIcon >{index % 2 === 0 ? <InboxIcon fontSize={"large"}/> : <MailIcon fontSize={"large"}/>}</ListItemIcon>
+                <ListItemIcon > {index % 2 === 0 ? <InboxIcon fontSize={"large"}/> : <MailIcon fontSize={"large"}/>}</ListItemIcon>
             
                 <ListItemText primary={link.text} />
             
@@ -303,6 +292,7 @@ export default function Dashboard(props) {
         <Switch>
           <Route path='/inbox' exact component={Inbox}  />
           {/* <Route path='/starred' component={MakeYourChoice,DataTable} /> */}
+          
           <Route path='/starred' render={props =>
                     // <div>
                       <MakeYourChoice />
