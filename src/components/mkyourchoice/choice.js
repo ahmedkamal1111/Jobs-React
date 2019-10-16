@@ -58,7 +58,7 @@ export default class MakeYourChoice extends Component {
                 jobType: this.state.jobId,
                 jobName: this.state.search.positionName,
                 startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
-                endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
+                endDate: this.state.search.endDate ? this.state.search.endDate : this.state.search.customDate,
 
             },{
                 params:{
@@ -67,10 +67,17 @@ export default class MakeYourChoice extends Component {
             })
                .then(response => {
                 // console.log(response.data);
-                this.setState({
+                this.setState(prev => ({
+                    ...prev,
                     searchResults: response.data,
                     response: true,
-                })
+                    search:{
+                        ...prev.search,
+                        startDate: null,
+                        endDate: null,
+                        customDate: "disabled",
+                    },
+                }))
             })
             .catch (error=>{console.log(error.message)})
             
@@ -80,18 +87,25 @@ export default class MakeYourChoice extends Component {
                 jobType:  5,
                 jobName: this.state.search.intern,
                 startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
-                endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
+                endDate: this.state.search.endDate ? this.state.search.endDate: this.state.search.customDate,
             },  {
                 params: {
                     CID: "1",
                   }
             })
                .then(response => {
-        //   console.log(response.data);
-                    this.setState({
+          console.log(response.data);
+                    this.setState(prev => ({
+                        ...prev,
                         searchResults: response.data,
                         response: true,
-                    })
+                        search:{
+                            ...prev.search,
+                            startDate: null,
+                            endDate: null,
+                            customDate: "disabled",
+                        },
+                    }))
             })
             .catch (error=>{console.log(error.message)})
             
@@ -114,7 +128,8 @@ export default class MakeYourChoice extends Component {
         })
             .then(response => {
                 // console.log(response.data)
-                this.setState({
+                this.setState(prev => ({
+                    ...prev,
                     internName: response.data.filter(intern => {
                         return intern.Job_Type === 5
                     }),
@@ -127,7 +142,7 @@ export default class MakeYourChoice extends Component {
                         PartTime: response.data.filter(jobs => jobs.Job_Type == 3),
                         Freelance: response.data.filter(jobs => jobs.Job_Type == 4)
                     }
-                })
+                }))
                 this.state.internName.unshift({ value: 'disabled', name: 'Choose specialization'})
                 this.state.Positions.FullTime.unshift({ value: 'disabled', name: 'Choose Job position'})
                 this.state.Positions.Project.unshift({ value: 'disabled', name: 'Choose Job position'})
@@ -169,6 +184,8 @@ export default class MakeYourChoice extends Component {
         let v = e.target.value;
         this.setState(prev => ({
             ...prev,
+            searchResults:[],
+            response: false,
             search:{ 
                 ...prev.search,
                 type: v,
@@ -267,7 +284,8 @@ export default class MakeYourChoice extends Component {
         //distruct state
         const { jobType, pickDate, internName, JobName } = this.state;
         const { type, positionType, positionName, customDate, intern } = this.state.search;
-        console.log(this.state.searchResults)
+        // console.log(this.state.searchResults)
+        console.log(customDate)
         if( type === "job" ) {
             action =  (
                 <Container  className="respo" >
@@ -309,10 +327,8 @@ export default class MakeYourChoice extends Component {
                 <div className="toolbar"/>
                 <Container >
                     { this.renderToggleButton( type ) }
-                   {/* <form  id="myForm" encType="multipart/form-data"> */}
                     { action }
-                    {/* </form> */}
-                    {this.state.response && <DataTable data={this.state.searchResults} />}
+                    {this.state.response === true ? <DataTable data={this.state.searchResults} /> : "no records to display" }
                 </Container>
             </main>          
         );
