@@ -15,10 +15,9 @@ class ConfirmLogin extends Component {
     super(props);
 
     this.state = {
-      companyName: "Teqneia",
       loginForm: {
         password: {
-          value: '',
+          value: "",
           valid: false,
           touched: false,
           validationRules: {
@@ -72,7 +71,7 @@ class ConfirmLogin extends Component {
             label="Password"
             type="password"
             control="input"
-            placeholder="password..?"
+            placeholder="*******"
             onChange={this.inputChangeHandler}
             value={this.state.loginForm['password'].value}
             valid={this.state.loginForm['password'].valid}
@@ -99,7 +98,6 @@ class ConfirmLogin extends Component {
         </form>
       </Auth>
     );
-
   }
 }
 

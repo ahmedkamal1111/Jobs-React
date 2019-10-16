@@ -102,7 +102,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Dashboard() {
+export default function Dashboard(props) {
 
   const classes = useStyles();
   const theme = useTheme();
@@ -151,7 +151,7 @@ export default function Dashboard() {
           </NavbarBrand>
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text className="float-right">
-              Signed in as: <a href="#login">Mark Otto</a>
+              Signed in as: moh { /* this.props.admin */}
             </Navbar.Text>
         </Navbar.Collapse>
         

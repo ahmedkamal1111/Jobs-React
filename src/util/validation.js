@@ -10,7 +10,7 @@ const validate = (val, rules, connectedValue) => {
             case 'isEmail':
                 isValid = isValid && emailValidator(val);
                 break;
-            case 'menLength':
+            case 'minLength':
                 isValid = isValid && menLengthValidator(val, rules[rule]);
                 break;
             case 'maxLength':

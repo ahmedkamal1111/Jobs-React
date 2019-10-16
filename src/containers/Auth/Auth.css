@@ -18,10 +18,10 @@
 .header {
   margin-top: -20px;
   position: relative;
-  left: -18px;
   top: 110px;
   font-family: 'Abril Fatface', cursive;
 }
+
 .center {
   text-align: center;
 }
@@ -55,12 +55,8 @@
 
 @media (max-width: 575.98px) { 
   .auth-form {
-    /* height: 400px; */
     width: 25rem;
-    /* padding: 2rem; */
-    /* border-radius: 5px; */
     margin: auto;
-    /* position: relative; */
     top: 120px;
     box-shadow: none !important;
   }
