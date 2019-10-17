@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { Switch, Route } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './containers/Auth/Login';
 import ErrorHandler from './components/ErrorHandler/ErrorHandler';
 import Backdrop from './components/Backdrop/Backdrop';

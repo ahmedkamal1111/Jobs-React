@@ -4,7 +4,7 @@ import './Navbar.css';
 
 function Navbar (props ) {
     return (
-        <div className="toolbar">
+        <div className="Navbar">
             {props.children}
         </div>
     );

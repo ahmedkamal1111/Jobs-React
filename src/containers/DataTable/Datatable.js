@@ -16,7 +16,7 @@ class DataTable extends Component {
       
       selected: false,
       
-      type: 'pdf', 
+
       
       columns: [
         { 
@@ -54,13 +54,12 @@ class DataTable extends Component {
           editable: 'never'  
         }
       ],
-      
-      data: props.data
+    
     }
   }
 
   render () {
-    console.log(this.state.data)
+  
     let hide = false;
     
     if ( this.state.selected ) {
@@ -98,13 +97,13 @@ class DataTable extends Component {
               }),
               actionsColumnIndex: -1,
             }}
-            data={this.state.data}
+            data={this.props.data}
             editable={{
               onRowUpdate: (newData, oldData) =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
                     {
-                      const data = this.state.data;
+                      const data = this.props.data;
                       const index = data.indexOf(oldData);
                       data[index] = newData;
                       this.setState({ data }, () => resolve());
@@ -116,7 +115,7 @@ class DataTable extends Component {
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
                     {
-                      let data = this.state.data;
+                      let data = this.props.data;
                       const index = data.indexOf(oldData);
                       data.splice(index, 1);
                       this.setState({ data }, () => resolve());
@@ -135,15 +134,17 @@ class DataTable extends Component {
                       
                       <div className={styles.details} >
                         <h2>More details</h2>
-                        <p>Name: { rowData.name }</p>
-                        <p>phone: 0102952456</p>
+                        <ul>
+                          <li>Name: { rowData.name }</li>
+                          <li>phone: {rowData.mobile}</li>
+                        </ul>
                       </div>
                       
                       <div className={styles.cv}>  
 
                         <FileViewer
-                          fileType={this.state.type}
-                          filePath={mohamed}
+                          fileType={rowData.ext.replace(".","")}
+                          filePath={"http://joblaravel.tbv.cloud/tt/cvs/" + rowData.offline_cv}
                         />
                                         
                       </div>   

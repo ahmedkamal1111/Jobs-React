@@ -6,15 +6,14 @@ import DataTable from '../../containers/DataTable/Datatable';
 
 export default class MakeYourChoice extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor( props ) {
+        super( props );
         this.state = {
             isLoading: false,
             jobId: null,
             searchResults:[],
             response: false,
             search: {
-                
                 type: '',
                 positionType: "disabled",
                 positionName: "disabled",
@@ -59,40 +58,53 @@ export default class MakeYourChoice extends Component {
                 jobType: this.state.jobId,
                 jobName: this.state.search.positionName,
                 startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
-                endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
+                endDate: this.state.search.endDate ? this.state.search.endDate : this.state.search.customDate,
 
             },{
                 params:{
                     CID: "1",
-                  }
+                }
             })
                .then(response => {
-                // console.log(response.data);
-                this.setState({
+                this.setState(prev => ({
+                    ...prev,
                     searchResults: response.data,
                     response: true,
-                })
+                    search:{
+                        ...prev.search,
+                        startDate: null,
+                        endDate: null,
+                        customDate: "disabled",
+                    },
+                }))
             })
             .catch (error=>{console.log(error.message)})
             
         }
-        if(this.state.search.type === "intern") {
+
+        if( this.state.search.type === "intern" ) {
             axios.post("https://joblaravel.tbv.cloud/filter",{
                 jobType:  5,
                 jobName: this.state.search.intern,
                 startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
-                endDate: this.state.search.endDate ?this.state.search.endDate: this.state.search.customDate,
+                endDate: this.state.search.endDate ? this.state.search.endDate: this.state.search.customDate,
             },  {
                 params: {
                     CID: "1",
-                  }
+                }
             })
                .then(response => {
-        //   console.log(response.data);
-                    this.setState({
+                    this.setState(prev => ({
+                        ...prev,
                         searchResults: response.data,
                         response: true,
-                    })
+                        search:{
+                            ...prev.search,
+                            startDate: null,
+                            endDate: null,
+                            customDate: "disabled",
+                        },
+                    }))
             })
             .catch (error=>{console.log(error.message)})
             
@@ -104,7 +116,6 @@ export default class MakeYourChoice extends Component {
                 // console.log(response.data);
                 this.setState({
                     jobType:  response.data.filter(positionType => positionType.id !== 5)
-                    // jobType: response.data.filter(positionType => positionType.id !== 5),
                    })
                    this.state.jobType.unshift({ value: 'disabled', name: 'Choose Job type'})
             });
@@ -114,8 +125,8 @@ export default class MakeYourChoice extends Component {
             }
         })
             .then(response => {
-                // console.log(response.data)
-                this.setState({
+                this.setState(prev => ({
+                    ...prev,
                     internName: response.data.filter(intern => {
                         return intern.Job_Type === 5
                     }),
@@ -128,7 +139,7 @@ export default class MakeYourChoice extends Component {
                         PartTime: response.data.filter(jobs => jobs.Job_Type === 3),
                         Freelance: response.data.filter(jobs => jobs.Job_Type === 4)
                     }
-                })
+                }))
                 this.state.internName.unshift({ value: 'disabled', name: 'Choose specialization'})
                 this.state.Positions.FullTime.unshift({ value: 'disabled', name: 'Choose Job position'})
                 this.state.Positions.Project.unshift({ value: 'disabled', name: 'Choose Job position'})
@@ -170,6 +181,8 @@ export default class MakeYourChoice extends Component {
         let v = e.target.value;
         this.setState(prev => ({
             ...prev,
+            searchResults:[],
+            response: false,
             search:{ 
                 ...prev.search,
                 type: v,
@@ -184,11 +197,28 @@ export default class MakeYourChoice extends Component {
     }
 
     //render submit button
-    renderSubmitButton = () => (
-        <div className="text-center pt-3" >
-            <Button variant="primary" type="submit" > Search </Button>
-        </div>
-    );
+    renderSubmitButton = () => {
+        const {
+            positionType,
+            positionName,
+            customDate,
+            intern,
+            startDate,
+            endDate,
+        } = this.state.search;
+
+        let v = false;
+        
+        if ( ( (positionType !== "disabled" && positionName !== "disabled") || intern !== "disabled") && (customDate !== "disabled" || (endDate && startDate))) {
+            v = true;
+        }
+        
+        return (
+            <div className="text-center pt-3" >
+                <Button variant="primary search" type="submit" disabled={!v} > Search </Button>
+            </div>
+        )
+    };
 
     //render options debpend on form control selection name
     renderOptions = ( options ) => (
@@ -229,7 +259,7 @@ export default class MakeYourChoice extends Component {
     );
 
     renderDateFieldGroup = (label , id) => (
-        <Form.Group as={Col}  controlId="formGridState"  >
+        <Form.Group as={Col} className="rangeDate"  controlId="formGridState"  >
             <Form.Label > { label } </Form.Label>
             <Form.Control 
                 type="date"   
@@ -242,8 +272,8 @@ export default class MakeYourChoice extends Component {
     
     //Render the inter and job toggle buttons
     renderToggleButton = ( type ) => (
-        <div className="d-flex flex-column">
-            <ButtonGroup toggle className="mt-3, c-width" >
+        <div className="d-flex flex-column toggle">
+            <ButtonGroup toggle className="mt-3 c-width" >
                 { this.renderButton("job", "Job", type) }
                 { this.renderButton("intern", "Internship", type) }
             </ButtonGroup>
@@ -268,17 +298,18 @@ export default class MakeYourChoice extends Component {
         //distruct state
         const { jobType, pickDate, internName } = this.state;
         const { type, positionType, positionName, customDate, intern } = this.state.search;
-        console.log(this.state.searchResults)
+        // console.log(this.state.searchResults)
+        console.log(customDate)
         if( type === "job" ) {
             action =  (
                 <Container  className="respo" >
-                    <Form  id="myForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
+                    <Form  id="myForm" className="searchForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
                         <Form.Row>
                             { this.renderFormGroup( 'Job Type', positionType, 'positionType', jobType) }
-                            { positionType === "Full Time" ? this.renderFormGroup('Full Time -> Available Positions', positionName, 'positionName', this.state.Positions.FullTime) : null }
-                            { positionType === "Project" ? this.renderFormGroup('Project -> Available Positions', positionName, 'positionName', this.state.Positions.Project) : null }
-                            { positionType === "Part Time" ? this.renderFormGroup('Part Time -> Available Positions', positionName, 'positionName',this.state.Positions.PartTime) : null }
-                            { positionType === "Freelance" ? this.renderFormGroup('Freelance -> Available Positions', positionName, 'positionName', this.state.Positions.Freelance) : null }
+                            { positionType === "Full Time" ? this.renderFormGroup('Positions', positionName, 'positionName', this.state.Positions.FullTime) : null }
+                            { positionType === "Project" ? this.renderFormGroup('Positions', positionName, 'positionName', this.state.Positions.Project) : null }
+                            { positionType === "Part Time" ? this.renderFormGroup('Positions', positionName, 'positionName',this.state.Positions.PartTime) : null }
+                            { positionType === "Freelance" ? this.renderFormGroup('Positions', positionName, 'positionName', this.state.Positions.Freelance) : null }
               
                             { this.renderFormGroup( 'Date', customDate, 'customDate', pickDate) }
               
@@ -292,7 +323,7 @@ export default class MakeYourChoice extends Component {
         }  else if ( type === "intern" ) {
             action = (
                 <Container>
-                    <Form  id="myForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
+                    <Form  id="myForm" className="searchForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
                         <Form.Row>  
                             { this.renderFormGroup("Specialities", intern, "intern", internName) } 
                             { this.renderFormGroup( 'Date',  customDate, 'customDate', pickDate) }
@@ -307,13 +338,17 @@ export default class MakeYourChoice extends Component {
 
         return (
             <main className="content" >
-                <div className="toolbar"/>
-                <Container >
+                <Container>
                     { this.renderToggleButton( type ) }
-                    {/* <form  id="myForm" encType="multipart/form-data"> */}
                     { action }
-                    {/* </form> */}
-                    {this.state.response && <DataTable data={this.state.searchResults} />}
+                    { 
+                        this.state.response === true ? 
+                            <DataTable data={this.state.searchResults} /> 
+                            :
+                            <div className="alert alert-info feedback" role="alert">
+                                Choose your search preferences first.
+                            </div>
+                    }
                 </Container>
             </main>          
         );
