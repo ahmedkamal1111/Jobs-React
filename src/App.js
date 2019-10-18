@@ -7,6 +7,7 @@ import Backdrop from './components/Backdrop/Backdrop';
 import PinLogin from './containers/Auth/PinLogin';
 import ConfirmLogin from './containers/Auth/ConfirmLogin';
 import Dashboard from './components/Dashboard/dashboard';
+import Joinus from './components/ApplyasCandi/joinus/joinus'
 
 class App extends Component {
   
@@ -359,7 +360,8 @@ class App extends Component {
       routes = (
         <Switch>
           <Route>
-            <Dashboard admin={this.state.admin} logout={this.logout} />
+            {/* <Dashboard admin={this.state.admin} logout={this.logout} />*/}
+            <Joinus />
           </Route>
         </Switch>
       );
