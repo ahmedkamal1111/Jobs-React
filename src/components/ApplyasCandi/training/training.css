@@ -1,0 +1,28 @@
+.titlestyle {
+  background-color: navy;
+  color: white;
+  border-radius: 25px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.descriptionParagraphStyle {
+  font-size: 17px;
+  margin-top: 12px;
+  margin-bottom: 20px;
+}
+.formnamestlye {
+  padding-left: 0px !important;
+  padding-right: 4px !important;
+}
+.formemailstlye {
+  padding-right: 0px !important;
+  padding-left: 4px !important;
+}
+.datapickerstyle {
+  width: 310px;
+  height: 35px;
+  border-radius: 6px;
+  /* box-shadow: none; */
+  border-top-style: outset;
+  border-left-style: outset;
+}

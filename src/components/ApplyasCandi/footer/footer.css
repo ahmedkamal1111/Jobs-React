@@ -1,0 +1,22 @@
+.footer {
+  background-color:#000921;
+  padding: 15px;
+  color: white;
+  overflow: hidden;
+  width:100%;
+}
+
+.footericon .i {
+  clear: both;
+  display: inline-block;
+  margin-right: 2%;
+ 
+}
+.footericon i {
+  color: white;
+  font-size: 20px;
+  transition: all 0.5;
+}
+.footericon i:hover {
+  color: #ffc107;
+}

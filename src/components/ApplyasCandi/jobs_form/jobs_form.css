@@ -1,0 +1,12 @@
+.container > .row {
+  margin-top: 10px;
+  padding-right: 0px !important;
+}
+
+.datepickerstyle {
+  display: flow-root !important;
+}
+
+.jobsformcomponentstyle {
+  margin-top: 20px;
+}
