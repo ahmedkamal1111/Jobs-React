@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/Button/Button';
-
+import { withRouter } from 'react-router-dom';
 import validate from '../../util/validation';
 
 import Auth from './Auth';
@@ -62,9 +62,10 @@ class ConfirmLogin extends Component {
         </div>
 
         <form className="auth-form"
-          onSubmit={ e =>
+          onSubmit={ e => {
             this.props.confirmlogin(e, { password: this.state.loginForm.password.value })
-          }
+            this.props.history.push("/dashboard")
+          }}
         >            
           <Input
             id="password"
@@ -101,4 +102,4 @@ class ConfirmLogin extends Component {
   }
 }
 
-export default ConfirmLogin;
+export default withRouter(ConfirmLogin);

@@ -15,9 +15,9 @@ class App extends Component {
     super(props)
     this.state = {
       showBackdrop: false,
-      isAuth: true,
+      isAuth: false,
       token: null,
-      userId: 1,
+      userId: 0,
       authLoading: false,
       error: null,
       admin: "",
@@ -311,8 +311,11 @@ class App extends Component {
 
     let routes = (
       <Switch>
+        
+        <Route path="/" exact component={Joinus} />
+        
         <Route
-          path="/"
+          path="/login"
           exact
           render={props => (
             <LoginPage
@@ -329,7 +332,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route
-            path="/"
+            path="/login"
             render={props => (
               <ConfirmLogin
                 {...props}
@@ -345,7 +348,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route
-            path="/"
+            path="/login"
             render={props => (
               <PinLogin
                 {...props}
@@ -358,11 +361,12 @@ class App extends Component {
       );   
     } else if ( this.state.isAuth && this.state.userId) {
       routes = (
-        <Switch>
-          <Route>
-            {/* <Dashboard admin={this.state.admin} logout={this.logout} />*/}
-            <Joinus />
-          </Route>
+          <Switch>
+            <Route
+            path="/dashboard"
+            exact
+            render={props => ( <Dashboard {...props} admin={this.state.admin} logout={this.logout} /> )}
+          />
         </Switch>
       );
     }
