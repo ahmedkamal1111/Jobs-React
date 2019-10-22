@@ -50,7 +50,7 @@ componentDidMount() {
   render() {
 
     let main = (
-      <div className="sweetLoading">
+      <div className={style.sweetLoading}>
         <HashLoader
             sizeUnit={"px"}
             size={50}

@@ -1,3 +1,8 @@
+.sweetLoading {
+  margin-top: -137px;
+  margin-left: 440px;
+}
+
 .gridJobsContainer {
   display: grid;
   grid-template-columns: 100%;
