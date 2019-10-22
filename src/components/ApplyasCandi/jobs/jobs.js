@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import HashLoader from 'react-spinners/HashLoader';
 import * as style from  "./jobs.module.css";
 import Footer from "../footer/footer";
 import { Link } from 'react-router-dom';
@@ -48,7 +49,17 @@ componentDidMount() {
   
   render() {
 
-    let main;
+    let main = (
+      <div className="sweetLoading">
+        <HashLoader
+            sizeUnit={"px"}
+            size={50}
+            color={'#0C407C'}
+            margin="2px"
+            loading={this.state.isLoading}
+        />
+      </div> 
+    )
 
     if (!this.state.isLoading) {
 
