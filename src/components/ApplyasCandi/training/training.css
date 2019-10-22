@@ -1,28 +1,38 @@
 .titlestyle {
-  background-color: navy;
-  color: white;
-  border-radius: 25px;
+  color: #000;
+  font-family: 'Graphik', sans-serif;
+  width: 300px;
+  text-align: center;
   padding-bottom: 10px;
-  margin-bottom: 10px;
 }
 .descriptionParagraphStyle {
   font-size: 17px;
   margin-top: 12px;
   margin-bottom: 20px;
 }
-.formnamestlye {
-  padding-left: 0px !important;
-  padding-right: 4px !important;
-}
-.formemailstlye {
-  padding-right: 0px !important;
-  padding-left: 4px !important;
-}
+
 .datapickerstyle {
   width: 310px;
   height: 35px;
   border-radius: 6px;
-  /* box-shadow: none; */
   border-top-style: outset;
   border-left-style: outset;
+}
+
+.sendbtn {
+  background-color: #000921;
+  cursor: pointer;
+  color: #fff;
+  width: 92px;
+  font-size: 14px;
+  text-align: center;
+  height: 33px;
+  padding: 6px;
+  border: none;
+  border-radius: 3px;
+  margin: 30px 0 50px;  
+}
+
+.sendbtn:hover {
+  background-color: #040a44ed;
 }

@@ -1,99 +1,114 @@
 import React, { Component } from "react";
-import "./jobs.css";
-import { Button } from "reactstrap";
+import axios from "axios";
+import * as style from  "./jobs.module.css";
 import Footer from "../footer/footer";
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 class Jobs extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      error: null,
+      jobs : []
+    }
+  }
+
+componentDidMount() {
+   
+  this.setState(prev => ({...prev, isLoading: true }));
+  
+  axios.get("https://joblaravel.tbv.cloud/jobs", {
+    params: {
+      cid: 1
+    }
+  })
+  .then(res => {
+
+    let jobs = res.data.filter(job => job.Job_Type !== 5);
+    
+    this.setState(prev => ({
+      ...prev,
+      isLoading: false,
+      jobs : jobs
+    }));
+  
+  })
+  .catch(err => {
+    this.setState(prev => ({
+      ...prev,
+      isLoading: false,
+      err,
+    }));
+  })
+}
+
+  
+  
   render() {
-    return (
-      <React.Fragment>
-        <div className="container jobscontainerstyle">
-          <h2 className="jobtitlestyle text-center">BE PART OF OUR TEAM</h2>
-          <hr className="hrstyle" />
-          <h4 className="text-center  jobtitlestyle2">
-            Apply for our available jobs now
-          </h4>
-          <div className="row">
-            <div className="col-md-1" />
-            <div className="col-md-3 jobcardstyle">
-              <h3>Flutter Developer</h3>
-              <h3>Full Time</h3>
-              <a href="/details">
-                {" "}
-                <Button
-                  className="btn btn-default jobsbuttonstyle1 "
-                  type="submit"
-                >
-                  Details
-                </Button>
-              </a>
-            </div>
 
-            <div className="col-md-3 jobcardstyle">
-              <h3>React native Developer</h3>
-              <h3>Full Time</h3>
-              <a href="/details">
-                {" "}
-                <Button
-                  className="btn btn-default jobsbuttonstyle1 "
-                  type="submit"
-                >
-                  Details
-                </Button>
-              </a>
-            </div>
+    let main;
 
-            <div className="col-md-3 jobcardstyle">
-              <h3>software Tester</h3>
-              <h3>Full Time</h3>
-              <a href="/details">
-                {" "}
-                <Button
-                  className="btn btn-default jobsbuttonstyle1 "
-                  type="submit"
-                >
-                  Details
-                </Button>
-              </a>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-1" />
-            <div className="col-md-3 jobcardstyle">
-              <h3>React js</h3>
-              <h3>Freelance</h3>
-              <a href="/details">
-                {" "}
-                <Button
-                  className="btn btn-default jobsbuttonstyle1 "
-                  type="submit"
-                >
-                  Details
-                </Button>
-              </a>
-            </div>
+    if (!this.state.isLoading) {
 
-            <div className="col-md-3 jobcardstyle">
-              <h3>Other jobs</h3>
-              <h3>Full Time</h3>
-              <a href="/details">
-                {" "}
-                <Button
-                  className="btn btn-default jobsbuttonstyle1 "
-                  type="submit"
-                >
-                  Details
-                </Button>
-              </a>
-            </div>
+      main = this.state.jobs.map((job, index) => (
 
-            {/*we have to but this class name in the bellow div when entering data in it jobcardstyle*/}
-            <div className="col-md-3 " />
-          </div>
+        <div className={style.jobcardstyle} key={`${index}-${new Date()}`}>
+          
+          <h4> { job.Name } </h4>          
+          
+          <h5 >
+            { 
+              job.Job_Type === 1 ?
+                "Full Time": 
+                job.Job_Type === 2 ?
+                  "Project":
+                  job.Job_Type === 3 ?
+                    "Part Time":
+                      job.Job_Type === 4 ?
+                      "Freelance":  null
+            }
+          </h5>
+          
+          <Link to={`/jobs/${job.CID}/${job.id}/job-detail`}
+            className={style.detailLink} 
+          >
+            Details
+          </Link>
+          
         </div>
-        <Footer />
-      </React.Fragment>
+      ));
+    }
+
+    return (
+      
+      <section className={style.gridJobsContainer}>
+
+        <header className={style.gridHeader}>
+
+          <div className={style.headCont}>
+            
+            <h3 className={style.openRoles}>
+              Open roles
+            </h3>
+
+          </div>
+       
+        </header>
+      
+        <main className={style.gridMain}>
+         
+          <div className={style.flexContainer}>
+            { main }
+          </div>
+        
+        </main>
+      
+        <footer className={style.gridFooter}>
+          <Footer />
+        </footer>
+      </section>   
     );
   }
 }

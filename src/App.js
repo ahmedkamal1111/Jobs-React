@@ -1,13 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
-import { Switch, Route } from 'react-router-dom';
+import { Switch ,Route, Redirect } from 'react-router-dom';
 import LoginPage from './containers/Auth/Login';
 import ErrorHandler from './components/ErrorHandler/ErrorHandler';
 import Backdrop from './components/Backdrop/Backdrop';
 import PinLogin from './containers/Auth/PinLogin';
 import ConfirmLogin from './containers/Auth/ConfirmLogin';
 import Dashboard from './components/Dashboard/dashboard';
-import Joinus from './components/ApplyasCandi/joinus/joinus'
+import Joinus from './components/ApplyasCandi/joinus/joinus';
+import JobDetails from './components/ApplyasCandi/JobDetails/JobDetails';
+import JobForm from './components/ApplyasCandi/jobs_form/jobs_form';
 
 class App extends Component {
   
@@ -311,9 +313,24 @@ class App extends Component {
 
     let routes = (
       <Switch>
+
+        <Route 
+          path="/"
+          exact 
+          component={Joinus}
+        />
         
-        <Route path="/" exact component={Joinus} />
+        <Route
+          path="/jobs/:cid/:id/job-detail"
+          exact
+          component={JobDetails}
+        />
         
+        <Route
+          path="/jobs/:cid/:id/job-detail/job-form"
+          component={JobForm}
+        />
+
         <Route
           path="/login"
           exact
@@ -323,8 +340,10 @@ class App extends Component {
               onLogin={this.login}
               loading={this.state.authLoading}
             />
+
           )}
         />
+
       </Switch>
     );
 
@@ -361,12 +380,12 @@ class App extends Component {
       );   
     } else if ( this.state.isAuth && this.state.userId) {
       routes = (
-          <Switch>
-            <Route
+        <Switch>
+          <Route
             path="/dashboard"
-            exact
-            render={props => ( <Dashboard {...props} admin={this.state.admin} logout={this.logout} /> )}
+            render={props => ( <Dashboard admin={this.state.admin} logout={this.logout} /> )}
           />
+          <Redirect to="/login" />
         </Switch>
       );
     }

@@ -1,12 +1,26 @@
-.container > .row {
-  margin-top: 10px;
-  padding-right: 0px !important;
+.titlestyle {
+  color: #000;
+  font-family: 'Graphik', sans-serif;
+  width: 300px;
+  text-align: center;
+  margin-top: 50px;
+  padding-bottom: 10px;
 }
 
-.datepickerstyle {
-  display: flow-root !important;
+.sendbtn {
+  background-color: #000921;
+  cursor: pointer;
+  color: #fff;
+  width: 92px;
+  font-size: 14px;
+  text-align: center;
+  height: 33px;
+  padding: 6px;
+  border: none;
+  border-radius: 3px;
+  margin: 30px 0 50px;  
 }
 
-.jobsformcomponentstyle {
-  margin-top: 20px;
+.sendbtn:hover {
+  background-color: #040a44ed;
 }

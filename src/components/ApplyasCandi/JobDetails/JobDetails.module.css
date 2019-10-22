@@ -1,0 +1,91 @@
+.gridDetailsContainer {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-auto-rows: 60vh 220px auto 55px;
+  grid-template-areas: "Navbar" "header" "main" "footer";
+}
+
+.gridDetailsContainer .gridNavbar {
+  grid-area: navbar;
+}
+
+.gridDetailsContainer .gridHeader {
+  grid-area: header;
+  margin: auto;
+}
+
+.gridDetailsContainer .gridHeader .headCont {
+  width: 700px;
+  margin-top: 60px;
+  line-height: 1.5;
+  font-family: 'Graphik', sans-serif;
+}
+
+.gridDetailsContainer .gridHeader .headCont h3 {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.gridDetailsContainer .gridHeader .headCont h3 span {
+  font-weight: 500;
+  font-size: 14px;
+  color: #444444;
+}
+
+.gridDetailsContainer .gridHeader .headCont .jobLink {
+  font-size: 14px;
+}
+
+.gridDetailsContainer .gridHeader .headCont .location {
+  color: #444444;
+  font-size: 14px;
+  font-family: 'Graphik', sans-serif;
+  display: block;
+  margin-top: 8px;
+}
+
+.gridDetailsContainer .gridMain {
+  grid-area: main;
+  margin: auto;
+  margin-bottom: 30px;
+  min-height: 385px;
+}
+
+.gridDetailsContainer .gridMain .mainCont {
+  width: 700px;
+}
+
+.gridDetailsContainer .gridMain .mainCont h3 {
+  line-height: 1.5;
+  font-weight: 500;
+  font-size: 25px;
+  font-family: 'Graphik', sans-serif;
+}
+
+.gridDetailsContainer .gridMain .mainCont .applyMainCont {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  margin: 40px 0 0;
+}
+
+.gridDetailsContainer .gridMain .mainCont .applyMainCont .detailLink {
+  text-decoration: none;
+  background-color:  #000921;
+  cursor: pointer;
+  color: #fff;
+  width: 92px;
+  font-size: 14px;
+  text-align: center;
+  height: 33px;
+  padding: 6px;
+  border-radius: 3px;
+}
+
+.gridDetailsContainer .gridMain .mainCont .applyMainCont .detailLink:hover {
+  background-color: #040a44ed;
+}
+
+.gridDetailsContainer .gridFooter {
+  grid-area: footer;
+}

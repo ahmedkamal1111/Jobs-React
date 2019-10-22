@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 import "./training.css";
 import {
-  Button,
   Col,
   Form,
   Row,
   FormGroup,
   Label,
   Input,
-  FormText
 } from "reactstrap";
 import Fieldset from "react-bootstrap/Form";
 import Select from "react-select";
-// import DatePicker from "react-date-picker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import { Nav, NavItem,FormCheck  } from "react-bootstrap";
@@ -28,7 +25,7 @@ class Training extends Component {
       startDate: new Date(),
       Gender: [],
       specialities: [],
-      formData:{
+      formData: {
         Name: '',
         Email: '',
         Mobile: null,
@@ -43,7 +40,6 @@ class Training extends Component {
         backend: false,
            
       }
-
     };
     // this.handleChange2 = this.handleChange2.bind(this);
   }
@@ -93,7 +89,6 @@ class Training extends Component {
         }
       })
       .then(response => {
-        // console.log(response.data)
         this.setState({
           specialities: response.data.filter(item => item.Job_Type === 5).map(item => {
             return {
@@ -105,7 +100,8 @@ class Training extends Component {
         })
       })
   }
-   handleForm = (e) => {
+
+  handleForm = (e) => {
     let v = e.target.value;
     let n = e.target.name;
     this.setState(prevState => ({
@@ -143,14 +139,12 @@ class Training extends Component {
       
     },{
       params:{
-      CID: "1",
-    
+      CID: "1",  
       }
     })
-      .then(response => console.log(response.data))
-  
-
+    .then(response => console.log(response.data))
   }
+  
   handleChange = (e) => {
     let n = e.target.name
     let c = e.target.checked
@@ -172,7 +166,7 @@ class Training extends Component {
         ...prevState.formData,
         Gender: Gender.value,
       }
-       }));
+    }));
  
   };
 
@@ -183,7 +177,7 @@ class Training extends Component {
         ...prevState.formData,
         Location: Location.value,
       }
-       }));
+  }));
  
   };
 
@@ -194,7 +188,7 @@ class Training extends Component {
         ...prevState.formData,
         university: university.value
       }
-       }));
+    }));
  
   };
 
@@ -218,7 +212,8 @@ class Training extends Component {
       ...prevState.formData,
       Dateofbirth,
     }
-      }));
+  }));
+  
   handleSelectionChange = (e) => {
         let v = e.target.value;
         let n = e.target.name;
@@ -229,7 +224,7 @@ class Training extends Component {
                 [n]: v
             }
         }))
-    }
+  }
 
 
     // handleClick = () => {
@@ -258,19 +253,6 @@ class Training extends Component {
     
 
   render() {
-    // console.log(this.state.formData.Name)
-    // console.log(this.state.formData.Email)
-    // console.log(this.state.)
-    // console.log(this.state.start)
-    // console.log(this.state.formData.Mobile)
-    // console.log(this.state.formData.LinkedIn)
-    // console.log(this.state.formData.university.value)
-    // console.log(this.state.formData.Location)
-    // console.log(this.state.universities)
-    // console.log(this.state.formData.Location)
-    // console.log(this.state.formData.Gender)
-    // console.log(this.state.formData.university)
-    // console.log(this.state.formData.ff)
     
     const { Gender } = this.state.formData;
     const { Location } = this.state.formData;
@@ -279,42 +261,26 @@ class Training extends Component {
 
     return (
       <React.Fragment>
+
         <div className="container">
-          <ScrollAnimation animateIn="bounceInUp	" isVisible={true} delay={50}>
+         
+          <ScrollAnimation animateIn="bounceInUp	">
             <div className="row">
-              <div className="col-md-4" />
-              <div className="col-md-4 titlestyle">
+              <div className="col-md titlestyle">
                 <h2>Join our hands on training</h2>
               </div>
-              <div className="col-md-4" />
             </div>
           </ScrollAnimation>
 
           <div className="row">
             <div className="col-md-1" />
             <div className="col-md-10">
-              <div className="row">
-                <div className="col-md-1" />
-                <ScrollAnimation
-                  animateIn="bounceInUp	"
-                  isVisible={true}
-                  delay={50}
-                >
-                  <div className="col-md-10">
-                    <p className="descriptionParagraphStyle text-center">
-                      Here in TEQNEIA we are always happy to meet new life
-                      filled passionate individuals, feel free to leave your cv
-                      or apply to one of our open jobs!
-                    </p>
-                    <br />
-                  </div>
-                </ScrollAnimation>
-                <div className="col-md-1" />
-              </div>
               <Form onSubmit={this.handleSubmit.bind(this)}>
                 <Row form>
                   <Col md={8} className="formnamestlye">
+                    
                     <FormGroup>
+                      
                       <Label className="YourName" for="name">
                         Your Name
                       </Label>
@@ -327,10 +293,13 @@ class Training extends Component {
                         value={this.state.formData.Name}
                         onChange={this.handleForm.bind(this)}
                       />
+
                     </FormGroup>
+                  
                   </Col>
 
                   <Col md={4} className="formemailstlye">
+                  
                     <FormGroup>
                       <Label>Gender</Label>
                       <Select
@@ -341,6 +310,7 @@ class Training extends Component {
                         required="true"
                       />
                     </FormGroup>
+                  
                   </Col>
                 </Row>
 
@@ -398,7 +368,6 @@ class Training extends Component {
                         id="date"
                         value={this.state.formData.Dateofbirth}
                         onChange={this.handleForm.bind(this)}
-                        // className="pickerstyle"
                         required="true"
                         name="Dateofbirth"
                       />
@@ -477,9 +446,6 @@ class Training extends Component {
                             title="test"
                             name="frontend"
                             inline
-                            
-                            
-                            
                             readOnly
                           >
                             Front-end (React.js)
@@ -521,15 +487,14 @@ class Training extends Component {
                     </FormGroup>
                   </Col>
                 </Row>
-                <FormGroup className="float-right px-3">
+                <FormGroup className="px-3">
                   <div className="row">
                     <div className="col-md-10" />
                     <div className="col-md-2">
-                      {" "}
                       <td>
                         <Fieldset Label="">
-                          <button className="btn btn-primary " type="submit" >
-                            <h6> Submit</h6>{" "}
+                          <button className="sendbtn" type="submit">
+                            <h6> Submit </h6>
                           </button>
                         </Fieldset>
                       </td>
@@ -538,7 +503,6 @@ class Training extends Component {
                 </FormGroup>
               </Form>
             </div>
-            <div className="col-md-1" />
           </div>
         </div>
         <Footer />

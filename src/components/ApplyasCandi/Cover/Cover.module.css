@@ -1,0 +1,44 @@
+.gridCoverContainer {
+    display: grid;
+    padding: 115px 80px 0 80px;
+    background: rgb(0,18,36);
+    background: linear-gradient(90deg, rgba(0,18,36,1) 5%, rgba(9,9,121,1) 51%, rgba(9,8,129,1) 74%, rgba(6,36,166,1) 100%);
+    grid-template-columns: 400px 600px;
+    grid-template-areas: "left right";
+    grid-template-rows: 42vh;
+    grid-column-gap: 75px;
+    font-family: Graphik, sans-serif;
+}
+
+.gridLeftInfo {
+    grid-area: left;
+}
+
+.gridLeftInfo h1 {
+    color: white;
+    margin-bottom: 8px;
+    font-size: 60px;
+    line-height: 120%;
+}
+
+.gridLeftInfo p {
+    color: white;
+    margin-bottom: 16px;
+    padding-bottom: 50px;
+    border-radius: 20px;
+    font-size: 24px;
+    line-height: 36px;
+}
+
+
+.gridRightInfo {
+    grid-area: right;
+    padding-top: 80px;
+}
+
+.gridRightInfo p {
+    color: white;
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+}

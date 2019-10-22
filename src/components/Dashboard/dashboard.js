@@ -179,22 +179,22 @@ export default function Dashboard( props ) {
           {[
             {
               text:'Inbox',
-              to:'/inbox',
+              to:'/dashboard/inbox',
               nested:{
                 text: "Nested",
-                to: "/nested"
+                to: "/dashboard/nested"
               }
             },
             {
               text: 'Starred',
-              to:'/starred'
+              to:'/dashboard/starred'
             },
             { text:'Send email',
-              to:'sendmail'
+              to:'/dashboard/sendmail'
             },
             {
               text:'Drafts',
-              to:'/drafts'
+              to:'dashboard/drafts'
             }
               ].map((link, index) => (
                 link.text === "Inbox"?
@@ -251,11 +251,11 @@ export default function Dashboard( props ) {
           {[
             {
               text:'All mail',
-              to:'/allmail',
+              to:'/dashboard/allmail',
             },
             {
               text:'Trash',
-              to:'/trash',
+              to:'/dashboard/trash',
             },    
           ].map((link, index) => (
             link.text === "Logout" ? 
@@ -290,18 +290,18 @@ export default function Dashboard( props ) {
       </Drawer>
       
         <Switch>
-          <Route path='/inbox' exact component={Inbox}  />
+          <Route path='/dashboard/inbox' exact component={Inbox}  />
           {/* <Route path='/starred' component={MakeYourChoice,DataTable} /> */}
           
-          <Route path='/starred' render={props =>
+          <Route path='/dashboard/starred' render={props =>
                     // <div>
                       <MakeYourChoice />
                       // <DataTable />
                     // </div>
           }/>
 
-          <Route path='/sendmail' component={Addjob} />
-          <Route path='/drafts' />
+          <Route path='/dashboard/sendmail' component={Addjob} />
+          <Route path='/dashboard/drafts' />
         </Switch>
       
       {/* <main className={classes.content}>

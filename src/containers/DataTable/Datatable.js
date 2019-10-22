@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as styles from './DataTable.module.css';
 import MaterialTable from 'material-table';
-import mohamed from '../../assets/Cvs/Mohamed_Ayman_Mazlom.pdf';
 import FileViewer from 'react-file-viewer';
 
 class DataTable extends Component {
