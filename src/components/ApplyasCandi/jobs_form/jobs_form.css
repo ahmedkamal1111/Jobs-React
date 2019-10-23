@@ -1,3 +1,10 @@
+.sweetLoading {
+  position: relative;
+  top: 1000px;
+  left: 600px;
+  min-height: 600px;
+}
+
 .titlestyle {
   color: #000;
   font-family: 'Graphik', sans-serif;

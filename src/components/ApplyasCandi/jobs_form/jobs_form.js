@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import "./jobs_form.css";
+import HashLoader from 'react-spinners/HashLoader';
 import "../training/training.css";
 import { Col, Form, Row, FormGroup, Label, Input } from "reactstrap";
 import Fieldset from "react-bootstrap-form";
@@ -17,18 +18,17 @@ import Nav1 from "../navbar/navbar";
 import Footer from "../footer/footer";
 import ScrollAnimation from "react-animate-on-scroll";
 
-const options4 = [{ value: "Flutter developer", label: "Flutter developer" }];
+// const options4 = [{ value: "Flutter developer", label: "Flutter developer" }];
 
 class jobs_form extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
-      err: null,
       startDate: new Date(),
       Gender: [],
       specialities: [],
-      formData: {
+      jobName: [],
+      formData:{
         Name: '',
         Email: '',
         Mobile: null,
@@ -39,21 +39,23 @@ class jobs_form extends Component {
         Onlinecv: "",
         Dateofbirth: "",
         ff: "",
-        frontend: false,
-        backend: false,
-      }
+        jobId: null,
+        jobType: null,
+        salary: null
+      },
+      checked: false,
+
+
     };
-    this.handleChange__1 = this.handleChange__1.bind(this);
-    this.handleSubmit__1 = this.handleSubmit__1.bind(this);
   }
 
   componentDidMount () {
-    //Job Type
+    // Job Type
     const Job_Type =  this.props.location.state.jobType;
-    const JobName =  this.props.jobname;
-    //CID and JObID
-    const {cid, id} =  this.props.match.params;
-    console.log(Job_Type, JobName ,cid, id);
+    // const JobName =  this.props.jobname;
+    // CID and JObID
+     const {cid, id} =  this.props.match.params;
+    console.log(Job_Type ,cid, id);
 
     this.setState(prev => ({
       ...prev,
@@ -109,20 +111,23 @@ class jobs_form extends Component {
 
     axios.get("https://joblaravel.tbv.cloud/jobs",{
       params:{
-        cid: "1"
+        cid: cid
       }
     })
     .then(response => {
-      // console.log(response.data)
-      this.setState({
-        specialities: response.data.filter(item => item.Job_Type === 5).map(item => {
+      console.log(response.data)
+      console.log(id)
+      this.setState(prev => ({
+        ...prev,
+        isLoading: false,
+        jobName: response.data.filter(i => i.id == id).map(i => {
           return {
-            id: item.id,
-            Name: item.Name,
-            typeId: item.Job_Type
+            value: i.Name,
+
+            label: i.Name
           }
         })
-      })
+      }))
     }).catch(err => {
       this.setState(prev => ({ ...prev, isLoading: false , err }))
     }) 
@@ -168,21 +173,127 @@ class jobs_form extends Component {
     this.setState({ backend: !this.state.backend });
   };
 
+  handleForm = (e) => {
+    let v = e.target.value;
+    let n = e.target.name;
+    this.setState(prevState => ({
+      ...prevState,
+      formData:{
+        ...prevState.formData,
+        [n]: v,
+      }
+    }))
+  }
+  
+  getFile = (e) => {
+    e.preventDefault()
+    // console.log(e.target.files)
+    // console.log(e.target.files[0])
+    // let reader = new FileReader();
+    let file = e.target.files[0];
+    // let reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.readAsText(file)
+    // reader.onload = (e) => {
+      // let ff = e.target.result;
+      // console.log(e.target.result)
+      // console.log(file)
+      this.setState(prevState =>({
+        ...prevState,
+        formData:{
+          ...prevState.formData,
+          ff: file,
+        }
+      }));
+      
+    }
+  handleChange_1 = Gender => {
+    this.setState(prevState =>({
+      ...prevState,
+      formData:{
+        ...prevState.formData,
+        Gender: Gender.value,
+      }
+       }));
+ 
+  };
+
+  handleChange_2 = Location => {
+    this.setState(prevState =>({
+      ...prevState,
+      formData:{
+        ...prevState.formData,
+        Location: Location.value,
+      }
+       }));
+ 
+  };
+
+  handleChange_3 = university =>{
+    this.setState(prevState =>({
+      ...prevState,
+      formData:{
+        ...prevState.formData,
+        university: university.value
+      }
+       }));
+ 
+  };
+
   onChange = date => this.setState({ date });
+  handleSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const data = new FormData()
+    data.set('Name',this.state.formData.Name)
+    data.append('Email',this.state.formData.Email)
+    data.append('Mobile',this.state.formData.Mobile)
+    data.append('LinkedIn',this.state.formData.LinkedIn)
+    data.append('Gender',this.state.formData.Gender)
+    data.append('Location',this.state.formData.Location)
+    data.append('university',this.state.formData.university)
+    data.append('Onlinecv',this.state.formData.Onlinecv)
+    data.append('Dateofbirth',this.state.formData.Dateofbirth)
+    data.append('jobId',this.state.formData.jobId)
+    data.append('JobType',this.state.formData.jobType)
+    data.append('salary',this.state.formData.salary)
+    data.append("ff", this.state.formData.ff)
+    data.append("JobType",this.props.location.state.jobType)
+    data.append("jobId",this.props.match.params.id)
+    axios.post("https://joblaravel.tbv.cloud/job/store",data,{
+      params:{
+      CID: "1",
+      }
+    })
+      .then(response => console.log(response.data))
+  
+
+  }
 
   render() {
 
-    const { selectedOption1, selectedOption2 , selectedOption4  } = this.state;
+    // const { selectedOption1, selectedOption2 , selectedOption4  } = this.state;
+    const { Gender } = this.state.formData;
+    const { Location } = this.state.formData;
+    const { university } = this.state.formData;
+    const { jobName } = this.state;
+    // console.log(this.props.location.state.jobType);
 
-    return (
-      
-      <React.Fragment>
-
-          <Nav1 />
-
-          <Cover />
-
-          <div className="container jobsformcomponentstyle">
+    let comp = (
+      <div className="sweetLoading">
+        <HashLoader
+            sizeUnit={"px"}
+            size={50}
+            color={'#0C407C'}
+            margin="2px"
+            loading={this.state.isLoading}
+        />
+      </div> 
+    )
+    
+    if(!this.state.isLoading) {
+      comp = (
+            <div className="container jobsformcomponentstyle">
             <ScrollAnimation animateIn="bounceInUp">
               <div className="row">
                 <div className="col-md titlestyle">
@@ -194,19 +305,21 @@ class jobs_form extends Component {
             <div className="row">
               <div className="col-md-1" />
               <div className="col-md-10">
-                <Form>
+                <Form onSubmit={this.handleSubmit.bind(this)}>
                   <Row form>
                     <Col md={12} className="formnamestlye">
                       <FormGroup>
                         <Label className="Job type" for="jop tybe">
-                          Job type
+                          Job position
                         </Label>
 
                         <Select
-                          value={selectedOption4}
+                          value={jobName}
                           onChange={this.handleChange_4}
-                          options={options4}
+                          options={this.state.jobName}
                           required="true"
+                          isDisabled="true"
+                          
                         />
                       </FormGroup>
                     </Col>
@@ -219,10 +332,12 @@ class jobs_form extends Component {
                         </Label>
 
                         <Input
-                          type="Text"
-                          name="username"
-                          placeholder="Username"
-                          required="true"
+                        type="Text"
+                        name="Name"
+                        placeholder="Username"
+                        required="true"
+                        value={this.state.formData.Name}
+                        onChange={this.handleForm.bind(this)}
                         />
                       </FormGroup>
                     </Col>
@@ -231,9 +346,10 @@ class jobs_form extends Component {
                       <FormGroup>
                         <Label>Gender</Label>
                         <Select
-                          value={selectedOption1}
+                          value={Gender.value}
+                          name="Gender"
                           onChange={this.handleChange_1}
-                          // options={options}
+                          options={this.state.Gender}
                           required="true"
                         />
                       </FormGroup>
@@ -246,9 +362,11 @@ class jobs_form extends Component {
                         <Label for="exampleEmail">Email</Label>
                         <Input
                           type="email"
-                          name="email"
+                          name="Email"
                           required="true"
                           placeholder="Your Email@host.com"
+                          value={this.state.formData.Email}
+                          onChange={this.handleForm.bind(this)}
                         />
                       </FormGroup>
                     </Col>
@@ -257,10 +375,11 @@ class jobs_form extends Component {
                       <FormGroup>
                         <Label>Location</Label>
                         <Select
-                          value={selectedOption2}
+                          value={Location.value}
                           onChange={this.handleChange_2}
-                          // options={options2}
+                          options={this.state.Locations}
                           required="true"
+                          name="Location"
                         />
                       </FormGroup>
                     </Col>
@@ -273,9 +392,11 @@ class jobs_form extends Component {
 
                         <Input
                           type="Text"
-                          name="username"
+                          name="Onlinecv"
                           placeholder="Online CV (Compulsory only if CV is not attached)"
                           required="true"
+                          value={this.state.formData.Onlinecv}
+                          onChange={this.handleForm.bind(this)}
                         />
                       </FormGroup>
                     </Col>
@@ -284,12 +405,15 @@ class jobs_form extends Component {
                       <FormGroup>
                         <Label>Date Of Birth</Label>
                         <br />
-                        <DatePicker
-                          onChange={this.onChange}
-                          value={this.state.date}
-                          className="datepickerstyle"
-                          required="true"
-                        />
+                        <Input
+                        type="date"
+                        id="date"
+                        value={this.state.formData.Dateofbirth}
+                        onChange={this.handleForm.bind(this)}
+                        // className="pickerstyle"
+                        required="true"
+                        name="Dateofbirth"
+                      />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -300,11 +424,13 @@ class jobs_form extends Component {
                         <Label className="YourName">Upload cv</Label>
 
                         <input
-                          type="file"
-                          name="ff[]"
-                          className="form-control"
-                          placeholder="Compulsory only if no link of online CV is not provided"
-                          required="true"
+                        type="file"
+                        name="ff"
+                        onChange={this.getFile.bind(this)}
+                        // onClick={this.fileUploadHandler.bind(this)}
+                        className="form-control"
+                        placeholder="Compulsory only if no link of online CV is not provided"
+                        required="true"
                         />
                       </FormGroup>
                     </Col>
@@ -313,10 +439,12 @@ class jobs_form extends Component {
                       <FormGroup>
                         <Label>Mobile</Label>
                         <Input
-                          type="text"
-                          name="mobile"
-                          required="true"
-                          placeholder="mobile"
+                            type="text"
+                            name="Mobile"
+                            required="true"
+                            placeholder="Mobile"
+                            value={this.state.formData.Mobile}
+                            onChange={this.handleForm.bind(this)}
                         />
                       </FormGroup>
                     </Col>
@@ -327,23 +455,39 @@ class jobs_form extends Component {
                       <FormGroup>
                         <Label className="YourName">LinkedIn Profile</Label>
                         <Input
-                          type="text"
-                          required="true"
-                          name="linkedin"
-                          placeholder="your linkein profile"
+                        type="text"
+                        required="true"
+                        name="LinkedIn"
+                        placeholder="your linkein profile"
+                        value={this.state.formData.LinkedIn}
+                        onChange={this.handleForm.bind(this)}
                         />
                       </FormGroup>
                     </Col>
+                    <Col md={4} className="formemailstlye">
+                    <FormGroup>
+                      <Label>University</Label>
+                      <Select
+                        required="true"
+                        value={university.value}
+                        onChange={this.handleChange_3}
+                        options={this.state.universities}
+                        name="university"
+                      />
+                    </FormGroup>
+                  </Col>
 
                     <Col md={4} className="formemailstlye">
                       <FormGroup>
                         <Label>Expected salary</Label>
                         <Input
-                          type="number"
-                          min="100"
-                          max="20000"
-                          name="salary"
-                          required=""
+                            type="number"
+                            min="100"
+                            max="20000"
+                            name="salary"
+                            required=""
+                            value={this.state.formData.salary}
+                            onChange={this.handleForm.bind(this)}
                         />
                       </FormGroup>
                     </Col>
@@ -367,7 +511,20 @@ class jobs_form extends Component {
               </div>
             </div>
           </div>
-        <Footer />
+      )
+    }
+
+    return (
+      
+      <React.Fragment>
+
+          <Nav1 />
+
+          <Cover />
+          
+          { comp }
+          
+          <Footer />
       </React.Fragment>
     );
   }
