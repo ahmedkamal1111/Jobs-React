@@ -43,8 +43,6 @@ class Training extends Component {
         jobType: null,
       },
       checked: false,
-
-
     };
     // this.handleChange2 = this.handleChange2.bind(this);
   }
@@ -118,8 +116,6 @@ class Training extends Component {
     }))
   }
   
-  
-
   handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -142,8 +138,6 @@ class Training extends Component {
       }
     })
       .then(response => console.log(response.data))
-  
-
   }
   handleChange = (e) => {
     let n = e.target.name
@@ -322,14 +316,14 @@ class Training extends Component {
 
     return (
       <React.Fragment>
+
         <div className="container">
-          <ScrollAnimation animateIn="bounceInUp	" isVisible={true} delay={50}>
+
+          <ScrollAnimation animateIn="bounceInUp">
             <div className="row">
-              <div className="col-md-4" />
-              <div className="col-md-4 titlestyle">
+              <div className="titlestyle">
                 <h2>Join our hands on training</h2>
               </div>
-              <div className="col-md-4" />
             </div>
           </ScrollAnimation>
 
@@ -337,21 +331,7 @@ class Training extends Component {
             <div className="col-md-1" />
             <div className="col-md-10">
               <div className="row">
-                <div className="col-md-1" />
-                <ScrollAnimation
-                  animateIn="bounceInUp	"
-                  isVisible={true}
-                  delay={50}
-                >
-                  <div className="col-md-10">
-                    <p className="descriptionParagraphStyle text-center">
-                      Here in TEQNEIA we are always happy to meet new life
-                      filled passionate individuals, feel free to leave your cv
-                      or apply to one of our open jobs!
-                    </p>
-                    <br />
-                  </div>
-                </ScrollAnimation>
+                
                 <div className="col-md-1" />
               </div>
               <Form onSubmit={this.handleSubmit.bind(this)}>
@@ -441,7 +421,6 @@ class Training extends Component {
                         id="date"
                         value={this.state.formData.Dateofbirth}
                         onChange={this.handleForm.bind(this)}
-                        // className="pickerstyle"
                         required="true"
                         name="Dateofbirth"
                       />
@@ -458,7 +437,6 @@ class Training extends Component {
                         type="file"
                         name="ff"
                         onChange={this.getFile.bind(this)}
-                        // onClick={this.fileUploadHandler.bind(this)}
                         className="form-control"
                         placeholder="Compulsory only if no link of online CV is not provided"
                         required="true"
@@ -514,27 +492,7 @@ class Training extends Component {
                   <Col md={12}>
                     <FormGroup>
                       <Label for="number">Specialitiy</Label>
-                      {/* <input type="checkbox" checked={this.state.checked} onChange={this.handleCheck.bind(this)}/>test */}
                       <Nav bsStyle="tabs" activeKey="1">
-                     
-                      {/* <Form.Group controlId="formBasicCheckbox"> */}
-   
-  {/* </Form.Group> */}
-                        {/* <NavItem  onClick={this.handleCheck.bind(this)}>
-                          <Checkbox
-                            // title="test"
-                            // name="frontend"
-                            // inline
-                            // onChange={this.handleCheck.bind(this)}
-                            checked={this.state.checked}
-                            
-                            
-                            // readOnly
-                          >
-                            
-                          </Checkbox>
-                          
-                        </NavItem> */}
 
                     
                            {this.state.specialities.map((cbox,k) => {
@@ -578,14 +536,13 @@ class Training extends Component {
                     </FormGroup>
                   </Col>
                 </Row>
-                <FormGroup className="float-right px-3">
+                <FormGroup className="px-3">
                   <div className="row">
                     <div className="col-md-10" />
                     <div className="col-md-2">
-                      {" "}
                       <td>
                         <Fieldset Label="">
-                          <button className="btn btn-primary " type="submit" >
+                          <button className="sendbtn" type="submit" >
                             <h6> Submit</h6>{" "}
                           </button>
                         </Fieldset>
@@ -595,7 +552,6 @@ class Training extends Component {
                 </FormGroup>
               </Form>
             </div>
-            <div className="col-md-1" />
           </div>
         </div>
         <Footer />

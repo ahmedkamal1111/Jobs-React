@@ -10,7 +10,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import Cover from "../Cover/Cover";
 import "moment/locale/it.js";
-import DatePicker from "react-date-picker";
 import "react-datepicker/dist/react-datepicker.css";
 import "moment/locale/fr.js";
 import "moment/locale/es.js";
@@ -24,6 +23,7 @@ class jobs_form extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
       startDate: new Date(),
       Gender: [],
       specialities: [],
@@ -44,8 +44,6 @@ class jobs_form extends Component {
         salary: null
       },
       checked: false,
-
-
     };
   }
 
@@ -120,7 +118,7 @@ class jobs_form extends Component {
       this.setState(prev => ({
         ...prev,
         isLoading: false,
-        jobName: response.data.filter(i => i.id == id).map(i => {
+        jobName: response.data.filter(i => i.id === id).map(i => {
           return {
             value: i.Name,
 
@@ -280,15 +278,17 @@ class jobs_form extends Component {
     // console.log(this.props.location.state.jobType);
 
     let comp = (
-      <div className="sweetLoading">
-        <HashLoader
-            sizeUnit={"px"}
-            size={50}
-            color={'#0C407C'}
-            margin="2px"
-            loading={this.state.isLoading}
-        />
-      </div> 
+      <div className="loading">
+        <div className="sweetLoading">
+          <HashLoader
+              sizeUnit={"px"}
+              size={50}
+              color={'#0C407C'}
+              margin="2px"
+              loading={this.state.isLoading}
+          />
+        </div> 
+      </div>
     )
     
     if(!this.state.isLoading) {
@@ -521,9 +521,7 @@ class jobs_form extends Component {
           <Nav1 />
 
           <Cover />
-          
-          { comp }
-          
+            { comp }
           <Footer />
       </React.Fragment>
     );

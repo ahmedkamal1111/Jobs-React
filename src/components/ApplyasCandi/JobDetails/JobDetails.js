@@ -108,7 +108,7 @@ class JobDetails extends Component {
             <span>At { this.state.details.CompanyName } </span>
             
             <span>             
-              ( <Link to="/" className={style.jobLink}>
+              ( <Link to="/jobs" className={style.jobLink}>
                 View all jobs               
               </Link> )
             </span>

@@ -1,8 +1,10 @@
-.sweetLoading {
-  position: relative;
-  top: 1000px;
-  left: 600px;
-  min-height: 600px;
+.loading {
+  min-height: 400px;
+  width: 100%;
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  padding-top: 109px;
 }
 
 .titlestyle {
