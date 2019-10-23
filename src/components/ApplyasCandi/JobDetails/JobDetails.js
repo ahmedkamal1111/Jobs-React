@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import * as style from "./JobDetails.module.css";
 import Footer from "../footer/footer";
 import Navbar from "../navbar/navbar";
@@ -51,7 +51,8 @@ class JobDetails extends Component {
           jobType: res.data.Job_Type,
           name: res.data.Name,
           skills: skills,
-          respons: Respo 
+          respons: Respo,
+          id: res.data.id,
         }
       }))
     })
@@ -123,12 +124,25 @@ class JobDetails extends Component {
           
           <div className={style.mainCont}>
     
-            <h3>Responsbility</h3>
+         {
+           this.state.details.id == 11 ? <p>{this.state.details.respons}</p> :
+            <Fragment>
+              <h3>Responsbility</h3>
+              {this.renderRespons()}
+              <h3>Skills</h3>
+              {this.renderSkills() }
+            </Fragment>
+         
+         }
+         
+         
+          
+             
             
-            { this.renderRespons() }
             
-            <h3>Skills</h3>
-            { this.renderSkills() }    
+            
+            
+            {  }    
             
             <div className={style.applyMainCont}>
               <Link 
