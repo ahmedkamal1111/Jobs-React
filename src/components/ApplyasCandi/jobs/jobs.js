@@ -82,7 +82,13 @@ componentDidMount() {
             }
           </h5>
           
-          <Link to={`/jobs/${job.CID}/${job.id}/job-detail`}
+          <Link 
+            to={{
+              pathname: `/jobs/${job.CID}/${job.id}/job-detail`,
+              state: {
+                jobType: job.Job_Type 
+              }
+            }} 
             className={style.detailLink} 
           >
             Details
