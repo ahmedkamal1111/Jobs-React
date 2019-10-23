@@ -1,21 +1,26 @@
 import React, { Component } from "react";
 import "./training.css";
+import Form from 'react-bootstrap/Form';
 import {
+  Button,
   Col,
-  Form,
+  // Form,
   Row,
   FormGroup,
   Label,
   Input,
+  FormText
 } from "reactstrap";
-import Fieldset from "react-bootstrap/Form";
+import Fieldset from "react-bootstrap-form";
 import Select from "react-select";
+import DatePicker from "react-date-picker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
-import { Nav, NavItem,FormCheck  } from "react-bootstrap";
+import { Nav, NavItem, Checkbox } from "react-bootstrap";
 import Footer from "../footer/footer";
 import ScrollAnimation from "react-animate-on-scroll";
 import axios from "axios";
+// import Form from 'react-bootstrap/Form'
 
 
 class Training extends Component {
@@ -25,7 +30,7 @@ class Training extends Component {
       startDate: new Date(),
       Gender: [],
       specialities: [],
-      formData: {
+      formData:{
         Name: '',
         Email: '',
         Mobile: null,
@@ -36,10 +41,12 @@ class Training extends Component {
         Onlinecv: "",
         Dateofbirth: "",
         ff: "",
-        frontend: false,
-        backend: false,
-           
-      }
+        jobId: null,
+        jobType: null,
+      },
+      checked: false,
+
+
     };
     // this.handleChange2 = this.handleChange2.bind(this);
   }
@@ -89,6 +96,7 @@ class Training extends Component {
         }
       })
       .then(response => {
+        // console.log(response.data)
         this.setState({
           specialities: response.data.filter(item => item.Job_Type === 5).map(item => {
             return {
@@ -100,8 +108,7 @@ class Training extends Component {
         })
       })
   }
-
-  handleForm = (e) => {
+   handleForm = (e) => {
     let v = e.target.value;
     let n = e.target.name;
     this.setState(prevState => ({
@@ -118,33 +125,28 @@ class Training extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
- 
-    // console.log(this.state.formData.ff)
-    axios.post("https://joblaravel.tbv.cloud/job/store",{
-      Name: this.state.formData.Name,
-      Email:  this.state.formData.Email,
-      Mobile:  this.state.formData.Mobile,
-      LinkedIn:  this.state.formData.LinkedIn,
-      Gender:  1,
-      Location:  1,
-      university:  1,
-      Onlinecv:  this.state.formData.Onlinecv,
-      Dateofbirth:  this.state.formData.Dateofbirth,
-      ff: this.state.formData.ff,
-      frontend:  this.state.formData.frontend,
-      backend:  this.state.formData.backend,
-      jobId: 101,
-      salary: 8000,
-      JobType: 5,
-      
-    },{
+    const data = new FormData()
+    data.set('Name',this.state.formData.Name)
+    data.append('Email',this.state.formData.Email)
+    data.append('Mobile',this.state.formData.Mobile)
+    data.append('LinkedIn',this.state.formData.LinkedIn)
+    data.append('Gender',this.state.formData.Gender)
+    data.append('Location',this.state.formData.Location)
+    data.append('university',this.state.formData.university)
+    data.append('Onlinecv',this.state.formData.Onlinecv)
+    data.append('Dateofbirth',this.state.formData.Dateofbirth)
+    data.append('jobId',this.state.formData.jobId)
+    data.append('JobType',this.state.formData.jobType)
+    data.append("ff", this.state.formData.ff)
+    axios.post("https://joblaravel.tbv.cloud/job/store",data,{
       params:{
-      CID: "1",  
+      CID: "1",
       }
     })
-    .then(response => console.log(response.data))
-  }
+      .then(response => console.log(response.data))
   
+
+  }
   handleChange = (e) => {
     let n = e.target.name
     let c = e.target.checked
@@ -166,7 +168,7 @@ class Training extends Component {
         ...prevState.formData,
         Gender: Gender.value,
       }
-    }));
+       }));
  
   };
 
@@ -177,7 +179,7 @@ class Training extends Component {
         ...prevState.formData,
         Location: Location.value,
       }
-  }));
+       }));
  
   };
 
@@ -188,7 +190,7 @@ class Training extends Component {
         ...prevState.formData,
         university: university.value
       }
-    }));
+       }));
  
   };
 
@@ -206,14 +208,39 @@ class Training extends Component {
   //   this.setState(prevState => ({ ...prevState, formData:{ ...prevState.formData,backend: !this.state.formData.backend } }));
   // };
 
+  handleCheck(e) {
+    // console.log(e.target.id)
+    // console.log(e.target.name)
+    // console.log(e.target.value)
+    let name = e.target.name;
+    let checked = e.target.checked;
+    let jobId = e.target.id;
+    let jobType = e.target.value;
+    // console.log(data)
+    // console.log(e.target.checked)
+    this.setState(prevState => ({
+      ...prevState,
+      [name]: !checked,
+      formData:{
+        ...prevState.formData,
+        jobId,
+        jobType,
+      }
+    }))
+  }
+
+  controlCheck(e) {
+    // console.log(e.target.name)
+    // console.log(e.target.checked)
+  }
+
   onChange = Dateofbirth => this.setState(prevState =>({
     ...prevState,
     formData:{
       ...prevState.formData,
       Dateofbirth,
     }
-  }));
-  
+      }));
   handleSelectionChange = (e) => {
         let v = e.target.value;
         let n = e.target.name;
@@ -224,63 +251,115 @@ class Training extends Component {
                 [n]: v
             }
         }))
-  }
+    }
 
 
-    // handleClick = () => {
-    //   console.log(this.state.formData.ff)
-    // }
     getFile = (e) => {
       e.preventDefault()
-      console.log(e.target.files)
-      console.log(e.target.files[0])
+      // console.log(e.target.files)
+      // console.log(e.target.files[0])
       // let reader = new FileReader();
       let file = e.target.files[0];
-      // reader.onloadend = () => {
+      // let reader = new FileReader();
+      // reader.readAsDataURL(file);
+      // reader.readAsText(file)
+      // reader.onload = (e) => {
+        // let ff = e.target.result;
+        // console.log(e.target.result)
+        // console.log(file)
         this.setState(prevState =>({
           ...prevState,
           formData:{
             ...prevState.formData,
             ff: file,
           }
-        
-        
         }));
+        
+      }
+      // reader.onloadend = () => {
+        
       // }
       // reader.readAsDataURL(file);
-    }
+    
+
+      // fileUploadHandler = () => {
+      //   const file = new FormData();
+      //   file.append("ff",this.state.formData.ff);
+      //   axios.post("https://joblaravel.tbv.cloud/job/store",file)
+      //   .then(response => console.log(response.data))
+    
+      // };
+      
+
+    // onClickHandler = () => {
+    //   const data = new FormData(this.state.formData.ff);
+     
+    //   console.log(data)
+    //   // axios.post("http://joblaravel.tbv.cloud/public/cvs/",ff)
+    //   // .then(response => console.log(response.data))
+    // }
 
     
 
   render() {
-    
+    // console.log(this.state.formData.Name)
+    // console.log(this.state.formData.Email)
+    // console.log(this.state.)
+    // console.log(this.state.start)
+    // console.log(this.state.formData.Mobile)
+    // console.log(this.state.formData.LinkedIn)
+    // console.log(this.state.formData.university.value)
+    // console.log(this.state.formData.Location)
+    // console.log(this.state.universities)
+    // console.log(this.state.formData.Location)
+    // console.log(this.state.formData.Gender)
+    // console.log(this.state.formData.university)
+    // console.log(this.state.formData.ff)
+    // console.log(this.state.formData.ff)
     const { Gender } = this.state.formData;
     const { Location } = this.state.formData;
     const { university } = this.state.formData;
-    // console.log(this.state.Gender)
+    
+    // console.log(this.state.formData.jobId,this.state.formData.jobType);
 
     return (
       <React.Fragment>
-
         <div className="container">
-         
-          <ScrollAnimation animateIn="bounceInUp	">
+          <ScrollAnimation animateIn="bounceInUp	" isVisible={true} delay={50}>
             <div className="row">
-              <div className="col-md titlestyle">
+              <div className="col-md-4" />
+              <div className="col-md-4 titlestyle">
                 <h2>Join our hands on training</h2>
               </div>
+              <div className="col-md-4" />
             </div>
           </ScrollAnimation>
 
           <div className="row">
             <div className="col-md-1" />
             <div className="col-md-10">
+              <div className="row">
+                <div className="col-md-1" />
+                <ScrollAnimation
+                  animateIn="bounceInUp	"
+                  isVisible={true}
+                  delay={50}
+                >
+                  <div className="col-md-10">
+                    <p className="descriptionParagraphStyle text-center">
+                      Here in TEQNEIA we are always happy to meet new life
+                      filled passionate individuals, feel free to leave your cv
+                      or apply to one of our open jobs!
+                    </p>
+                    <br />
+                  </div>
+                </ScrollAnimation>
+                <div className="col-md-1" />
+              </div>
               <Form onSubmit={this.handleSubmit.bind(this)}>
                 <Row form>
                   <Col md={8} className="formnamestlye">
-                    
                     <FormGroup>
-                      
                       <Label className="YourName" for="name">
                         Your Name
                       </Label>
@@ -293,13 +372,10 @@ class Training extends Component {
                         value={this.state.formData.Name}
                         onChange={this.handleForm.bind(this)}
                       />
-
                     </FormGroup>
-                  
                   </Col>
 
                   <Col md={4} className="formemailstlye">
-                  
                     <FormGroup>
                       <Label>Gender</Label>
                       <Select
@@ -310,7 +386,6 @@ class Training extends Component {
                         required="true"
                       />
                     </FormGroup>
-                  
                   </Col>
                 </Row>
 
@@ -368,6 +443,7 @@ class Training extends Component {
                         id="date"
                         value={this.state.formData.Dateofbirth}
                         onChange={this.handleForm.bind(this)}
+                        // className="pickerstyle"
                         required="true"
                         name="Dateofbirth"
                       />
@@ -384,6 +460,7 @@ class Training extends Component {
                         type="file"
                         name="ff"
                         onChange={this.getFile.bind(this)}
+                        // onClick={this.fileUploadHandler.bind(this)}
                         className="form-control"
                         placeholder="Compulsory only if no link of online CV is not provided"
                         required="true"
@@ -439,39 +516,55 @@ class Training extends Component {
                   <Col md={12}>
                     <FormGroup>
                       <Label for="number">Specialitiy</Label>
-                    
+                      {/* <input type="checkbox" checked={this.state.checked} onChange={this.handleCheck.bind(this)}/>test */}
                       <Nav bsStyle="tabs" activeKey="1">
-                        <NavItem eventKey="3"  >
-                          <FormCheck
-                            title="test"
-                            name="frontend"
-                            inline
-                            readOnly
+                     
+                      {/* <Form.Group controlId="formBasicCheckbox"> */}
+   
+  {/* </Form.Group> */}
+                        {/* <NavItem  onClick={this.handleCheck.bind(this)}>
+                          <Checkbox
+                            // title="test"
+                            // name="frontend"
+                            // inline
+                            // onChange={this.handleCheck.bind(this)}
+                            checked={this.state.checked}
+                            
+                            
+                            // readOnly
                           >
-                            Front-end (React.js)
-                          </FormCheck>
-                        </NavItem>
+                            
+                          </Checkbox>
+                          
+                        </NavItem> */}
 
                     
-                          {/* {this.state.specialities.map(cbox => {
+                           {this.state.specialities.map((cbox,k) => {
                             return (
-                              <NavItem  >
-                                <FormCheck
+                              // <NavItem  >
+                                <Form.Check
+                                type="checkbox"
                                 title={cbox.Name}
                                 name={cbox.Name}
-                              
+                                value={cbox.typeId}
+                                id={cbox.id}
+                                // checked={this.state.checked}
+                                onClick={this.handleCheck.bind(this)}
+                                onChange={this.controlCheck.bind(this)}
+                                label={cbox.Name}
                                 inline 
                                 >
-                                  {cbox.Name}
-
-                                </FormCheck>
-                              </NavItem>
+                                  
+                                </Form.Check>
+                                
+                              // </NavItem>
                             )
-                          })} */}
+                          })}
+                          
                         
 
-                        <NavItem eventKey="3" >
-                          <FormCheck
+                        {/* <NavItem eventKey="3" >
+                          <Checkbox
                             title="test"
                             name="backend"
                             inline
@@ -481,20 +574,21 @@ class Training extends Component {
                             readOnly
                           >
                             PHP / Laravel
-                          </FormCheck>
-                        </NavItem> 
+                          </Checkbox>
+                        </NavItem>  */}
                       </Nav>
                     </FormGroup>
                   </Col>
                 </Row>
-                <FormGroup className="px-3">
+                <FormGroup className="float-right px-3">
                   <div className="row">
                     <div className="col-md-10" />
                     <div className="col-md-2">
+                      {" "}
                       <td>
                         <Fieldset Label="">
-                          <button className="sendbtn" type="submit">
-                            <h6> Submit </h6>
+                          <button className="btn btn-primary " type="submit" >
+                            <h6> Submit</h6>{" "}
                           </button>
                         </Fieldset>
                       </td>
@@ -503,6 +597,7 @@ class Training extends Component {
                 </FormGroup>
               </Form>
             </div>
+            <div className="col-md-1" />
           </div>
         </div>
         <Footer />
