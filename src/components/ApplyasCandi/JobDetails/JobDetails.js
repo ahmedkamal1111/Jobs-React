@@ -36,7 +36,7 @@ class JobDetails extends Component {
       }
     })
     .then(res => {
-
+      console.log(res);
       let Respo = res.data.Respo.split("*")
       Respo.shift(Respo[0]);
       
@@ -87,8 +87,10 @@ class JobDetails extends Component {
   render() {
 
     const type =  this.props.location.state.jobType;
-    
+    const jobName = this.state.details.name;
     const {cid, id} = this.props.match.params;
+
+    console.log(jobName);
     
     return (
    
@@ -135,10 +137,11 @@ class JobDetails extends Component {
                 to={{
                   pathname: `/jobs/${cid}/${id}/job-detail/job-form`,
                   state: {
-                    jobType: type 
+                    jobType: type, 
                   }
                 }} 
                 className={style.detailLink}
+                jobname={jobName}
               >
                 Apply Now               
               </Link>

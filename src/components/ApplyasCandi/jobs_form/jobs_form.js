@@ -50,9 +50,10 @@ class jobs_form extends Component {
   componentDidMount () {
     //Job Type
     const Job_Type =  this.props.location.state.jobType;
+    const JobName =  this.props.jobname;
     //CID and JObID
     const {cid, id} =  this.props.match.params;
-    console.log(Job_Type, cid, id);
+    console.log(Job_Type, JobName ,cid, id);
 
     this.setState(prev => ({
       ...prev,
