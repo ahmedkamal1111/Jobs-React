@@ -85,6 +85,8 @@ class JobDetails extends Component {
   )
   
   render() {
+
+    const type =  this.props.location.state.jobType;
     
     const {cid, id} = this.props.match.params;
     
@@ -133,7 +135,7 @@ class JobDetails extends Component {
                 to={{
                   pathname: `/jobs/${cid}/${id}/job-detail/job-form`,
                   state: {
-                    jobType: this.state.details.jobType 
+                    jobType: type 
                   }
                 }} 
                 className={style.detailLink}
