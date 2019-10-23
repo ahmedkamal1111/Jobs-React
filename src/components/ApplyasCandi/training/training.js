@@ -2,14 +2,12 @@ import React, { Component } from "react";
 import "./training.css";
 import Form from 'react-bootstrap/Form';
 import {
-  Button,
   Col,
   // Form,
   Row,
   FormGroup,
   Label,
   Input,
-  FormText
 } from "reactstrap";
 import Fieldset from "react-bootstrap-form";
 import Select from "react-select";

@@ -315,7 +315,7 @@ class App extends Component {
       <Switch>
 
         <Route 
-          path="/"
+          path="/jobs"
           exact 
           component={Joinus}
         />
