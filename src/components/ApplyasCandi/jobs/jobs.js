@@ -59,6 +59,7 @@ componentDidMount() {
             loading={this.state.isLoading}
         />
       </div> 
+      
     )
 
     if (!this.state.isLoading) {

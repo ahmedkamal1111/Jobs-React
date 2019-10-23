@@ -87,10 +87,8 @@ class JobDetails extends Component {
   render() {
 
     const type =  this.props.location.state.jobType;
-    const jobName = this.state.details.name;
     const {cid, id} = this.props.match.params;
 
-    console.log(jobName);
     
     return (
    
@@ -141,7 +139,6 @@ class JobDetails extends Component {
                   }
                 }} 
                 className={style.detailLink}
-                jobname={jobName}
               >
                 Apply Now               
               </Link>
