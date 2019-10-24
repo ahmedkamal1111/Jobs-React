@@ -14,56 +14,26 @@ class DataTable extends Component {
       selectedRow: null,
       
       selected: false,
-      
 
-      
-      columns: [
-        { 
-          title: 'Id', 
-          field: 'id', 
-          filtering: false,
-          editable: 'never',  
-        },
-        { 
-          title: 'Name', 
-          field: 'name', 
-          filterPlaceholder: 'name',
-          editable: 'never',  
-        },
-        { 
-          title: 'Date', 
-          field: 'date', 
-          filterPlaceholder: 'Date',
-          editable: 'never',  
-        },
-        { 
-          title: 'Status', 
-          field: 'status', 
-          filterPlaceholder: 'Status',
-          lookup: { 
-            0: 'New', 
-            1: 'Shortlisted', 
-            2: 'Rejected'
-          }, 
-        },
-        { 
-          title: 'Location', 
-          field: 'location', 
-          filterPlaceholder: 'Location',
-          editable: 'never'  
-        }
-      ],
-    
+      viewCv: false,
+    }
+  }
+  componentDidMount(){
+    if(this.props.flag){
+      this.setState(prevState => ({
+        ...prevState,
+        viewCv: true,
+      }))
     }
   }
 
   render () {
   
     let hide = false;
-    
+    console.log( this.props )
     if ( this.state.selected ) {
       hide = true;
-      console.log( this.state.selectedRow )
+      
     } 
 
     return (
@@ -78,7 +48,7 @@ class DataTable extends Component {
           
           <MaterialTable
             title="Requests"
-            columns={this.state.columns}
+            columns={this.props.columns}
             options={{
               selection: hide,
               detailPanelProps: rowData => ({
@@ -92,8 +62,9 @@ class DataTable extends Component {
               },
               rowStyle: rowData => ({
                 backgroundColor: (this.state.selected && this.state.selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF',
-                transition: 'background .2s ease-in'
+                transition: 'background .2s ease-in',
               }),
+              
               actionsColumnIndex: -1,
             }}
             data={this.props.data}
@@ -123,7 +94,10 @@ class DataTable extends Component {
                   }, 1000)
                 }),
             }}
-            detailPanel= {[
+           
+            detailPanel= {this.state.viewCv ? 
+              [
+              
               { 
                 icon: 'description',
                 tooltip: 'Show CV',
@@ -150,7 +124,7 @@ class DataTable extends Component {
                     </div>
                   )
                 },
-              }]
+              }] : null
             }
             onRowClick={((evt, rowData) => this.setState({ 
               selectedRow : rowData.tableData.id, 

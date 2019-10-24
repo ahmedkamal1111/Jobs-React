@@ -17,9 +17,9 @@ class App extends Component {
     super(props)
     this.state = {
       showBackdrop: false,
-      isAuth: false,
+      isAuth: true,
       token: null,
-      userId: 0,
+      userId: 1,
       authLoading: false,
       error: null,
       admin: "",

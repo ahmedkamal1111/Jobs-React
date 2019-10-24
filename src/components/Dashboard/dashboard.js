@@ -30,6 +30,8 @@ import './dashboard.css';
 import Inbox from './inbox';
 import MakeYourChoice from '../mkyourchoice/choice';
 import Addjob from '../Form/addJob/addJob';
+import Editjob from '../Form/Edit_Job/edit';
+import EditJob from '../Form/Edit_Job/edit';
 
 
 const drawerWidth = 200;
@@ -300,8 +302,8 @@ export default function Dashboard( props ) {
                     // </div>
           }/>
 
-          <Route path='/dashboard/sendmail' component={Addjob} />
-          <Route path='/dashboard/drafts' />
+          <Route path='/dashboard/sendmail' component={EditJob} />
+          <Route path='/dashboard/drafts' component={EditJob} />
         </Switch>
       
       {/* <main className={classes.content}>
