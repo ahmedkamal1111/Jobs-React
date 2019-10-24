@@ -379,7 +379,7 @@ export default class MakeYourChoice extends Component {
                     { action }
                     { 
                         this.state.response === true ? 
-                            <DataTable data={this.state.searchResults} columns={this.state.columns} flag={true}/> 
+                            <DataTable data={this.state.searchResults} columns={this.state.columns} flag={0}/> 
                             :
                             <div className="alert alert-info feedback" role="alert">
                                 Choose your search preferences first.

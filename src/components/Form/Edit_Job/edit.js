@@ -26,23 +26,18 @@ import DataTable from '../../../containers/DataTable/Datatable'
                       filterPlaceholder: 'Date',
                     //   editable: 'never',  
                     },
-                    { 
-                      title: 'Responsibilities', 
-                      field: 'Respo', 
-                      filterPlaceholder: 'Status',
-                    //   editable: true,
-                    //   lookup: { 
-                    //     0: 'New', 
-                    //     1: 'Shortlisted', 
-                    //     2: 'Rejected'
-                    //   }, 
-                    },
-                    { 
-                      title: 'Skills', 
-                      field: 'Skills', 
-                      filterPlaceholder: 'Location',
-                      editable: true, 
-                    }
+                    // { 
+                    //   title: 'Responsibilities', 
+                    //   field: 'Respo', 
+                    //   filterPlaceholder: 'Status',
+                  
+                    // },
+                    // { 
+                    //   title: 'Skills', 
+                    //   field: 'Skills', 
+                    //   filterPlaceholder: 'Location',
+                    //   editable: true, 
+                    // }
                   ],
                   data: [],
             }
@@ -69,7 +64,7 @@ import DataTable from '../../../containers/DataTable/Datatable'
             return (
                 <div className="content-form">
                     <div className="container">
-                        <DataTable  columns={this.state.columns} data={this.state.data}/>
+                        <DataTable  columns={this.state.columns} data={this.state.data} flag={1}/>
                     </div>
                 </div>
             )
