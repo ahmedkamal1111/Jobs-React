@@ -11,10 +11,9 @@ import {
 } from "reactstrap";
 import Fieldset from "react-bootstrap-form";
 import Select from "react-select";
-import DatePicker from "react-date-picker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
-import { Nav, NavItem, Checkbox } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import Footer from "../footer/footer";
 import ScrollAnimation from "react-animate-on-scroll";
 import axios from "axios";

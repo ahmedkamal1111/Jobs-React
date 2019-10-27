@@ -1,0 +1,15 @@
+//Fetch Company Information action types
+export const COMPANYINFO_LOADING = "COMPANYINFO_LOADING";
+export const COMPANYINFO_SUCCESS = "COMPANYINFO_SUCCESS";
+export const COMPANYINFO_FAIL = "COMPANYINFO_FAIL";
+
+//Authentication
+export const AUTH_LAODING = "AUTH_LOADING";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const CONFIRM_LOGIN_SUCCESS = "CONFIRM_LOGIN_SUCCESS";
+export const CONFIRM_LOGIN_FAIL = "CONFIRM_LOGIN_FAIL";
+export const CREATE_PIN_SUCCESS = "CREATE_PIN_SUCCESS";
+export const CREATE_PIN_FAIL = "CREATE_PIN_FAIL";
+export const AUTH_LOGOUT = "AUTH_LOGOUT";
+export const AUTH_REDIRECT_PATH = "AUTH_REDIRECT_PATH";

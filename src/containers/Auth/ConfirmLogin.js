@@ -11,9 +11,7 @@ import './Auth.css';
 class ConfirmLogin extends Component {
 
   constructor(props) {
-    
     super(props);
-
     this.state = {
       loginForm: {
         password: {
@@ -51,7 +49,6 @@ class ConfirmLogin extends Component {
   };
 
   render() {
-
     const passValid = this.state.loginForm.password.valid;  
     
     return ( 
@@ -64,7 +61,7 @@ class ConfirmLogin extends Component {
         <form className="auth-form"
           onSubmit={ e => {
             this.props.confirmlogin(e, { password: this.state.loginForm.password.value })
-            this.props.history.push("/dashboard")
+            this.props.history.push("/aa/:anything/dashboard")
           }}
         >            
           <Input

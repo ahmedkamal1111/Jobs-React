@@ -1,4 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from "react-redux";
+import * as actions from './store/actions/index';
+
 import axios from 'axios';
 import { Switch ,Route, Redirect } from 'react-router-dom';
 import LoginPage from './containers/Auth/Login';
@@ -14,55 +17,47 @@ import JobForm from './components/ApplyasCandi/jobs_form/jobs_form';
 class App extends Component {
   
   constructor(props) {
-    super(props)
+    super( props )
     this.state = {
       showBackdrop: false,
       isAuth: false,
-      token: null,
-      userId: 0,
-      authLoading: false,
-      error: null,
-      admin: "",
-      authorize: "1",
-      email: "",
-      CID: 1
     };
   }
 
-  // componentDidMount() {
+  componentDidMount() {
+   
+    //Get data authentication from localStorage
+    const token = localStorage.getItem('token');
+    const expiryDate = localStorage.getItem('expiryDate');
+    const adminId = localStorage.getItem('adminId');
 
-  //   Get data authentication from localStorage
-  //   const token = localStorage.getItem('token');
-  //   const expiryDate = localStorage.getItem('expiryDate');
-  //   const adminId = localStorage.getItem('adminId');
+    //Check in data existing
+    if ( !token && !expiryDate ) {
+      return;
+    }
 
-  //   Check in data existing
-  //   if ( !token && !expiryDate ) {
-  //     return;
-  //   }
-
-  //   Check in expiry Date if expiry data is 0 or less than 0 
-  //   It return true and logout else skip
-  //   if ( new Date( expiryDate ) <= new Date() ) {
-  //     this.logout(); //logout
-  //     return;
-  //   }
+    //Check in expiry Date if expiry data is 0 or less than 0 
+    //It return true and logout else skip
+    if ( new Date( expiryDate ) <= new Date() ) {
+      this.logout(); //logout
+      return;
+    }
     
-  //   Get the time remaining in seconds
-  //   const remainingMilliseconds = new Date(expiryDate).getTime() - new Date().getTime();
+    //Get the time remaining in seconds
+    const remainingMilliseconds = new Date(expiryDate).getTime() - new Date().getTime();
 
-  //   update state
-  //   this.setState(prev => ({ 
-  //       ...prev, 
-  //       setAuth: true, 
-  //       token: token, 
-  //       adminId: adminId
-  //     }));
+    //update state
+    this.setState(prev => ({ 
+        ...prev, 
+        setAuth: true, 
+        token: token, 
+        adminId: adminId
+    }));
 
-  //   set auto Logout depend on time remaining
-  //   this.autoLogout(remainingMilliseconds);
+    //set auto Logout depend on time remaining
+    this.autoLogout(remainingMilliseconds);
 
-  // }
+  }
 
   //Logout Func
   logout = () => {
@@ -93,8 +88,7 @@ class App extends Component {
 
     axios.post('https://joblaravel.tbv.cloud/entermail',
       {
-        email: authData.email, 
-        CID: this.state.CID
+        email: authData.email,
       })
       .then(res => {
         
@@ -137,7 +131,6 @@ class App extends Component {
     //Post data authentication to login onto the system
     axios.post("https://joblaravel.tbv.cloud/login", 
       { 
-        CID: this.state.CID,
         email: this.state.email,
         pw: authData.password    
       }
@@ -203,18 +196,14 @@ class App extends Component {
   
       //Update state to fire spinner
       this.setState({ authLoading: true });
-
-      console.log(authData, this.state.email);
       
       //Post data authentication to login onto the system
       axios.post("https://joblaravel.tbv.cloud/ResetPassword", { 
         email:  this.state.email,
         PIN: authData.pin,
         pw: authData.password,
-        CID: 1    
       })
         .then(res => {
-          console.log(res);
           
           // Handle Response Status
           // if( res.status === 422 ) {
@@ -224,9 +213,7 @@ class App extends Component {
           // if ( res.status !== 200 || res.status !== 201 ) {
           //   throw new Error("Could not authenticate yet, you should input the right password or email");
           // }
-          
-          console.log(res.data[0].api_token);
-          console.log(res.data[0].usr_id);
+        
           //udpate state with initial data
           this.setState(prev => ({
             ...prev,
@@ -279,7 +266,7 @@ class App extends Component {
     //Post data authentication to login onto the system
     axios.post("https://joblaravel.tbv.cloud/createPin", { 
       email:  this.state.email,
-      CID: this.state.CID
+      CID: this.props.CID
     })
       .then(res => {
         this.setState(prev => ({
@@ -312,62 +299,36 @@ class App extends Component {
   render () {
 
     let routes = (
+
       <Switch>
-
-        <Route 
-          path="/jobs"
-          exact 
-          component={Joinus}
-        />
-        
-        <Route
-          path="/jobs/:cid/:id/job-detail"
-          exact
-          component={JobDetails}
-        />
-        
-        <Route
-          path="/jobs/:cid/:id/job-detail/job-form"
-          component={JobForm}
-        />
-
-        <Route
-          path="/login"
-          exact
-          render={props => (
-            <LoginPage
-              {...props}
-              onLogin={this.login}
-              loading={this.state.authLoading}
-            />
-
-          )}
-        />
-
+        <Route path="/jobs/:cid/:id/job-detail" component={JobDetails} />
+        <Route path="/jobs/:cid/:id/job-detail/job-form" component={JobForm} />
+        <Route path="/aa/:anything/login" render={props => ( <LoginPage {...props} onLogin={this.login} loading={this.state.authLoading} />)} />
+        <Route path="/aa/:anything" exact component={Joinus} />
+        <Redirect to="/aa/:anything" />
       </Switch>
     );
 
-    if ( (!this.isAuth) && (this.state.authorize === 0 || this.state.authorize === 1)) {
+    if ( (!this.state.isAuth) && (this.state.authorize === 0 || this.state.authorize === 1)) {
       routes = (
         <Switch>
           <Route
-            path="/login"
+            path="/aa/:anything/login"
             render={props => (
               <ConfirmLogin
                 {...props}
                 confirmlogin={this.confirmlogin}
                 loading={this.state.authLoading}
-                createPin={this.createPin}
               />
             )}
           />
         </Switch>
       );
-    } else if ( (!this.isAuth) && this.state.authorize === 2 ) {
+    } else if ( (!this.state.isAuth) && this.state.authorize === 2 ) {
       routes = (
         <Switch>
           <Route
-            path="/login"
+            path="/aa/:anything/login"
             render={props => (
               <PinLogin
                 {...props}
@@ -382,10 +343,10 @@ class App extends Component {
       routes = (
         <Switch>
           <Route
-            path="/dashboard"
+            path="aa/:anything/dashboard"
             render={props => ( <Dashboard admin={this.state.admin} logout={this.logout} /> )}
           />
-          <Redirect to="/login" />
+          <Redirect to="/aa/:anything" />
         </Switch>
       );
     }
@@ -405,4 +366,17 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    isAuth: state.auth.tiken !== null,
+    authorize: state.auth.authorize 
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAuth: () => dispatch( actions.checkAuthState() ),
+  }
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( App );
