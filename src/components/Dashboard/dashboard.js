@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { Route, Link , Switch} from 'react-router-dom';
-
+import { connect  } from "react-redux";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Dashboard( props ) {
+function Dashboard( props ) {
 
   const classes = useStyles();
   const theme = useTheme();
@@ -179,7 +179,7 @@ export default function Dashboard( props ) {
           {[
             {
               text:'Inbox',
-              to:'/dashboard/inbox',
+              to:`/aa/${props.param}/dashboard/inbox`,
               nested:{
                 text: "Nested",
                 to: "/dashboard/nested"
@@ -187,14 +187,14 @@ export default function Dashboard( props ) {
             },
             {
               text: 'Starred',
-              to:'/dashboard/starred'
+              to:`/aa/${props.param}/dashboard/starred`
             },
             { text:'Send email',
-              to:'/dashboard/sendmail'
+              to:`/aa/${props.param}/dashboard/sendmail`
             },
             {
               text:'Drafts',
-              to:'dashboard/drafts'
+              to:`/aa/${props.param}/dashboard/drafts`
             }
               ].map((link, index) => (
                 link.text === "Inbox"?
@@ -251,11 +251,11 @@ export default function Dashboard( props ) {
           {[
             {
               text:'All mail',
-              to:'/dashboard/allmail',
+              to:`/aa/${props.param}/dashboard/allmail`,
             },
             {
               text:'Trash',
-              to:'/dashboard/trash',
+              to:`/aa/${props.param}/dashboard/trash`,
             },    
           ].map((link, index) => (
             link.text === "Logout" ? 
@@ -290,18 +290,18 @@ export default function Dashboard( props ) {
       </Drawer>
       
         <Switch>
-          <Route path='/dashboard/inbox' exact component={Inbox}  />
+          <Route path={`/aa/${props.param}/dashboard/inbox`} exact component={Inbox}  />
           {/* <Route path='/starred' component={MakeYourChoice,DataTable} /> */}
           
-          <Route path='/dashboard/starred' render={props =>
+          <Route path={`/aa/${props.param}/dashboard/starred`} render={props =>
                     // <div>
                       <MakeYourChoice />
                       // <DataTable />
                     // </div>
           }/>
 
-          <Route path='/dashboard/sendmail' component={Addjob} />
-          <Route path='/dashboard/drafts' />
+          <Route path={`/aa/${props.param}/dashboard/sendmail`} component={Addjob} />
+          <Route path={`/aa/${props.param}/dashboard/drafts`} />
         </Switch>
       
       {/* <main className={classes.content}>
@@ -313,3 +313,11 @@ export default function Dashboard( props ) {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    param: state.company.param,
+  };
+};
+
+export default connect(mapStateToProps)(Dashboard);

@@ -7,5 +7,12 @@ export {
     login,
     logout,
     createNewPass,
-    confirmLogin
+    createPin,
+    confirmLogin,
+    authRedirectPath
 } from './auth';
+
+export {
+   fetchJobs,
+   fetchJobDetail, 
+} from "./Jobs";

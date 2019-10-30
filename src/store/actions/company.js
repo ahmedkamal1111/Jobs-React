@@ -8,10 +8,11 @@ export const loadCompanyInfo = () => {
     }
 }
 
-export const companyInfoSuccess = ( payload )  => {
+export const companyInfoSuccess = ( param, payload )  => {
     return {
-        type: actionTypes.COMPANYINFO_SUCCESS ,
-        payload: payload
+        type: actionTypes.COMPANYINFO_SUCCESS,
+        param,
+        payload
     }
 }
 
@@ -30,7 +31,9 @@ export const fetchCompanyInfo = ( param ) => {
             if(!response.data.success) {
                 throw new Error("Sorry, you are not subscribe");
             }
-            dispatch(companyInfoSuccess(response.data.company));
+            localStorage.setItem('CID', response.data.company.cid);
+            localStorage.setItem('companyName', response.data.company.Name);
+            dispatch(companyInfoSuccess(param, response.data.company));
         })
         .catch(error => {
             dispatch(companyInfoFail(error))

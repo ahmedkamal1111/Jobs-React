@@ -1,94 +1,78 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import HashLoader from 'react-spinners/HashLoader';
+
+import * as actions from '../../../store/actions/index';
 import * as style from "./JobDetails.module.css";
 import Footer from "../footer/footer";
 import Navbar from "../navbar/navbar";
 import Cover from "../Cover/Cover";
-import axios from 'axios'; 
-import { Link } from "react-router-dom";
 
 class JobDetails extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading : false,
-      err: null,
-      details: {
-        name: "Senior React Developer",
-        CID: null,
-        CompanyName: "Teqenia",
-        jobType: "Full Time",
-        location: "Zayed, Giza",
-        skills: [],
-        respons: [] 
-      }    
+
+  componentDidMount() {   
+    const id = this.props.match.params.id; 
+    if( this.props.CID ) {
+      this.props.onFetchJobDetail(this.props.CID, id);
+    } else {
+      const param = this.props.match.params.anything; 
+      const cid = localStorage.getItem('CID');
+      this.props.onFetchCompanyInfo(param);
+      this.props.onFetchJobDetail(cid, id);
     }
   }
-
-  componentDidMount() {
-    
-    const {cid, id} = this.props.match.params;
-    
-    axios.get(`https://joblaravel.tbv.cloud/job-detail`, {
-      params: {
-        cid: cid,
-        jobId: id
-      }
-    })
-    .then(res => {
-      console.log(res);
-      let Respo = res.data.Respo.split("*")
-      Respo.shift(Respo[0]);
-      
-      let skills = res.data.Skills.split("*")
-      skills.shift(skills[0]);
-      
-      this.setState(prev => ({
-        ...prev,
-        details: {
-          ...prev.details,
-          CID: res.data.CID,
-          jobType: res.data.Job_Type,
-          name: res.data.Name,
-          skills: skills,
-          respons: Respo 
-        }
-      }))
-    })
-    .catch(err => {
-      this.setState(prev =>({
-        ...prev,
-        isLoading: false,
-        err,
-      }))
-    })
-  }
-
-  renderSkills = () => (
-    <ul> 
-      {
-        this.state.details.skills.map((skill, index) => (
-          <li key={`${index-new Date()}`} > { skill } </li>
-        ))
-      }
-    </ul>
-  )
-
-  renderRespons = () => (
-    <ul> 
-      {
-        this.state.details.respons.map((respon, index) => (
-          <li key={`${index-new Date()}`} > { respon } </li>
-        ))
-      }
-    </ul>
-  )
   
   render() {
 
-    const type =  this.props.location.state.jobType;
-    const {cid, id} = this.props.match.params;
+    let companyName = this.props.companyName;
 
+    if (!this.props.companyName) {
+      companyName = localStorage.getItem('companyName');
+    }
+    
+    const { id } = this.props.match.params.id;
+
+    let main = (
+      <div className={style.sweetLoading}>
+        <HashLoader
+            sizeUnit={"px"}
+            size={50}
+            color={'#0C407C'}
+            margin="2px"
+            loading={this.props.isLoading}
+        />
+      </div> 
+    );
+
+    if ( !this.props.isLoading ) {
+      if (this.props.skills.length !== 0 && this.props.respons.length !== 0) {
+        main = (
+          <React.Fragment>
+            <h3>Responsbility</h3>
+            <ul> 
+              {
+                this.props.respons.map((respon, index) => (
+                  <li key={`${index-new Date()}`} > { respon } </li>
+                ))
+              }
+            </ul>
+            <h3>Skills</h3>
+            <ul> 
+              {
+                this.props.skills.map((skill, index) => (
+                  <li key={`${index-new Date()}`} > { skill } </li>
+                ))
+              }
+            </ul>
+          </React.Fragment> 
+        );
+      } else {
+        main = (
+          <p>Thank you you can apply to your job from the form. </p>
+        );
+      }
+    }
     
     return (
    
@@ -103,51 +87,40 @@ class JobDetails extends Component {
           
           <div className={style.headCont} >
             
-            <h3>{ this.state.details.name } <span>( { this.state.details.jobType } )</span></h3>
+            <h3>{ this.props.name } <span>( { this.props.jobType } )</span></h3>
             
-            <span>At { this.state.details.CompanyName } </span>
+            <span>At { companyName } </span>
             
             <span>             
-              ( <Link to="/jobs" className={style.jobLink}>
+              ( <Link to={`/aa/${this.props.param}`} className={style.jobLink}>
                 View all jobs               
               </Link> )
             </span>
             
-            <p className={style.location}> { this.state.details.location } </p>    
-          
+            <p className={style.location}> { this.props.location } </p>    
           </div>
-
         </header>
 
         <main className={style.gridMain}>
-          
           <div className={style.mainCont}>
-    
-            <h3>Responsbility</h3>
-            
-            { this.renderRespons() }
-            
-            <h3>Skills</h3>
-            { this.renderSkills() }    
+
+            { main }
             
             <div className={style.applyMainCont}>
               <Link 
                 to={{
-                  pathname: `/jobs/${cid}/${id}/job-detail/job-form`,
+                  pathname: `/aa/${this.props.param}/jobs/${id}/apply`,
                   state: {
-                    jobType: type, 
+                    jobType: this.props.jobType
                   }
                 }} 
                 className={style.detailLink}
               >
                 Apply Now               
               </Link>
-            </div>      
-
+            </div>     
           </div>
-        
         </main>
-        
         <footer className={style.gridFooter}>
           <Footer />  
         </footer>
@@ -156,4 +129,25 @@ class JobDetails extends Component {
   }
 }
 
-export default JobDetails;
+const mapStateToProps = state => {
+  return {
+    param: state.company.param,
+    CID: state.company.info.cid,
+    companyName: state.company.info.Name,
+    location: state.jobs.location,
+    name: state.jobs.jobName,
+    jobType: state.jobs.jobType,
+    respons: state.jobs.respons,
+    skills: state.jobs.skills,
+    isLoading: state.jobs.isLoading
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return  {
+    onFetchJobDetail: (CID, ID) => dispatch(actions.fetchJobDetail(CID, ID)),
+    onFetchCompanyInfo: (param) => dispatch(actions.fetchCompanyInfo(param)),
+  };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( JobDetails );

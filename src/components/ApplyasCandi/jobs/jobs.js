@@ -1,52 +1,20 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
+
+import * as actions from "../../../store/actions/index";
 import HashLoader from 'react-spinners/HashLoader';
 import * as style from  "./jobs.module.css";
 import Footer from "../footer/footer";
-import { Link } from 'react-router-dom';
 
 class Jobs extends Component {
   
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      error: null,
-      jobs : []
+  componentDidMount() {
+    if ( this.props.CID && true ) {
+      this.props.onFetchJobs(this.props.CID);  
     }
-  }
+  };
 
-componentDidMount() {
-   
-  this.setState(prev => ({...prev, isLoading: true }));
-  
-  axios.get("https://joblaravel.tbv.cloud/jobs", {
-    params: {
-      cid: 1
-    }
-  })
-  .then(res => {
-
-    let jobs = res.data.filter(job => job.Job_Type !== 5);
-    
-    this.setState(prev => ({
-      ...prev,
-      isLoading: false,
-      jobs : jobs
-    }));
-  
-  })
-  .catch(err => {
-    this.setState(prev => ({
-      ...prev,
-      isLoading: false,
-      err,
-    }));
-  })
-}
-
-  
-  
   render() {
 
     let main = (
@@ -56,15 +24,14 @@ componentDidMount() {
             size={50}
             color={'#0C407C'}
             margin="2px"
-            loading={this.state.isLoading}
+            loading={this.props.isLoading}
         />
       </div> 
-      
-    )
+    );
 
-    if (!this.state.isLoading) {
+    if ( !this.props.isLoading ) {
 
-      main = this.state.jobs.map((job, index) => (
+      main = this.props.jobs.map((job, index) => (
 
         <div className={style.jobcardstyle} key={`${index}-${new Date()}`}>
           
@@ -83,11 +50,12 @@ componentDidMount() {
             }
           </h5>
           
-          <Link 
+          <Link
             to={{
-              pathname: `/jobs/${job.CID}/${job.id}/job-detail`,
+              pathname: `/aa/${this.props.param}/jobs/${job.id}`,
               state: {
-                jobType: job.Job_Type 
+                jobType: job.Job_Type,
+                jobId:  job.id
               }
             }} 
             className={style.detailLink} 
@@ -131,4 +99,19 @@ componentDidMount() {
   }
 }
 
-export default Jobs;
+const mapStateToProps = state => {
+  return {
+    param: state.company.param,
+    CID: state.company.info.cid,
+    isLoading: state.jobs.isLoading,
+    jobs: state.jobs.jobs
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchJobs: ( CID ) => dispatch( actions.fetchJobs( CID ) ),
+  };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( Jobs );

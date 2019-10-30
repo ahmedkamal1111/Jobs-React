@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import * as actions from "./../../store/actions/index";
+import { Redirect } from "react-router-dom";
 
+import PulseLoader from 'react-spinners/PulseLoader';
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/Button/Button';
-import { withRouter } from 'react-router-dom';
 import validate from '../../util/validation';
 
 import Auth from './Auth';
@@ -48,22 +51,49 @@ class ConfirmLogin extends Component {
     });
   };
 
+  submitHandle = ( event ) => {
+    event.preventDefault();
+    const pass = this.state.loginForm.password.value;
+    this.props.onConfirm(this.props.email , pass);
+  }
+
   render() {
+    
     const passValid = this.state.loginForm.password.valid;  
     
+    let text = "Confirm";
+    
+    if ( this.props.loading ) {
+      text = (
+        <PulseLoader
+          sizeUnit={"px"}
+          size={10}
+          color={'#FFFFFF'}
+          margin="2px"
+        />
+      )
+    }
+
+    let authRedirect = null;
+    
+    if ( this.props.isAuth && this.props.userId  ) {
+      authRedirect = <Redirect to="/aa/tq/dashboard" />
+    } else if ( this.props.isAuthorized ) {
+      authRedirect = <Redirect to="/aa/tq/new-password" />
+    }
+
     return ( 
 
       <Auth>
+        
+        { authRedirect }
+
         <div className="center header">      
           <h2>Confirm Login</h2>
         </div>
 
-        <form className="auth-form"
-          onSubmit={ e => {
-            this.props.confirmlogin(e, { password: this.state.loginForm.password.value })
-            this.props.history.push("/aa/:anything/dashboard")
-          }}
-        >            
+        <form className="auth-form" onSubmit={ this.submitHandle } >            
+          
           <Input
             id="password"
             label="Password"
@@ -83,15 +113,14 @@ class ConfirmLogin extends Component {
                     disabled={passValid ? false : true} 
                     design="raised" 
                     type="submit" 
-                    loading={ this.props.loading } 
                     style ={{width: '333px', fontSize: '18px', marginTop: '16px'}} 
                   >
-                    Confirm
+                    { text }
                   </Button>
                 </div>
             </div> 
             <div className="forget">
-              <p className="forg" onClick={this.props.createPin}> Forget your password? </p>
+              <p className="forg"> Forget your password? </p>
             </div>
         </form>
       </Auth>
@@ -99,4 +128,21 @@ class ConfirmLogin extends Component {
   }
 }
 
-export default withRouter(ConfirmLogin);
+const mapStateToProps = state => {
+  return {
+    email: state.auth.email,
+    userId: true && state.auth.userId,
+    loading: state.auth.isLoading,
+    isAuth: state.auth.token !== null,
+    isAuthorized: state.auth.authorize === 2,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onConfirm: (email, password) => dispatch(actions.confirmLogin(email, password)),
+    onCreatePin: (email) => dispatch(actions.createPin(email)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)( ConfirmLogin );

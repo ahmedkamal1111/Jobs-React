@@ -1,3 +1,9 @@
+.sweetLoading {
+  margin-top: 83px;
+  margin-left: 328px;
+  margin-bottom: 100px;
+}
+
 .gridDetailsContainer {
   display: grid;
   grid-template-columns: 100%;

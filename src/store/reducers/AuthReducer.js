@@ -46,7 +46,7 @@ const confirmLoginSuccess = (state, action) => {
         authorize: action.payload.authorize,
         CID: action.payload.CID,
         token: action.payload.api_token,
-        userId: action.payload.user_id,
+        userId: action.payload.usr_id,
         priv: action.payload.priv,
         uprofile: action.payload.uprofile,
         error: null,
@@ -62,7 +62,7 @@ const confirmLoginFail = (state, action) => {
     };
 };
 
-const createPinSuccess = (state, action) => {
+const createPassSuccess = (state, action) => {
     return {
         ...state,
         authorize: action.payload.authorize,
@@ -76,13 +76,30 @@ const createPinSuccess = (state, action) => {
     };
 };
 
-const createPinFail = (state, action) => {
+const createPassFail = (state, action) => {
     return {
         ...state,
         error: action.error,
         isLoading: false
     }
 }
+
+const createPinSuccess = (state, action) => {
+    return {
+        ...state,
+        authorize: action.authorize,
+        error: null,
+        isLoading: false
+    };
+};
+
+const createPinFail = (state, action) => {
+    return {
+        ...state,
+        error: action.error,
+        isLoading: false
+    };
+}; 
 
 const authLogout = (state, action) => {
     return {
@@ -113,6 +130,8 @@ const AuthReducer = (state = initialState, action) => {
         case actionTypes.CONFIRM_LOGIN_FAIL:  return confirmLoginFail(state, action);
         case actionTypes.CREATE_PIN_SUCCESS : return createPinSuccess(state, action);
         case actionTypes.CREATE_PIN_FAIL:  return createPinFail(state, action);
+        case actionTypes.CREATE_PASS_SUCCESS : return createPassSuccess(state, action);
+        case actionTypes.CREATE_PASS_FAIL:  return createPassFail(state, action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state,action);
         case actionTypes.AUTH_REDIRECT_PATH: return authRedirectPath(state,action);
         default:

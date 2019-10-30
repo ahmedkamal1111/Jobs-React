@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import * as actions from '../../store/actions/index';
+
+import PulseLoader from 'react-spinners/PulseLoader';
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/Button/Button';
 import validate from '../../util/validation';
@@ -45,23 +50,49 @@ class Login extends Component {
     });
   };
 
+  submitHandler = ( event ) => {
+    
+    event.preventDefault();
+
+    this.props.onLogin( this.state.loginForm.email.value );
+  
+  }
+
+  
   render() {
 
-    const mailValid =this.state.loginForm.email.valid;
+    const mailValid = this.state.loginForm.email.valid;
     
+    let text = "Log In";
+    
+    if ( this.props.loading ) {
+      text = (
+        <PulseLoader
+          sizeUnit={"px"}
+          size={10}
+          color={'#FFFFFF'}
+          margin="2px"
+        />
+      )
+    }
+
+    let authRedirect = null;
+
+    if ( this.props.isAuthorized ) {
+      authRedirect = <Redirect to="/aa/tq/confirmlogin" />
+    }
+
     return (
       
       <Auth>
-
+        { authRedirect }
         <div className="center header">      
           <h2> Log Into My Account </h2>
         </div>
           
 
         <form className="auth-form"
-          onSubmit={ e => {
-            this.props.onLogin(e, { email: this.state.loginForm.email.value }) 
-          }}
+          onSubmit={ this.submitHandler }
         >
 
           <Input
@@ -82,11 +113,10 @@ class Login extends Component {
               <Button 
                 disabled={ mailValid ? false : true}
                 design="raised" 
-                type="submit"
-                loading={ this.props.loading } 
+                type="submit" 
                 style ={{width: '333px', fontSize: '18px', marginTop: '16px'}} 
               >
-                Log In
+                { text }
               </Button> 
             </div>
           </div> 
@@ -96,4 +126,18 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    loading: state.auth.isLoading,
+    isAuthorized: state.auth.authorize === 0 || state.auth.authorize === 1,
+    authRedirectPath: state.auth.authRedirectPath
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogin: (email) => dispatch(actions.login(email)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)( Login );

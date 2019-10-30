@@ -1,6 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
+    param: '',
     info: {
         cid: null,
         Name: "",
@@ -27,6 +28,7 @@ const loadCompanyInfo = ( state, action ) => ({
 
 const fetchCompanyInfoSuccess = ( state, action ) => ({
     ...state,
+    param: action.param,
     info: {
         ...state.info,
         cid: action.payload.cid,

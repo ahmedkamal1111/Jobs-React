@@ -51,6 +51,20 @@ export const createPinFail = ( error ) => {
     };
 };
 
+export const createPassSuccess = ( authorize ) => {
+    return {
+        type: actionTypes.CREATE_PIN_SUCCESS,
+        authorize
+    };
+};
+
+export const createPassFail = ( error ) => {
+    return {
+        type: actionTypes.CREATE_PIN_FAIL,
+        error
+    };
+};
+
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
@@ -61,11 +75,11 @@ export const logout = () => {
     };
 };
 
-export const checkAuthTimeout = ( expirationTime ) => {
+export const checkAuthTimeout = () => {
     return dispatch => {
         setTimeout(() => {
             dispatch(logout());
-        }, expirationTime * 1000);
+        }, 25000 * 1000);
     };
 };
 
@@ -86,7 +100,7 @@ export const login = ( email ) => {
             }
         })
         .catch(error => {
-            dispatch(loginFail(error.response.data.error));
+            dispatch(loginFail(error));
         })
     };
 };
@@ -111,16 +125,16 @@ export const confirmLogin = (email, password) => {
                 }
 
                 const expirationDate = new Date(new Date().getTime() + 60 * 60 * 1000 /*response.data.expiresIn * 1000*/);
-                localStorage.setItem('token', response.data.api_token);
+                localStorage.setItem('token', response.data[0].api_token);
                 localStorage.setItem('expirationDate', expirationDate);
-                localStorage.setItem('CID', response.data.CID);
-                localStorage.setItem('userId', response.data.user_id);
-                dispatch(confirmLoginSuccess(response.data));
-                dispatch(checkAuthTimeout(60 * 60 * 1000 /* response.data.expiresIn */));
+                localStorage.setItem('CID', response.data[0].CID);
+                localStorage.setItem('userId', response.data[0].usr_id);
+                dispatch(confirmLoginSuccess(response.data[0]));
+                dispatch(checkAuthTimeout(/* 60 * 60 * 1000  response.data.expiresIn */));
             }
         })
         .catch(error => {
-            dispatch(confirmLoginFail(error.response.data.error));
+            dispatch(confirmLoginFail(error));
         });
     }
 }
@@ -144,12 +158,27 @@ export const createNewPass = (email, pin, password) => {
             localStorage.setItem('expirationDate', expirationDate);
             localStorage.setItem('CID', response.data[0].CID);
             localStorage.setItem('userId', response.data[0].user_id);
-            dispatch(createPinSuccess(response.data[0]));
-            dispatch(checkAuthTimeout(60 * 60 * 1000 /* response.data.expiresIn */));
+            dispatch(createPassSuccess(response.data[0]));
+            dispatch(checkAuthTimeout(expirationDate.getTime()));
         })
         .catch(error => {
-            dispatch(createPinFail(error.response.data[0].error));
+            dispatch(createPassFail(error.response.data[0].error));
         });
+    };
+};
+
+export const createPin = ( email ) => {
+    return dispatch => {
+        dispatch(authLoading());
+        axios.post("https://joblaravel.tbv.cloud/createPin", {
+            email: email
+        })
+        .then(response => {
+            dispatch(createPinSuccess(response.data));
+        })
+        .catch(error => {
+            dispatch(createPinFail(error));
+        })
     };
 };
 
@@ -173,12 +202,12 @@ export const checkAuthState = () => {
                 const CID = localStorage.getItem('CID');
                 const userId = localStorage.getItem('userId');
                 const payload = {
-                    user_id: userId,
-                    token: token,
+                    usr_id: userId,
+                    api_token: token,
                     CID: CID
                 }
                 dispatch(confirmLoginSuccess(payload));
-                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000 ));
+                dispatch(checkAuthTimeout( /*(expirationDate.getTime() - new Date().getTime()) / 1000 )*/ ));
             }   
         }
     };
