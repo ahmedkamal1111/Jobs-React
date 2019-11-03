@@ -12,13 +12,16 @@ import Cover from "../Cover/Cover";
 class JobDetails extends Component {
 
   componentDidMount() {   
+
     const id = this.props.match.params.id; 
+    
     if( this.props.CID ) {
       this.props.onFetchJobDetail(this.props.CID, id);
     } else {
       const param = this.props.match.params.anything; 
       const cid = localStorage.getItem('CID');
       this.props.onFetchCompanyInfo(param);
+      this.props.onFetchJobs(cid);
       this.props.onFetchJobDetail(cid, id);
     }
   }
@@ -31,7 +34,7 @@ class JobDetails extends Component {
       companyName = localStorage.getItem('companyName');
     }
     
-    const { id } = this.props.match.params.id;
+    const id  = this.props.match.params.id;
 
     let main = (
       <div className={style.sweetLoading}>
@@ -147,6 +150,7 @@ const mapDispatchToProps = dispatch => {
   return  {
     onFetchJobDetail: (CID, ID) => dispatch(actions.fetchJobDetail(CID, ID)),
     onFetchCompanyInfo: (param) => dispatch(actions.fetchCompanyInfo(param)),
+    onFetchJobs: ( CID ) => dispatch(actions.fetchJobs( CID ))
   };
 };
 

@@ -1,24 +1,17 @@
 import React, { Component } from "react";
-import "./training.css";
+import { connect } from 'react-redux';
+import { Nav } from "react-bootstrap";
+import { Col, Row, FormGroup, Label, Input } from "reactstrap";
 import Form from 'react-bootstrap/Form';
-import {
-  Col,
-  // Form,
-  Row,
-  FormGroup,
-  Label,
-  Input,
-} from "reactstrap";
 import Fieldset from "react-bootstrap-form";
 import Select from "react-select";
+import ScrollAnimation from "react-animate-on-scroll";
+
+import * as actions from '../../../store/actions/index';
+import Footer from "../footer/footer";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
-import { Nav } from "react-bootstrap";
-import Footer from "../footer/footer";
-import ScrollAnimation from "react-animate-on-scroll";
-import axios from "axios";
-// import Form from 'react-bootstrap/Form'
-
+import "./training.css";
 
 class Training extends Component {
   constructor(props) {
@@ -43,67 +36,15 @@ class Training extends Component {
       },
       checked: false,
     };
-    // this.handleChange2 = this.handleChange2.bind(this);
   }
-  //    genders = this.state.Gender.map(i => {
-  //   return { value: i.id, label: i.Name}
-  // })
-  // state = {
-  //   date: new Date()
-  // };
-
+  
   componentDidMount(){
-    axios.get("https://joblaravel.tbv.cloud/show_universities")
-      .then(response => {
-        this.setState({
-          universities: response.data.map(item => {
-            return {
-              value: item.id,
-              label: item.Name
-            }
-          })
-        })
-      })
-      axios.get("https://joblaravel.tbv.cloud/show_locations")
-      .then(response => {
-        // console.log(response.data)
-        this.setState({
-          Locations: response.data.map(item => {
-            return {
-              value: item.id,
-              label: item.Name
-            }
-          })
-        })
-      })
-      axios.get("https://joblaravel.tbv.cloud/show_genders",)
-      .then(response => {
-        this.setState({
-          Gender: response.data.map(item => {
-            return { value: item.id, label: item.Name}
-          })
-        })
-      })
-
-      axios.get("https://joblaravel.tbv.cloud/jobs",{
-        params:{
-          cid: "1"
-        }
-      })
-      .then(response => {
-        // console.log(response.data)
-        this.setState({
-          specialities: response.data.filter(item => item.Job_Type === 5).map(item => {
-            return {
-              id: item.id,
-              Name: item.Name,
-              typeId: item.Job_Type
-            }
-          })
-        })
-      })
+    if (this.props.CID) {
+      this.props.onFetchJobApply();
+    }
   }
-   handleForm = (e) => {
+
+  handleForm = (e) => {
     let v = e.target.value;
     let n = e.target.name;
     this.setState(prevState => ({
@@ -131,19 +72,13 @@ class Training extends Component {
     data.append('jobId',this.state.formData.jobId)
     data.append('JobType',this.state.formData.jobType)
     data.append("ff", this.state.formData.ff)
-    axios.post("https://joblaravel.tbv.cloud/job/store",data,{
-      params:{
-      CID: "1",
-      }
-    })
-      .then(response => console.log(response.data))
   }
+
   handleChange = (e) => {
     let n = e.target.name
     let c = e.target.checked
     console.log(n,c)
     this.setState(prevState =>({
-      // startDate: date,
       ...prevState,
       formData:{
         ...prevState.formData,
@@ -194,21 +129,13 @@ class Training extends Component {
        ...prevState, formData:{ ...prevState.formData,[n]: !c } 
       }));
   };
-  // toggleCheckbox2 = event => {
-  //   // this.setState({ backend: !this.state.backend });
-  //   this.setState(prevState => ({ ...prevState, formData:{ ...prevState.formData,backend: !this.state.formData.backend } }));
-  // };
+ 
 
   handleCheck(e) {
-    // console.log(e.target.id)
-    // console.log(e.target.name)
-    // console.log(e.target.value)
     let name = e.target.name;
     let checked = e.target.checked;
     let jobId = e.target.id;
     let jobType = e.target.value;
-    // console.log(data)
-    // console.log(e.target.checked)
     this.setState(prevState => ({
       ...prevState,
       [name]: !checked,
@@ -220,18 +147,14 @@ class Training extends Component {
     }))
   }
 
-  controlCheck(e) {
-    // console.log(e.target.name)
-    // console.log(e.target.checked)
-  }
-
   onChange = Dateofbirth => this.setState(prevState =>({
     ...prevState,
     formData:{
       ...prevState.formData,
       Dateofbirth,
     }
-      }));
+  }));
+  
   handleSelectionChange = (e) => {
         let v = e.target.value;
         let n = e.target.name;
@@ -242,88 +165,36 @@ class Training extends Component {
                 [n]: v
             }
         }))
-    }
+  }
 
 
-    getFile = (e) => {
-      e.preventDefault()
-      // console.log(e.target.files)
-      // console.log(e.target.files[0])
-      // let reader = new FileReader();
-      let file = e.target.files[0];
-      // let reader = new FileReader();
-      // reader.readAsDataURL(file);
-      // reader.readAsText(file)
-      // reader.onload = (e) => {
-        // let ff = e.target.result;
-        // console.log(e.target.result)
-        // console.log(file)
-        this.setState(prevState =>({
-          ...prevState,
-          formData:{
-            ...prevState.formData,
-            ff: file,
-          }
-        }));
-        
+  getFile = (e) => {
+    e.preventDefault()
+    let file = e.target.files[0];
+    this.setState(prevState =>({
+      ...prevState,
+      formData:{
+        ...prevState.formData,
+        ff: file,
       }
-      // reader.onloadend = () => {
-        
-      // }
-      // reader.readAsDataURL(file);
-    
-
-      // fileUploadHandler = () => {
-      //   const file = new FormData();
-      //   file.append("ff",this.state.formData.ff);
-      //   axios.post("https://joblaravel.tbv.cloud/job/store",file)
-      //   .then(response => console.log(response.data))
-    
-      // };
+    }));
       
+  }
+  
+  render () {
 
-    // onClickHandler = () => {
-    //   const data = new FormData(this.state.formData.ff);
-     
-    //   console.log(data)
-    //   // axios.post("http://joblaravel.tbv.cloud/public/cvs/",ff)
-    //   // .then(response => console.log(response.data))
-    // }
-
-    
-
-  render() {
-    // console.log(this.state.formData.Name)
-    // console.log(this.state.formData.Email)
-    // console.log(this.state.)
-    // console.log(this.state.start)
-    // console.log(this.state.formData.Mobile)
-    // console.log(this.state.formData.LinkedIn)
-    // console.log(this.state.formData.university.value)
-    // console.log(this.state.formData.Location)
-    // console.log(this.state.universities)
-    // console.log(this.state.formData.Location)
-    // console.log(this.state.formData.Gender)
-    // console.log(this.state.formData.university)
-    // console.log(this.state.formData.ff)
-    // console.log(this.state.formData.ff)
-    const { Gender } = this.state.formData;
-    const { Location } = this.state.formData;
-    const { university } = this.state.formData;
-    
-    // console.log(this.state.formData.jobId,this.state.formData.jobType);
+    const { Gender, Location, university  } = this.state.formData;
 
     return (
+
       <React.Fragment>
 
         <div className="container">
 
           <ScrollAnimation animateIn="bounceInUp">
-            <div className="row">
               <div className="titlestyle">
                 <h2>Join our hands on training</h2>
               </div>
-            </div>
           </ScrollAnimation>
 
           <div className="row">
@@ -359,7 +230,7 @@ class Training extends Component {
                         value={Gender.value}
                         name="Gender"
                         onChange={this.handleChange_1}
-                        options={this.state.Gender}
+                        options={this.props.genders}
                         required="true"
                       />
                     </FormGroup>
@@ -387,7 +258,7 @@ class Training extends Component {
                       <Select
                         value={Location.value}
                         onChange={this.handleChange_2}
-                        options={this.state.Locations}
+                        options={this.props.locations}
                         required="true"
                         name="Location"
                       />
@@ -480,7 +351,7 @@ class Training extends Component {
                         required="true"
                         value={university.value}
                         onChange={this.handleChange_3}
-                        options={this.state.universities}
+                        options={this.props.universities}
                         name="university"
                       />
                     </FormGroup>
@@ -492,45 +363,23 @@ class Training extends Component {
                     <FormGroup>
                       <Label for="number">Specialitiy</Label>
                       <Nav bsStyle="tabs" activeKey="1">
-
-                    
-                           {this.state.specialities.map((cbox,k) => {
+                        {
+                          this.props.specialities.map((cbox, k ) => {
                             return (
-                              // <NavItem  >
                                 <Form.Check
-                                type="checkbox"
-                                title={cbox.Name}
-                                name={cbox.Name}
-                                value={cbox.typeId}
-                                id={cbox.id}
-                                // checked={this.state.checked}
-                                onClick={this.handleCheck.bind(this)}
-                                onChange={this.controlCheck.bind(this)}
-                                label={cbox.Name}
-                                inline 
+                                  type="checkbox"
+                                  title={cbox.Name}
+                                  name={cbox.Name}
+                                  value={cbox.typeId}
+                                  id={cbox.id}
+                                  onClick={this.handleCheck.bind(this)}
+                                  // onChange={this.controlCheck.bind(this)}
+                                  label={cbox.Name}
+                                  inline 
                                 >
-                                  
                                 </Form.Check>
-                                
-                              // </NavItem>
                             )
-                          })}
-                          
-                        
-
-                        {/* <NavItem eventKey="3" >
-                          <Checkbox
-                            title="test"
-                            name="backend"
-                            inline
-                            
-                            
-                           
-                            readOnly
-                          >
-                            PHP / Laravel
-                          </Checkbox>
-                        </NavItem>  */}
+                        })}
                       </Nav>
                     </FormGroup>
                   </Col>
@@ -559,4 +408,20 @@ class Training extends Component {
   }
 }
 
-export default Training;
+const mapStateToProps = state => {
+  return {
+    CID: state.company.info.cid,
+    specialities: state.jobs.jobs,
+    universities: state.jobs.universities,
+    locations: state.jobs.locations,
+    genders: state.jobs.genders,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchJobApply: () => dispatch( actions.fetchJobApplyData() ),
+  };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( Training );

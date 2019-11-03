@@ -57,6 +57,10 @@ class ConfirmLogin extends Component {
     this.props.onConfirm(this.props.email , pass);
   }
 
+  handleForget = () => {
+    this.props.onCreatePin(this.props.email);
+  }
+
   render() {
     
     const passValid = this.state.loginForm.password.valid;  
@@ -80,6 +84,8 @@ class ConfirmLogin extends Component {
       authRedirect = <Redirect to="/aa/tq/dashboard" />
     } else if ( this.props.isAuthorized ) {
       authRedirect = <Redirect to="/aa/tq/new-password" />
+    } else if (this.props.authorize === -1) {
+      authRedirect = <Redirect to="/aa/tq/login" />
     }
 
     return ( 
@@ -118,10 +124,10 @@ class ConfirmLogin extends Component {
                     { text }
                   </Button>
                 </div>
+                <div className="forget">
+                  <p className="forg" onClick={this.handleForget} > Forget your password? </p>
+                </div>
             </div> 
-            <div className="forget">
-              <p className="forg"> Forget your password? </p>
-            </div>
         </form>
       </Auth>
     );
@@ -134,6 +140,7 @@ const mapStateToProps = state => {
     userId: true && state.auth.userId,
     loading: state.auth.isLoading,
     isAuth: state.auth.token !== null,
+    authorize: state.auth.authorize,
     isAuthorized: state.auth.authorize === 2,
   }
 };

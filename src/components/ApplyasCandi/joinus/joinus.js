@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions/index';
+
 import HashLoader from 'react-spinners/HashLoader';
 import { Tabs, Tab } from "react-bootstrap";
+
+import * as actions from '../../../store/actions/index';
 import Cover from "../Cover/Cover";
-import Training from "../training/training";
 import Jobs from "../jobs/jobs";
 import Navbar from '../navbar/navbar';
+import Training from "../training/training";
 
 import "./joinus.css";
 import "react-tabs/style/react-tabs.css";
@@ -52,7 +54,7 @@ class Joinus extends Component {
               <Jobs /> 
             </Tab>
             
-            <Tab eventKey="Hands on training " title="Hands on training ">
+            <Tab eventKey="Hands on training" title="Training">
               <Training />
             </Tab>
           

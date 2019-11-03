@@ -14,11 +14,16 @@
   cursor: pointer;
 }
 
-/* .MuiIconButton-root {
-  color: rgb(0,0,0) !important;
-} */
-
 .collapse:not(.show) {
   display: block;
 }
 
+.logout {
+  font-size: 18px;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+.logout:hover {
+  color: rgb(216, 213, 213);
+}

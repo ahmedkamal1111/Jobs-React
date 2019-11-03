@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import * as actionTypes from './actionTypes';
+import * as actionTypes from '../actionTypes';
 
 export const authLoading = () => {
     return {
@@ -30,10 +30,11 @@ export const confirmLoginSuccess = ( payload ) => {
     };
 };
 
-export const confirmLoginFail = ( error ) => {
+export const confirmLoginFail = ( error , res) => {
     return {
         type: actionTypes.CONFIRM_LOGIN_FAIL,
-        error
+        error,
+        res
     };
 };
 
@@ -134,7 +135,7 @@ export const confirmLogin = (email, password) => {
             }
         })
         .catch(error => {
-            dispatch(confirmLoginFail(error));
+            dispatch(confirmLoginFail(error , -1));
         });
     }
 }
@@ -145,12 +146,16 @@ export const createNewPass = (email, pin, password) => {
         axios.post("https://joblaravel.tbv.cloud/ResetPassword", { 
             email: email,
             PIN: pin, 
-            pw: password 
+            pw: password
         })
         .then(response => {
             
             if( response.status === 422 ) {
                 throw new Error("Validation Failed.");
+            }
+
+            if (response.data === -1) {
+                throw new Error("Invalid email or Password");
             }
 
             const expirationDate = new Date(new Date().getTime() + 60 * 60 * 1000 /*response.data.expiresIn * 1000*/);
@@ -162,7 +167,7 @@ export const createNewPass = (email, pin, password) => {
             dispatch(checkAuthTimeout(expirationDate.getTime()));
         })
         .catch(error => {
-            dispatch(createPassFail(error.response.data[0].error));
+            dispatch(createPassFail(error, -1));
         });
     };
 };

@@ -1,10 +1,11 @@
 .titlestyle {
   color: #000;
   font-family: 'Graphik', sans-serif;
-  width: 300px;
+  width: 800px !important;
   text-align: center;
   padding-bottom: 10px;
 }
+
 .descriptionParagraphStyle {
   font-size: 17px;
   margin-top: 12px;

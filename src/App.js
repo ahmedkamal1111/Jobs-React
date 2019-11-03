@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { connect } from "react-redux";
-import * as actions from './store/actions/index';
-
 import { Switch ,Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import LoginPage from './containers/Auth/Login';
 import ErrorHandler from './components/ErrorHandler/ErrorHandler';
 import Backdrop from './components/Backdrop/Backdrop';
@@ -22,10 +21,6 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.onTryAuth();
-  }
-
   backdropClickHandler = () => {
     this.setState({ showBackdrop: false, error: null });
   };
@@ -37,12 +32,13 @@ class App extends Component {
         <Route path="/aa/:anything/jobs/:id/apply" component={JobForm} />
         <Route path="/aa/:anything/jobs/:id" component={JobDetails} />
         <Route path="/aa/:anything/login" component={LoginPage} />
+        <Route path="/aa/:anything/dashboard" component={Dashboard} />
+        {/* <Route path="/aa/:anything/confirmlogin" component={ConfirmLogin} /> */}
         <Route path="/aa/:anything" exact component={Joinus} />
-        <Redirect to="/aa/:anything"/>
       </Switch>
     );
 
-    if ( (!this.props.isAuth) && (this.props.authorize === 0 || this.props.authorize === 1)) {
+    if ( (!this.props.isAuth) && (this.props.authorize === 0 || this.props.authorize === 1 || this.props.authorize === -1)) {
       routes = (
         <Switch>
           <Route path="/aa/:anything/confirmlogin" component={ConfirmLogin}/>
@@ -76,7 +72,7 @@ class App extends Component {
           <Backdrop onClick={ this.backdropClickHandler } />
         )}
       
-        <ErrorHandler error={ this.state.error } handleError={ this.errorHandler } />
+        <ErrorHandler error={ this.props.error } handleError={ this.errorHandler } />
         
         {routes}
 
@@ -89,14 +85,9 @@ const mapStateToProps = state => {
   return {
     isAuth: state.auth.token !== null,
     authorize: state.auth.authorize,
-    userId: state.auth.userId && true
+    userId: state.auth.userId && true,
+    error: state.company.info.error
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onTryAuth: () => dispatch( actions.checkAuthState() ),
-  }
-}
-
-export default connect( mapStateToProps, mapDispatchToProps )( App );
+export default connect( mapStateToProps )( App );

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
-import { Route, Link , Switch} from 'react-router-dom';
+import { Route, Link , Switch, Redirect} from 'react-router-dom';
 import { connect  } from "react-redux";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import * as actions from '../../store/actions/index';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -23,14 +24,13 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import StarBorder from '@material-ui/icons/StarBorder';
-import logo from '../../logo.png';
 import NavbarBrand from 'react-bootstrap/NavbarBrand';
 import Navbar from 'react-bootstrap/Navbar';
 import './dashboard.css';
 import Inbox from './inbox';
 import MakeYourChoice from '../mkyourchoice/choice';
 import Addjob from '../Form/addJob/addJob';
-
+import logo from '../../logo.png';
 
 const drawerWidth = 200;
 
@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Dashboard( props ) {
+const  Dashboard = props => {
 
   const classes = useStyles();
   const theme = useTheme();
@@ -112,10 +112,30 @@ function Dashboard( props ) {
     setOpen1(!open1);
   }
 
+  const handleLogout = () => {
+    props.onLogout();
+  }
+
+  useEffect(() => {
+    const param = props.match.params.anything;
+    props.onTryAuth();
+    props.onFetchCompanyInfo(param);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const param = props.match.params.anything;
+  
+  let authRedirect = null;
+  if( !props.isAuth && !props.userId ) {
+    authRedirect = <Redirect to={`/aa/${param}/login`} />
+  }
+  
   return (
     
     <div className={classes.root}>
-    
+      
+      { authRedirect }
+
       <CssBaseline />
       
       <AppBar
@@ -142,13 +162,14 @@ function Dashboard( props ) {
           <NavbarBrand to="/home" >
             <img src={logo} className="imgStyle" alt="Logo"/>
           </NavbarBrand>
+
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text className="float-right">
-              Signed in as: moh { /* this.props.admin */}
+              <p className="logout" onClick={handleLogout}>Logout</p>
             </Navbar.Text>
-        </Navbar.Collapse>
         
-        {/* <Button variant="light" size="sm" className="w-25 p-3">Logout<i class="fa fa-sign-out" aria-hidden="true"></i></Button> */}
+        </Navbar.Collapse>
+
         </Toolbar>
 
       </AppBar>
@@ -182,22 +203,34 @@ function Dashboard( props ) {
               to:`/aa/${props.param}/dashboard/inbox`,
               nested:{
                 text: "Nested",
-                to: "/dashboard/nested"
+                to: `/aa/${props.param}/dashboard/inbox/nested`
               }
             },
             {
-              text: 'Starred',
-              to:`/aa/${props.param}/dashboard/starred`
+              text: 'Candidates',
+              to:`/aa/${props.param}/dashboard/candidates`,
+              nested:{
+                text: "Show all Times",
+                to: `/aa/${props.param}/dashboard/candidates/nested`
+              }
             },
-            { text:'Send email',
-              to:`/aa/${props.param}/dashboard/sendmail`
+            { text:'Jobs',
+              to:`/aa/${props.param}/dashboard/jobs`,
+              nested:{
+                text: "Nested",
+                to: `/aa/${props.param}/dashboard/inbox/nested`
+              }
             },
             {
-              text:'Drafts',
-              to:`/aa/${props.param}/dashboard/drafts`
+              text:'Users',
+              to:`/aa/${props.param}/dashboard/users`,
+              nested:{
+                text: "Nested",
+                to: `/aa/${props.param}/dashboard/inbox/nested`
+              }
             }
               ].map((link, index) => (
-                link.text === "Inbox"?
+                link.text === "Inbox" ?
                 
                 <div >
                   <Link to={link.to} key={link.text + index}>
@@ -219,7 +252,7 @@ function Dashboard( props ) {
                        <StarBorder fontSize={"large"}/>
                      </ListItemIcon>
              
-                     <ListItemText primary="Starred" />
+                     <ListItemText primary="Candidates" />
              
                    </ListItem>
              
@@ -250,13 +283,13 @@ function Dashboard( props ) {
         <List>
           {[
             {
-              text:'All mail',
-              to:`/aa/${props.param}/dashboard/allmail`,
-            },
-            {
-              text:'Trash',
-              to:`/aa/${props.param}/dashboard/trash`,
-            },    
+              text:'Companies',
+              to:`/aa/${props.param}/dashboard/companies`,
+              nested:{
+                text: "Nested",
+                to: `/aa/${props.param}/dashboard/inbox/nested`
+              }
+            }, 
           ].map((link, index) => (
             link.text === "Logout" ? 
             
@@ -290,26 +323,13 @@ function Dashboard( props ) {
       </Drawer>
       
         <Switch>
-          <Route path={`/aa/${props.param}/dashboard/inbox`} exact component={Inbox}  />
-          {/* <Route path='/starred' component={MakeYourChoice,DataTable} /> */}
-          
-          <Route path={`/aa/${props.param}/dashboard/starred`} render={props =>
-                    // <div>
-                      <MakeYourChoice />
-                      // <DataTable />
-                    // </div>
-          }/>
-
-          <Route path={`/aa/${props.param}/dashboard/sendmail`} component={Addjob} />
-          <Route path={`/aa/${props.param}/dashboard/drafts`} />
+          <Route path={`/aa/:company/dashboard/inbox`} exact component={ Inbox }  />
+          <Route path={`/aa/:company/dashboard/candidates`} component={ MakeYourChoice } />
+          <Route path={`/aa/:company/dashboard/jobs`} component={ Addjob } />
+          <Route path={`/aa/:company/dashboard/users`} />
+          <Route path={`/aa/:company/dashboard/companies`} />
         </Switch>
       
-      {/* <main className={classes.content}>
-      
-        <div className={classes.toolbar} />
-        
-      </main> */}
-    
     </div>
   );
 }
@@ -317,7 +337,17 @@ function Dashboard( props ) {
 const mapStateToProps = state => {
   return {
     param: state.company.param,
+    isAuth: state.auth.token !== null,
+    userId: state.auth.userId,
   };
 };
 
-export default connect(mapStateToProps)(Dashboard);
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchCompanyInfo: ( param ) => dispatch( actions.fetchCompanyInfo( param ) ),
+    onTryAuth: () => dispatch( actions.checkAuthState() ),
+    onLogout: () => dispatch( actions.logout() ),
+  };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( Dashboard );

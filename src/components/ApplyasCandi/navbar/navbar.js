@@ -1,6 +1,5 @@
 import React from "react";
-import "./navbar.css";
-
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import {
   Collapse,
@@ -10,7 +9,9 @@ import {
   NavItem
 } from "reactstrap";
 
-export default class Nav1 extends React.Component {
+import "./navbar.css";
+
+class CustomNav extends React.Component {
   
   constructor(props) {
     super(props);
@@ -35,7 +36,7 @@ export default class Nav1 extends React.Component {
         <Navbar id="navbar" expand="md" className="navstyle">
           
           <NavbarBrand to="/home">
-            <h1 className="logo">Teqenia</h1>
+            <h1 className="logo">{ this.props.CompanyName }</h1>
           </NavbarBrand>
           
           <Collapse isOpen={this.state.isOpen} navbar>
@@ -78,3 +79,12 @@ export default class Nav1 extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    CompanyName: state.company.info.Name,
+    url: state.company.info.homepage
+  }
+}
+
+export default connect(mapStateToProps)(CustomNav);

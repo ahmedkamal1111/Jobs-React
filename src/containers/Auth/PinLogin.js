@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import * as actions from '../../store/actions/index';
+
+import PulseLoader from 'react-spinners/PulseLoader';
 import Input from '../../components/Form/Input/Input';
 import Button from '../../components/Button/Button';
 import validate from '../../util/validation';
@@ -8,11 +13,8 @@ import './Auth.css';
 class PinLogin extends Component {
 
   constructor(props) {
-    
     super(props);
-
     this.state = {
-      companyName: "Teqneia",
       loginForm: {
         pin: {
           value: "",
@@ -43,6 +45,12 @@ class PinLogin extends Component {
       }
     };
     this.inputChangeHandler = this.inputChangeHandler.bind(this); 
+  }
+
+  handleConfirm = () => {
+    const pin = this.state.loginForm.pin.value;
+    const pass = this.state.loginForm.password.value;
+    this.props.onCreateNewPass(this.props.email, pin, pass);
   }
   
   inputChangeHandler = (key, value) => {
@@ -93,12 +101,38 @@ class PinLogin extends Component {
       };
 
   render() {
+
     const pinValid = this.state.loginForm.pin.valid;
     const passValid = this.state.loginForm.password.valid;
     const confirmValid = this.state.loginForm.confirmPassword.valid;
+      
+    let text = "Create New Password";
+    
+    if ( this.props.loading ) {
+      text = (
+        <PulseLoader
+          sizeUnit={"px"}
+          size={10}
+          color={'#FFFFFF'}
+          margin="2px"
+        />
+      )
+    }
+
+    let authRedirect = null;
+    const param = this.props.match.params.anything;
+
+    if ( this.props.isAuth && this.props.userId  ) {
+      authRedirect = <Redirect to={`/aa/${param}/dashboard`} />
+    } else if (this.props.authorize === -1) {
+      authRedirect = <Redirect to={`/aa/${param}/login`} />
+    }
+    
     return ( 
     
       <Auth>
+
+        { authRedirect }
 
         <div className="center header">      
           <h2>Reset New Password</h2>
@@ -154,11 +188,12 @@ class PinLogin extends Component {
                 <Button 
                   disabled={pinValid && passValid && confirmValid ? false : true}
                   design="raised" 
-                  type="submit" 
+                  type="submit"
+                  onClick={this.handleConfirm} 
                   loading={ this.props.loading } 
                   style ={{width: '333px', fontSize: '18px', marginTop: '16px'}} 
                 >
-                  Confirm
+                  { text }
                 </Button>
               </div>
             </div>
@@ -169,4 +204,21 @@ class PinLogin extends Component {
   }
 }
 
-export default PinLogin;
+const mapStateToProps = state => {
+  return {
+    email: state.auth.email,
+    userId: true && state.auth.userId,
+    loading: state.auth.isLoading,
+    isAuth: state.auth.token !== null,
+    authorize: state.auth.authorize,
+    isAuthorized: state.auth.authorize === 2,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onCreateNewPass: (email, pin, pass) => dispatch(actions.createNewPass(email, pin, pass)),
+  };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( PinLogin );

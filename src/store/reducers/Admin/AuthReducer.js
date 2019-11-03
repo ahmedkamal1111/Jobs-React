@@ -1,4 +1,4 @@
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from "../../actions/actionTypes";
 
 const initialState = {
     email: null,
@@ -57,6 +57,7 @@ const confirmLoginSuccess = (state, action) => {
 const confirmLoginFail = (state, action) => {
     return {
         ...state,
+        authorize: action.res,
         error: action.error,
         isLoading: false,
     };
@@ -80,6 +81,7 @@ const createPassFail = (state, action) => {
     return {
         ...state,
         error: action.error,
+        authorize: action.authorize,
         isLoading: false
     }
 }

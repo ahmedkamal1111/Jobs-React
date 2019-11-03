@@ -30,6 +30,10 @@ class Login extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.onTryAuth();
+  }
+
   inputChangeHandler = (key, value) => {
     this.setState(prevState => {
       return {
@@ -78,8 +82,14 @@ class Login extends Component {
 
     let authRedirect = null;
 
+    const param = this.props.match.params.anything;
+
     if ( this.props.isAuthorized ) {
-      authRedirect = <Redirect to="/aa/tq/confirmlogin" />
+      authRedirect = <Redirect to={`/aa/${param}/confirmlogin`} />
+    }
+
+    if (this.props.isAuth) {
+      authRedirect = <Redirect to={`/aa/${param}/dashboard`} />
     }
 
     return (
@@ -90,7 +100,6 @@ class Login extends Component {
           <h2> Log Into My Account </h2>
         </div>
           
-
         <form className="auth-form"
           onSubmit={ this.submitHandler }
         >
@@ -129,6 +138,8 @@ class Login extends Component {
 const mapStateToProps = state => {
   return {
     loading: state.auth.isLoading,
+    isAuth: state.auth.token !== null,
+    userId: state.auth.userId && true,
     isAuthorized: state.auth.authorize === 0 || state.auth.authorize === 1,
     authRedirectPath: state.auth.authRedirectPath
   };
@@ -136,6 +147,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onTryAuth: () => dispatch( actions.checkAuthState() ),
     onLogin: (email) => dispatch(actions.login(email)),
   };
 };

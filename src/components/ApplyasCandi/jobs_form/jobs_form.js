@@ -1,31 +1,31 @@
 import React, { Component } from "react";
-import axios from 'axios';
-import "./jobs_form.css";
+import { connect } from "react-redux";
 import HashLoader from 'react-spinners/HashLoader';
-import "../training/training.css";
+import ScrollAnimation from "react-animate-on-scroll";
 import { Col, Form, Row, FormGroup, Label, Input } from "reactstrap";
 import Fieldset from "react-bootstrap-form";
 import Select from "react-select";
+
+import * as actions from "../../../store/actions/index";
+import Cover from "../Cover/Cover";
+import Nav1 from "../navbar/navbar";
+import Footer from "../footer/footer";
+
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
-import Cover from "../Cover/Cover";
+import "./jobs_form.css";
+import "../training/training.css";
 import "moment/locale/it.js";
 import "react-datepicker/dist/react-datepicker.css";
 import "moment/locale/fr.js";
 import "moment/locale/es.js";
-import Nav1 from "../navbar/navbar";
-import Footer from "../footer/footer";
-import ScrollAnimation from "react-animate-on-scroll";
-
-// const options4 = [{ value: "Flutter developer", label: "Flutter developer" }];
 
 class jobs_form extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
       startDate: new Date(),
-      Gender: [],
+      gender: [],
       specialities: [],
       jobName: [],
       formData:{
@@ -48,87 +48,15 @@ class jobs_form extends Component {
   }
 
   componentDidMount () {
-    // Job Type
-    const Job_Type =  this.props.location.state.jobType;
-    // const JobName =  this.props.jobname;
-    // CID and JObID
-     const {cid, id} =  this.props.match.params;
-    console.log(Job_Type ,cid, id);
-
-    this.setState(prev => ({
-      ...prev,
-      isLoading: true 
-    }));
-    
-    axios.get("https://joblaravel.tbv.cloud/show_universities")
-    .then(response => {
-
-      this.setState(prev => ({
-        ...prev,
-        universities: response.data.map(item => {
-          return {
-            value: item.id,
-            label: item.Name
-          }
-        })
-      }));
-
-    }).catch(err => {
-      this.setState(prev => ({ ...prev, isLoading: false , err }))
-    });
-
-    axios.get("https://joblaravel.tbv.cloud/show_locations")
-    .then(response => {
-      
-      this.setState(prev => ({
-        ...prev,
-        Locations: response.data.map(item => {
-          return {
-            value: item.id,
-            label: item.Name
-          }
-        }),
-      }))
-    }).catch(err => {
-      this.setState(prev => ({ ...prev, isLoading: false , err }))
-    });
-    
-    axios.get("https://joblaravel.tbv.cloud/show_genders",)
-    .then(response => {
-      
-      this.setState(prev => ({
-        ...prev,
-        Gender: response.data.map(item => {
-          return { value: item.id, label: item.Name}
-        })
-      }));
-
-    }).catch(err => {
-      this.setState(prev => ({ ...prev, isLoading: false , err }))
-    })
-
-    axios.get("https://joblaravel.tbv.cloud/jobs",{
-      params:{
-        cid: cid
-      }
-    })
-    .then(response => {
-      console.log(response.data)
-      console.log(id)
-      this.setState(prev => ({
-        ...prev,
-        isLoading: false,
-        jobName: response.data.filter(i => i.id === id).map(i => {
-          return {
-            value: i.Name,
-
-            label: i.Name
-          }
-        })
-      }))
-    }).catch(err => {
-      this.setState(prev => ({ ...prev, isLoading: false , err }))
-    }) 
+    const id =  this.props.match.params.id;
+    const param = this.props.match.params.anything;
+    if( !this.props.CID && true) {
+      const cid = localStorage.getItem('CID');
+      this.props.onFetchApplyJobData();
+      this.props.onFetchCompanyInfo(param);
+      this.props.onFetchJobs(cid);
+      this.props.onFetchJobDetail(cid, id);
+    }
   }
 
   handleChange__1(date) {
@@ -185,26 +113,17 @@ class jobs_form extends Component {
   
   getFile = (e) => {
     e.preventDefault()
-    // console.log(e.target.files)
-    // console.log(e.target.files[0])
-    // let reader = new FileReader();
     let file = e.target.files[0];
-    // let reader = new FileReader();
-    // reader.readAsDataURL(file);
-    // reader.readAsText(file)
-    // reader.onload = (e) => {
-      // let ff = e.target.result;
-      // console.log(e.target.result)
-      // console.log(file)
       this.setState(prevState =>({
         ...prevState,
         formData:{
           ...prevState.formData,
           ff: file,
         }
-      }));
+    }));
       
-    }
+  }
+
   handleChange_1 = Gender => {
     this.setState(prevState =>({
       ...prevState,
@@ -212,7 +131,7 @@ class jobs_form extends Component {
         ...prevState.formData,
         Gender: Gender.value,
       }
-       }));
+    }));
  
   };
 
@@ -223,7 +142,7 @@ class jobs_form extends Component {
         ...prevState.formData,
         Location: Location.value,
       }
-       }));
+    }));
  
   };
 
@@ -234,11 +153,12 @@ class jobs_form extends Component {
         ...prevState.formData,
         university: university.value
       }
-       }));
+    }));
  
   };
 
   onChange = date => this.setState({ date });
+
   handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -258,24 +178,11 @@ class jobs_form extends Component {
     data.append("ff", this.state.formData.ff)
     data.append("JobType",this.props.location.state.jobType)
     data.append("jobId",this.props.match.params.id)
-    axios.post("https://joblaravel.tbv.cloud/job/store",data,{
-      params:{
-      CID: "1",
-      }
-    })
-      .then(response => console.log(response.data))
-  
-
   }
 
   render() {
 
-    // const { selectedOption1, selectedOption2 , selectedOption4  } = this.state;
-    const { Gender } = this.state.formData;
-    const { Location } = this.state.formData;
-    const { university } = this.state.formData;
-    const { jobName } = this.state;
-    // console.log(this.props.location.state.jobType);
+    const { Gender , university , Location } = this.state.formData;
 
     let comp = (
       <div className="loading">
@@ -314,9 +221,9 @@ class jobs_form extends Component {
                         </Label>
 
                         <Select
-                          value={jobName}
+                          value={this.props.jobApplied}
                           onChange={this.handleChange_4}
-                          options={this.state.jobName}
+                          options={this.props.jobApplied}
                           required="true"
                           isDisabled="true"
                           
@@ -349,7 +256,7 @@ class jobs_form extends Component {
                           value={Gender.value}
                           name="Gender"
                           onChange={this.handleChange_1}
-                          options={this.state.Gender}
+                          options={this.props.genders}
                           required="true"
                         />
                       </FormGroup>
@@ -377,7 +284,7 @@ class jobs_form extends Component {
                         <Select
                           value={Location.value}
                           onChange={this.handleChange_2}
-                          options={this.state.Locations}
+                          options={this.props.locations}
                           required="true"
                           name="Location"
                         />
@@ -410,7 +317,6 @@ class jobs_form extends Component {
                         id="date"
                         value={this.state.formData.Dateofbirth}
                         onChange={this.handleForm.bind(this)}
-                        // className="pickerstyle"
                         required="true"
                         name="Dateofbirth"
                       />
@@ -427,7 +333,6 @@ class jobs_form extends Component {
                         type="file"
                         name="ff"
                         onChange={this.getFile.bind(this)}
-                        // onClick={this.fileUploadHandler.bind(this)}
                         className="form-control"
                         placeholder="Compulsory only if no link of online CV is not provided"
                         required="true"
@@ -471,7 +376,7 @@ class jobs_form extends Component {
                         required="true"
                         value={university.value}
                         onChange={this.handleChange_3}
-                        options={this.state.universities}
+                        options={this.props.universities}
                         name="university"
                       />
                     </FormGroup>
@@ -515,7 +420,6 @@ class jobs_form extends Component {
     }
 
     return (
-      
       <React.Fragment>
 
           <Nav1 />
@@ -528,4 +432,24 @@ class jobs_form extends Component {
   }
 }
 
-export default jobs_form;
+const mapStateToProps = state => {
+  return {
+    CID: state.company.info.cid,
+    jobs: state.jobs.jobs,
+    universities: state.jobs.universities,
+    locations: state.jobs.locations,
+    genders: state.jobs.genders,
+    jobApplied: {value: state.jobs.jobName, label: state.jobs.jobName},
+  };
+};
+
+const mapdispatchToProps = dispatch => {
+  return {
+    onFetchApplyJobData: () => dispatch(actions.fetchJobApplyData()),
+    onFetchCompanyInfo: (param) => dispatch(actions.fetchCompanyInfo(param)),
+    onFetchJobDetail: (cid, id) => dispatch(actions.fetchJobDetail(cid, id)),
+    onFetchJobs: ( id ) => dispatch(actions.fetchJobs( id )),
+  };
+};
+
+export default connect( mapStateToProps, mapdispatchToProps )( jobs_form );
