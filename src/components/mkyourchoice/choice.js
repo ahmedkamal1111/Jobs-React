@@ -38,6 +38,42 @@ export default class MakeYourChoice extends Component {
                 { value:  3, name: 'Last 3 months'},
                 { value:  'customDate', name: 'Pick a Range Date'},
             ],
+            columns: [
+                { 
+                  title: 'Id', 
+                  field: 'id', 
+                  filtering: false,
+                  editable: 'never',  
+                },
+                { 
+                  title: 'Name', 
+                  field: 'name', 
+                  filterPlaceholder: 'name',
+                  editable: 'never',  
+                },
+                { 
+                  title: 'Date', 
+                  field: 'date', 
+                  filterPlaceholder: 'Date',
+                  editable: 'never',  
+                },
+                { 
+                  title: 'Status', 
+                  field: 'status', 
+                  filterPlaceholder: 'Status',
+                  lookup: { 
+                    0: 'New', 
+                    1: 'Shortlisted', 
+                    2: 'Rejected'
+                  }, 
+                },
+                { 
+                  title: 'Location', 
+                  field: 'location', 
+                  filterPlaceholder: 'Location',
+                  editable: 'never'  
+                }
+              ],
         }
     }
 
@@ -299,7 +335,7 @@ export default class MakeYourChoice extends Component {
         const { jobType, pickDate, internName } = this.state;
         const { type, positionType, positionName, customDate, intern } = this.state.search;
         // console.log(this.state.searchResults)
-        console.log(customDate)
+        console.log(this.state.searchResults)
         if( type === "job" ) {
             action =  (
                 <Container  className="respo" >
@@ -343,7 +379,7 @@ export default class MakeYourChoice extends Component {
                     { action }
                     { 
                         this.state.response === true ? 
-                            <DataTable data={this.state.searchResults} /> 
+                            <DataTable data={this.state.searchResults} columns={this.state.columns} flag={0}/> 
                             :
                             <div className="alert alert-info feedback" role="alert">
                                 Choose your search preferences first.

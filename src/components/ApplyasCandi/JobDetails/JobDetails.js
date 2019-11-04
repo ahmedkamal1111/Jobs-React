@@ -12,9 +12,7 @@ import Cover from "../Cover/Cover";
 class JobDetails extends Component {
 
   componentDidMount() {   
-
     const id = this.props.match.params.id; 
-    
     if( this.props.CID ) {
       this.props.onFetchJobDetail(this.props.CID, id);
     } else {

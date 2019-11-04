@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import * as styles from './DataTable.module.css';
 import MaterialTable from 'material-table';
 import FileViewer from 'react-file-viewer';
@@ -14,56 +14,33 @@ class DataTable extends Component {
       selectedRow: null,
       
       selected: false,
-      
 
-      
-      columns: [
-        { 
-          title: 'Id', 
-          field: 'id', 
-          filtering: false,
-          editable: 'never',  
-        },
-        { 
-          title: 'Name', 
-          field: 'name', 
-          filterPlaceholder: 'name',
-          editable: 'never',  
-        },
-        { 
-          title: 'Date', 
-          field: 'date', 
-          filterPlaceholder: 'Date',
-          editable: 'never',  
-        },
-        { 
-          title: 'Status', 
-          field: 'status', 
-          filterPlaceholder: 'Status',
-          lookup: { 
-            0: 'New', 
-            1: 'Shortlisted', 
-            2: 'Rejected'
-          }, 
-        },
-        { 
-          title: 'Location', 
-          field: 'location', 
-          filterPlaceholder: 'Location',
-          editable: 'never'  
-        }
-      ],
-    
+      viewCv: false,
+      viewJobDetails:false,
+    }
+  }
+  componentDidMount(){
+    if(this.props.flag === 0){
+      this.setState(prevState => ({
+        ...prevState,
+        viewCv: true,
+      }))
+    }
+    if(this.props.flag === 1) {
+      this.setState(prevState => ({
+        ...prevState,
+        viewJobDetails: true,
+      }))
     }
   }
 
   render () {
   
     let hide = false;
-    
+    console.log( this.props.data )
     if ( this.state.selected ) {
       hide = true;
-      console.log( this.state.selectedRow )
+      
     } 
 
     return (
@@ -78,8 +55,9 @@ class DataTable extends Component {
           
           <MaterialTable
             title="Requests"
-            columns={this.state.columns}
+            columns={this.props.columns}
             options={{
+              
               selection: hide,
               detailPanelProps: rowData => ({
                 disabled: rowData.id !== this.state.selectedRow + 1,
@@ -88,12 +66,14 @@ class DataTable extends Component {
               filtering: true,
               headerStyle: {
                 backgroundColor: '#ccc',
-                color: '#000'
+                color: '#000',
+                paddingLeft: 15,
               },
               rowStyle: rowData => ({
                 backgroundColor: (this.state.selected && this.state.selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF',
-                transition: 'background .2s ease-in'
+                transition: 'background .2s ease-in',
               }),
+              
               actionsColumnIndex: -1,
             }}
             data={this.props.data}
@@ -123,7 +103,10 @@ class DataTable extends Component {
                   }, 1000)
                 }),
             }}
-            detailPanel= {[
+           
+            detailPanel= {this.state.viewCv ? 
+              [
+              
               { 
                 icon: 'description',
                 tooltip: 'Show CV',
@@ -150,7 +133,24 @@ class DataTable extends Component {
                     </div>
                   )
                 },
-              }]
+              }] : this.state.viewJobDetails ? [
+                {
+                  // icon: 'description',
+                  tooltip: 'Show Job Details',
+                  isEditable: true,
+                  render: rowData => {
+                    return (
+                      <Fragment>
+                        <h1>Responsibilities</h1>
+                        <p>{rowData.Respo}</p>
+                        <h3>Skills</h3>
+                        <p>{rowData.Skills}</p>
+                      </Fragment>
+                      
+                    )
+                  }
+                }
+              ] : null
             }
             onRowClick={((evt, rowData) => this.setState({ 
               selectedRow : rowData.tableData.id, 
