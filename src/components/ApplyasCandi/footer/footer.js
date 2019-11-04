@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import "./footer.css";
-import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "react-share";
 import { FacebookIcon, TwitterIcon, LinkedinIcon } from "react-share";
+
+import "./footer.css";
 
 class Footer extends Component {
   
@@ -15,7 +16,7 @@ class Footer extends Component {
       <div className="row">
           <div className="col-md-6 text-center">
             Copyright <span dangerouslySetInnerHTML={{ __html: "&copy;" }} />
-            <NavLink to="/">Teqneia</NavLink> 2019-20
+            <a href={`${this.props.url}`} > { this.props.CompanyName } </a> 2019-20
             
             </div>            
 
@@ -38,4 +39,11 @@ class Footer extends Component {
   }
 }
 
-export default Footer;
+const mapStateToProps = state => {
+  return {
+    CompanyName: state.company.info.Name,
+    url: state.company.info.homepage
+  }
+}
+
+export default connect( mapStateToProps )( Footer );

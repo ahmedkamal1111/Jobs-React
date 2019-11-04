@@ -81,10 +81,9 @@ class CustomNav extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    param: state.company.param,
     CompanyName: state.company.info.Name,
     url: state.company.info.homepage
-  }
-}
+  };
+};
 
 export default connect( mapStateToProps )( CustomNav );
