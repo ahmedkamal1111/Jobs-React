@@ -4,16 +4,15 @@ import Logo from '../Logo/Logo';
 
 import './Nav.css';
 
-function Nav ( props ) {
+export default function Nav ( props ) {
+
   return (
     <nav className="main-nav">
       <div className="main-nav__logo">
-        <NavLink to="/">
+        <NavLink>
           <Logo />
         </NavLink>
       </div>
    </nav>
   );
 }
-
-export default Nav;

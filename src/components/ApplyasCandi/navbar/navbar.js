@@ -1,10 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import {
   Collapse,
   Navbar,
-  NavbarBrand,
   Nav,
   NavItem
 } from "reactstrap";
@@ -30,14 +29,19 @@ class CustomNav extends React.Component {
   }
 
   render() {
+
     return (
     
       <div>
         <Navbar id="navbar" expand="md" className="navstyle">
           
-          <NavbarBrand to="/home">
-            <h1 className="logo">{ this.props.CompanyName }</h1>
-          </NavbarBrand>
+          
+           <Link to={`/aa/${this.props.param}`} >
+              <h1 className="logo">
+                { this.props.CompanyName }
+              </h1>
+            </Link> 
+      
           
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto navitemsstyle" navbar>
@@ -63,12 +67,7 @@ class CustomNav extends React.Component {
                 </a>
               </NavItem>
               <NavItem>
-                <a href="/" className="navitemcolor">
-                  Join Us
-                </a>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/contactus" className="navitemcolor">
+                <NavLink to={`/aa/${this.props.param}/contact-us`} className="navitemcolor">
                   Contact
                 </NavLink>
               </NavItem>
@@ -82,9 +81,10 @@ class CustomNav extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    param: state.company.param,
     CompanyName: state.company.info.Name,
     url: state.company.info.homepage
   }
 }
 
-export default connect(mapStateToProps)(CustomNav);
+export default connect( mapStateToProps )( CustomNav );

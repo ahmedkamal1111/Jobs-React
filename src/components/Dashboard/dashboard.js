@@ -159,15 +159,14 @@ const  Dashboard = props => {
 
           </IconButton>
 
-          <NavbarBrand to="/home" >
+          <Link to={`/aa/${param}/dashboard`} >
             <img src={logo} className="imgStyle" alt="Logo"/>
-          </NavbarBrand>
+          </Link>
 
-          <Navbar.Collapse className="justify-content-end">
+        <Navbar.Collapse className="justify-content-end">
             <Navbar.Text className="float-right">
               <p className="logout" onClick={handleLogout}>Logout</p>
             </Navbar.Text>
-        
         </Navbar.Collapse>
 
         </Toolbar>

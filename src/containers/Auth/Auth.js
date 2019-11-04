@@ -4,7 +4,8 @@ import Nav from '../../components/Nav/Nav';
 import Navbar from '../../components/Navbar/Navbar';
 import './Auth.css';
 
-const auth = props => { 
+const auth = props => {
+    
     return (
         <section className="auth">
             <Layout
