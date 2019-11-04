@@ -12,7 +12,9 @@ const initialState = {
     jobName: null,
     jobType: null,
     error: null,
-    isLoading: false
+    postMessage: "",
+    isLoading: false,
+    postDataLoading: false
 };
 
 const loadJobs = (state, action) => ({
@@ -96,6 +98,25 @@ const fetchJobAppliedFail = (state, action) => ({
     loading: false,
 });
 
+const postJobLoading = (state, action) => ({
+    ...state,
+    error: null,
+    postDataLoading: true
+});
+
+const postJobSuccess = (state, action) => ({
+    ...state, 
+    postMessage: action.message,
+    error: null,
+    postJobLoading: false,
+});
+
+const postJobFail = (state, action) => ({
+    ...state,
+    error: action.error.message,
+    postDataLoading: false,
+});
+
 const PublicJobsReducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.JOBS_LOADING: return loadJobs(state,action);
@@ -110,6 +131,9 @@ const PublicJobsReducer = (state = initialState, action) => {
         case actionTypes.LOAD_JOB_APPLIED: return loadJobApplied(state, action);
         case actionTypes.FETCH_JOB_APPLIED_FAIL: return fetchJobAppliedFail(state, action);
         case actionTypes.FETCH_JOB_APPLIED_SUCCESS: return fetchJobAppliedSuccess(state, action);
+        case actionTypes.POST_JOB_APPLIED_LOADING: return postJobLoading(state, action);
+        case actionTypes.POST_JOB_APPLIED_SUCCESS: return postJobSuccess(state, action);
+        case actionTypes.POST_JOB_APPLIED_FAIL: return postJobFail(state, action);
         default:
             return state;
     };

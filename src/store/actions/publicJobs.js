@@ -95,8 +95,7 @@ export const fetchJobs = ( CID ) => {
             params: { cid : CID }
         })
         .then(response => {
-            let jobs = response.data.filter(job => job.Job_Type !== 5);
-            dispatch(loadJobsSuccess(jobs));
+            dispatch(loadJobsSuccess(response.data));
         })
         .catch(error => {
             dispatch(loadJobsFail(error));
@@ -156,5 +155,45 @@ export const fetchJobApplied = ( jobId ) => {
         }).catch(error => {
             dispatch( fetchJobNameFail(error) );
         });
+    };
+};
+
+export const postJobApplyLoading = () => {
+    return {
+        type: actionTypes.POST_JOB_APPLIED_LOADING,
+    };
+};
+
+export const postJobApplySuccess = ( message ) => {
+    return {
+        type: actionTypes.POST_JOB_APPLIED_SUCCESS,
+        message
+    };
+};
+
+export const postJobApplyFail = ( error ) => {
+    return {
+        type: actionTypes.POST_JOB_APPLIED_FAIL,
+        error
+    };
+};
+
+export const postJobApply = ( data ) => {
+    const token = localStorage.getItem("token");
+    const CID = localStorage.getItem("CID");
+    return dispatch => {
+        dispatch(postJobApplyLoading());
+
+        axios.post("https://joblaravel.tbv.cloud/job/store", data , {
+            params:{ CID }
+        })
+        .then(response => {
+            console.log(response);
+            if (!(response.status === 200 || response.status === 201)){
+                throw new Error("Service not available now retry again after some period");
+            }
+            dispatch(postJobApplySuccess(response.data));
+        })
+        .catch(error => dispatch(postJobApplyFail(error)));
     };
 };

@@ -72,6 +72,7 @@ class Training extends Component {
     data.append('jobId',this.state.formData.jobId)
     data.append('JobType',this.state.formData.jobType)
     data.append("ff", this.state.formData.ff)
+    this.props.onPostJobApply( data );
   }
 
   handleChange = (e) => {
@@ -275,7 +276,6 @@ class Training extends Component {
                         type="Text"
                         name="Onlinecv"
                         placeholder="Online CV (Compulsory only if CV is not attached)"
-                        required="true"
                         value={this.state.formData.Onlinecv}
                         onChange={this.handleForm.bind(this)}
                       />
@@ -391,7 +391,7 @@ class Training extends Component {
                       <td>
                         <Fieldset Label="">
                           <button className="sendbtn" type="submit" >
-                            <h6> Submit</h6>{" "}
+                            <h6> Submit</h6>
                           </button>
                         </Fieldset>
                       </td>
@@ -403,6 +403,7 @@ class Training extends Component {
           </div>
         </div>
         <Footer />
+        { console.log(this.props.specialities) }
       </React.Fragment>
     );
   }
@@ -411,7 +412,7 @@ class Training extends Component {
 const mapStateToProps = state => {
   return {
     CID: state.company.info.cid,
-    specialities: state.jobs.jobs,
+    specialities: state.jobs.jobs.filter(job => job.Job_Type === 5),
     universities: state.jobs.universities,
     locations: state.jobs.locations,
     genders: state.jobs.genders,
@@ -421,6 +422,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchJobApply: () => dispatch( actions.fetchJobApplyData() ),
+    onPostJobApply: ( data ) => dispatch( actions.postJobApply( data ) ),
   };
 };
 

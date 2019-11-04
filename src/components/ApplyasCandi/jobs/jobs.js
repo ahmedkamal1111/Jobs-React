@@ -104,7 +104,7 @@ const mapStateToProps = state => {
     param: state.company.param,
     CID: state.company.info.cid,
     isLoading: state.jobs.isLoading,
-    jobs: state.jobs.jobs
+    jobs: state.jobs.jobs.filter(job => job.Job_Type !== 5)
   };
 };
 

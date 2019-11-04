@@ -25,9 +25,6 @@ class jobs_form extends Component {
     super(props);
     this.state = {
       startDate: new Date(),
-      gender: [],
-      specialities: [],
-      jobName: [],
       formData:{
         Name: '',
         Email: '',
@@ -178,6 +175,9 @@ class jobs_form extends Component {
     data.append("ff", this.state.formData.ff)
     data.append("JobType",this.props.location.state.jobType)
     data.append("jobId",this.props.match.params.id)
+    console.log(this.state.formData.Location);
+    console.log(this.state.formData.ff);
+    this.props.onPostJobApply(data);
   }
 
   render() {
@@ -301,7 +301,6 @@ class jobs_form extends Component {
                           type="Text"
                           name="Onlinecv"
                           placeholder="Online CV (Compulsory only if CV is not attached)"
-                          required="true"
                           value={this.state.formData.Onlinecv}
                           onChange={this.handleForm.bind(this)}
                         />
@@ -435,7 +434,7 @@ class jobs_form extends Component {
 const mapStateToProps = state => {
   return {
     CID: state.company.info.cid,
-    jobs: state.jobs.jobs,
+    jobs: state.jobs.filter(job => job.Job_Type !== 5),
     universities: state.jobs.universities,
     locations: state.jobs.locations,
     genders: state.jobs.genders,
@@ -449,6 +448,7 @@ const mapdispatchToProps = dispatch => {
     onFetchCompanyInfo: (param) => dispatch(actions.fetchCompanyInfo(param)),
     onFetchJobDetail: (cid, id) => dispatch(actions.fetchJobDetail(cid, id)),
     onFetchJobs: ( id ) => dispatch(actions.fetchJobs( id )),
+    onPostJobApply: ( data ) => dispatch(actions.postJobApply( data )),
   };
 };
 

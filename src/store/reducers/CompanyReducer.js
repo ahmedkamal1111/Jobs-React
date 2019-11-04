@@ -24,7 +24,7 @@ const loadCompanyInfo = ( state, action ) => ({
     ...state,
     isLoading: true,
     error: null
-})
+});
 
 const fetchCompanyInfoSuccess = ( state, action ) => ({
     ...state,
@@ -62,6 +62,6 @@ const CompanyInfo = (state = initialState, action) => {
         default:
             return state;
     }
-}
+};
 
 export default CompanyInfo;
