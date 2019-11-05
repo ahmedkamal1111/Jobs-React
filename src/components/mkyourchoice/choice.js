@@ -86,7 +86,7 @@ class MakeYourChoice extends Component {
     handleSubmit(e) {
         e.stopPropagation();
         e.preventDefault();
-        // console.log(this.state.JobName)
+        
         this.state.JobName.map((N, I) => {
             if( this.state.search.positionName === N.Name) {    
                 this.state.jobId = N.Job_Type;
