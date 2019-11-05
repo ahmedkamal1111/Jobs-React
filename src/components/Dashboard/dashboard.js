@@ -30,6 +30,10 @@ import './dashboard.css';
 import Inbox from './inbox';
 import MakeYourChoice from '../mkyourchoice/choice';
 import Addjob from '../Form/addJob/addJob';
+import Editjob from '../Form/Edit_Job/edit';
+import CreateJob from '../Form/addJob/createJob';
+import CreateInternship from '../Form/Internship/addIntern';
+import ViewInternships from '../Form/Internship/updateIntern';
 import logo from '../../logo.png';
 
 const drawerWidth = 200;
@@ -215,10 +219,25 @@ const  Dashboard = props => {
             },
             { text:'Jobs',
               to:`/aa/${props.param}/dashboard/jobs`,
-              nested:{
-                text: "Nested",
-                to: `/aa/${props.param}/dashboard/inbox/nested`
-              }
+              nested:[
+                {
+                  text: "Add a job",
+                  to: `/aa/${props.param}/dashboard/jobs/addJob`
+                },
+                {
+                  text: "Add Internship",
+                  to: `/aa/${props.param}/dashboard/jobs/addIntern`
+                },
+                {
+                  text: "View Jobs",
+                  to: `/aa/${props.param}/dashboard/jobs/editJob`
+                },
+                
+                {
+                  text: "View Internships",
+                  to: `/aa/${props.param}/dashboard/jobs/ViewInternships`
+                }
+              ]
             },
             {
               text:'Users',
@@ -234,7 +253,7 @@ const  Dashboard = props => {
                 <div >
                   <Link to={link.to} key={link.text + index}>
                     <ListItem button onClick={handleClick} >
-                      <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"large"}/> : <MailIcon fontSize={"large"}/>}</ListItemIcon>
+                      <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"small"}/> : <MailIcon fontSize={"small"}/>}</ListItemIcon>
                       <ListItemText primary={link.text} />
                       {open1 ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
@@ -248,7 +267,7 @@ const  Dashboard = props => {
              
                    <ListItem button className={classes.nested}>
                      <ListItemIcon>
-                       <StarBorder fontSize={"large"}/>
+                       <StarBorder fontSize={"small"}/>
                      </ListItemIcon>
              
                      <ListItemText primary="Candidates" />
@@ -262,12 +281,76 @@ const  Dashboard = props => {
                </Collapse>
              
                </div>
-                  :
+               :
+               link.text === "Candidates" ?  <div>
+               <Link to={link.to} key={link.text + index}>
+               <ListItem button onClick={handleClick} >
+                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"small"}/> : <MailIcon fontSize={"small"}/>}</ListItemIcon>
+                 <ListItemText primary={link.text} />
+                 {open1 ? <ExpandLess /> : <ExpandMore />}
+               </ListItem>
+             </Link>
+             <Collapse in={open1} timeout="auto" unmountOnExit>
+              
+            <List component="div" disablePadding>
+ 
+            <Link to={link.nested.to} key={link.nested.text}> 
+        
+              <ListItem button className={classes.nested}>
+                <ListItemIcon>
+                  <StarBorder fontSize={"small"}/>
+                </ListItemIcon>
+        
+                <ListItemText primary={link.nested.text} />
+        
+              </ListItem>
+        
+              </Link>
+        
+            </List>
+ 
+          </Collapse>
+           </div>
+           : 
+           link.text === "Jobs" ?  <div>
+           <Link to={link.to} key={link.text + index}>
+           <ListItem button onClick={handleClick} >
+             <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"small"}/> : <MailIcon fontSize={"small"}/>}</ListItemIcon>
+             <ListItemText primary={link.text} />
+             {open1 ? <ExpandLess /> : <ExpandMore />}
+           </ListItem>
+         </Link>
+         <Collapse in={open1} timeout="auto" unmountOnExit>
+          
+        <List component="div" disablePadding>
+                {link.nested.map(item => {
+                  return (
+                    <Link to={item.to} key={item.text}> 
+    
+                    <ListItem button className={classes.nested}>
+                      <ListItemIcon>
+                        <StarBorder fontSize={"small"}/>
+                      </ListItemIcon>
+              
+                      <ListItemText primary={item.text} />
+              
+                    </ListItem>
+              
+                    </Link>
+                  )
+                })}
+       
+    
+        </List>
+
+      </Collapse>
+       </div>  
+               :
                 <Link to={link.to} key={link.text + index}>
     
               <ListItem button >
               
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"large"}/> : <MailIcon fontSize={"large"}/>}</ListItemIcon>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"small"}/> : <MailIcon fontSize={"small"}/>}</ListItemIcon>
               
                 <ListItemText primary={link.text} />
                           
@@ -296,7 +379,7 @@ const  Dashboard = props => {
             
               <ListItem button >
             
-                <ListItemIcon><ExitToAppIcon color={"secondary"} fontSize={"large"}/></ListItemIcon>
+                <ListItemIcon><ExitToAppIcon color={"secondary"} fontSize={"small"}/></ListItemIcon>
             
                 <ListItemText primary={link.text} />
             
@@ -308,7 +391,7 @@ const  Dashboard = props => {
             
               <ListItem button >
             
-                <ListItemIcon > {index % 2 === 0 ? <InboxIcon fontSize={"large"}/> : <MailIcon fontSize={"large"}/>}</ListItemIcon>
+                <ListItemIcon > {index % 2 === 0 ? <InboxIcon fontSize={"small"}/> : <MailIcon fontSize={"small"}/>}</ListItemIcon>
             
                 <ListItemText primary={link.text} />
             
@@ -324,7 +407,11 @@ const  Dashboard = props => {
         <Switch>
           <Route path={`/aa/:company/dashboard/inbox`} exact component={ Inbox }  />
           <Route path={`/aa/:company/dashboard/candidates`} component={ MakeYourChoice } />
-          <Route path={`/aa/:company/dashboard/jobs`} component={ Addjob } />
+          
+          <Route path={`/aa/:company/dashboard/jobs/editJob`} component={ Editjob } />
+          <Route path={`/aa/:company/dashboard/jobs/addJob`} component={ CreateJob } />
+          <Route path={`/aa/:company/dashboard/jobs/addIntern`} component={ CreateInternship } />
+          <Route path={`/aa/:company/dashboard/jobs/ViewInternships`} component={ ViewInternships } />
           <Route path={`/aa/:company/dashboard/users`} />
           <Route path={`/aa/:company/dashboard/companies`} />
         </Switch>
