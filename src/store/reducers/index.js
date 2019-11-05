@@ -9,5 +9,5 @@ export default combineReducers({
     company: CompanyReducer,
     auth: AuthReducer,
     jobs: PublicJobsReducer,
-    candidate: CandidatesReducer 
+    candidates: CandidatesReducer 
 });
