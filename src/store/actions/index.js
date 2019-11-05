@@ -21,5 +21,6 @@ export {
 } from "./publicJobs";
 
 export {
-
+    fetchJobTypes,
+    fetchJobPositions,
 } from "./Admin/candidates";

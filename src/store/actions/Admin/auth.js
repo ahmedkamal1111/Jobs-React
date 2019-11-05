@@ -126,12 +126,13 @@ export const confirmLogin = (email, password) => {
                 }
 
                 const expirationDate = new Date(new Date().getTime() + 60 * 60 * 1000 /*response.data.expiresIn * 1000*/);
-                localStorage.setItem('token', response.data[0].api_token);
+                localStorage.setItem('token', response.data.tokenEncoded);
+                localStorage.setItem('refreshToken', response.data.refreshToken);
                 localStorage.setItem('expirationDate', expirationDate);
-                localStorage.setItem('CID', response.data[0].CID);
-                localStorage.setItem('userId', response.data[0].usr_id);
-                dispatch(confirmLoginSuccess(response.data[0]));
-                dispatch(checkAuthTimeout(/* 60 * 60 * 1000  response.data.expiresIn */));
+                localStorage.setItem('CID', response.data.user.CID);
+                localStorage.setItem('userId', response.data.user.usr_id);
+                dispatch(confirmLoginSuccess(response.data.user));
+                dispatch(checkAuthTimeout(/* 60 * 60 * 1000  response.data.expiresIn */1));
             }
         })
         .catch(error => {
@@ -159,11 +160,12 @@ export const createNewPass = (email, pin, password) => {
             }
 
             const expirationDate = new Date(new Date().getTime() + 60 * 60 * 1000 /*response.data.expiresIn * 1000*/);
-            localStorage.setItem('token', response.data[0].api_token);
+            localStorage.setItem('token', response.data.tokenEncoded);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
             localStorage.setItem('expirationDate', expirationDate);
-            localStorage.setItem('CID', response.data[0].CID);
-            localStorage.setItem('userId', response.data[0].user_id);
-            dispatch(createPassSuccess(response.data[0]));
+            localStorage.setItem('CID', response.data.user.CID);
+            localStorage.setItem('userId', response.data.user.usr_id);
+            dispatch(createPassSuccess(response.data.user));
             dispatch(checkAuthTimeout(expirationDate.getTime()));
         })
         .catch(error => {
@@ -208,7 +210,7 @@ export const checkAuthState = () => {
                 const userId = localStorage.getItem('userId');
                 const payload = {
                     usr_id: userId,
-                    api_token: token,
+                    tokenEncoded: token,
                     CID: CID
                 }
                 dispatch(confirmLoginSuccess(payload));

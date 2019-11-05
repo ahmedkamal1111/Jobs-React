@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { Form, Button, Row, Col, Container, ToggleButton, ButtonGroup } from 'react-bootstrap';
-import './action.css';
+import { connect } from "react-redux";
+import * as actions from "../../store/actions/index";
+import { 
+    Form, 
+    Button, 
+    Row, Col, 
+    Container,
+    ToggleButton, 
+    ButtonGroup 
+} from 'react-bootstrap';
 import axios from "axios";
 import DataTable from '../../containers/DataTable/Datatable';
 
-export default class MakeYourChoice extends Component {
+import './action.css';
+
+class MakeYourChoice extends Component {
 
     constructor( props ) {
         super( props );
@@ -22,15 +32,6 @@ export default class MakeYourChoice extends Component {
                 startDate: "",
                 endDate: "",
             },
-            Positions:{
-                FullTime:[],
-                Project:[],
-                PartTime:[],
-                Freelance:[],
-            },
-            jobType: [],
-            JobName: [],
-            internName: [],
             pickDate: [
                 { value: 'disabled', name: 'Choose Date'},
                 { value:  1, name: 'Last month'},
@@ -77,10 +78,15 @@ export default class MakeYourChoice extends Component {
         }
     }
 
+    componentDidMount() {
+        this.onFetchJobTypes();
+        this.onFetchJobPositions();
+    }
+
     handleSubmit(e) {
         e.stopPropagation();
         e.preventDefault();
-        // console.log(this.state.JobName)
+        
         this.state.JobName.map((N, I) => {
             if( this.state.search.positionName === N.Name) {    
                 this.state.jobId = N.Job_Type;
@@ -142,47 +148,9 @@ export default class MakeYourChoice extends Component {
                         },
                     }))
             })
-            .catch (error=>{console.log(error.message)})
-            
+            .catch (error=>{console.log(error.message)})            
         }
     } 
-
-    componentDidMount() {
-        axios.get("https://joblaravel.tbv.cloud/jobtypes").then(response => {
-                // console.log(response.data);
-                this.setState({
-                    jobType:  response.data.filter(positionType => positionType.id !== 5)
-                   })
-                   this.state.jobType.unshift({ value: 'disabled', name: 'Choose Job type'})
-            });
-        axios.get("https://joblaravel.tbv.cloud/jobs",{
-            params: {
-                cid: "1"
-            }
-        })
-            .then(response => {
-                this.setState(prev => ({
-                    ...prev,
-                    internName: response.data.filter(intern => {
-                        return intern.Job_Type === 5
-                    }),
-                    JobName: response.data.filter(job => {
-                        return job.Job_Type !== 5
-                    }),
-                    Positions: {
-                        FullTime: response.data.filter(jobs => jobs.Job_Type === 1),
-                        Project: response.data.filter(jobs => jobs.Job_Type === 2),
-                        PartTime: response.data.filter(jobs => jobs.Job_Type === 3),
-                        Freelance: response.data.filter(jobs => jobs.Job_Type === 4)
-                    }
-                }))
-                this.state.internName.unshift({ value: 'disabled', name: 'Choose specialization'})
-                this.state.Positions.FullTime.unshift({ value: 'disabled', name: 'Choose Job position'})
-                this.state.Positions.Project.unshift({ value: 'disabled', name: 'Choose Job position'})
-                this.state.Positions.PartTime.unshift({ value: 'disabled', name: 'Choose Job position'})
-                this.state.Positions.Freelance.unshift({ value: 'disabled', name: 'Choose Job position'})
-            })  
-    }
 
     //Handle all selections 
     handleSelectionChange = (input, e) => {
@@ -332,20 +300,21 @@ export default class MakeYourChoice extends Component {
 
         let action;
         //distruct state
-        const { jobType, pickDate, internName } = this.state;
+        const { pickDate } = this.state;
+        const { jobType ,internPosition } = this.props;
+        const { fullTime, project ,partTime, freelance } = this.props.positions;
         const { type, positionType, positionName, customDate, intern } = this.state.search;
-        // console.log(this.state.searchResults)
-        console.log(this.state.searchResults)
+
         if( type === "job" ) {
             action =  (
                 <Container  className="respo" >
                     <Form  id="myForm" className="searchForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
                         <Form.Row>
                             { this.renderFormGroup( 'Job Type', positionType, 'positionType', jobType) }
-                            { positionType === "Full Time" ? this.renderFormGroup('Positions', positionName, 'positionName', this.state.Positions.FullTime) : null }
-                            { positionType === "Project" ? this.renderFormGroup('Positions', positionName, 'positionName', this.state.Positions.Project) : null }
-                            { positionType === "Part Time" ? this.renderFormGroup('Positions', positionName, 'positionName',this.state.Positions.PartTime) : null }
-                            { positionType === "Freelance" ? this.renderFormGroup('Positions', positionName, 'positionName', this.state.Positions.Freelance) : null }
+                            { positionType === "Full Time" ? this.renderFormGroup('Positions', positionName, 'positionName', fullTime) : null }
+                            { positionType === "Project" ? this.renderFormGroup('Positions', positionName, 'positionName', project) : null }
+                            { positionType === "Part Time" ? this.renderFormGroup('Positions', positionName, 'positionName', partTime) : null }
+                            { positionType === "Freelance" ? this.renderFormGroup('Positions', positionName, 'positionName', freelance) : null }
               
                             { this.renderFormGroup( 'Date', customDate, 'customDate', pickDate) }
               
@@ -361,7 +330,7 @@ export default class MakeYourChoice extends Component {
                 <Container>
                     <Form  id="myForm" className="searchForm" encType="multipart/form-data" onSubmit={this.handleSubmit.bind(this)}>
                         <Form.Row>  
-                            { this.renderFormGroup("Specialities", intern, "intern", internName) } 
+                            { this.renderFormGroup("Specialities", intern, "intern", internPosition) } 
                             { this.renderFormGroup( 'Date',  customDate, 'customDate', pickDate) }
                             { customDate === "customDate" ? this.renderPickDateRange() : null }  
                         </Form.Row>
@@ -390,3 +359,21 @@ export default class MakeYourChoice extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        jobType: state.candidates.jobTypes.filter(jobType => jobType.id !== 5),
+        positions: state.candidates.positions,
+        jobName: state.candidates.jobName,
+        internPosition: state.candidates.internPosition,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onFetchJobTypes: () => dispatch(actions.fetchJobTypes()),
+        onFetchJobPositions: () => dispatch(actions.fetchJobPositions()),
+    };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( MakeYourChoice );
