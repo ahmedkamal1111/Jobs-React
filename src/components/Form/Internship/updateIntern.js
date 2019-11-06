@@ -1,9 +1,9 @@
- import React, { Component } from 'react';
+import React, { Component } from 'react';
 import Axios from 'axios';
 import "../form.css";
 import DataTable from '../../../containers/DataTable/Datatable'
 
- export default class EditJob extends Component {
+ export default class ViewInternships extends Component {
         constructor(props) {
             super(props)
             this.state = {
@@ -54,7 +54,7 @@ import DataTable from '../../../containers/DataTable/Datatable'
             .then(response => {
                 console.log(response.data)
                 this.setState({
-                    data: response.data.filter(job => job.Job_Type !== 5)
+                    data: response.data.filter(job => job.Job_Type === 5)
                 })
             })
             
