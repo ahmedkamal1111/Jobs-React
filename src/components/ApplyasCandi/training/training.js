@@ -125,7 +125,6 @@ class Training extends Component {
     console.log(event)
     let n = event.target.name;
     let c = event.target.checked;
-    console.log(c)
     this.setState(prevState => ({
        ...prevState, formData:{ ...prevState.formData,[n]: !c } 
       }));
@@ -403,7 +402,6 @@ class Training extends Component {
           </div>
         </div>
         <Footer />
-        { console.log(this.props.specialities) }
       </React.Fragment>
     );
   }

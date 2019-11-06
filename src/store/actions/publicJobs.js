@@ -128,7 +128,7 @@ export const fetchJobApplyData =  () => {
     return async dispatch => {
         await dispatch(loadJobApply());
         try {
-            const uniResponse = await axios.get("https://joblaravel.tbv.cloud/show_universities");
+            const uniResponse = await axios.get("https://joblaravel.tbv.cloud/show_universities");        
             let uni = uniResponse.data.map(item => ({ value: item.id, label: item.Name }));
             const locResponse = await axios.get("https://joblaravel.tbv.cloud/show_locations");
             let loc = locResponse.data.map(item => ({value: item.id, label: item.Name}));
@@ -150,7 +150,6 @@ export const fetchJobApplied = ( jobId ) => {
             let jobName = response.data.filter(i => jobId === i.id).map(i => ({
                 value: i.Name, label: i.Name 
             }));
-            console.log(jobName);
             dispatch( fetchJobNameSuccess( jobName[0]) );
         }).catch(error => {
             dispatch( fetchJobNameFail(error) );
@@ -179,7 +178,6 @@ export const postJobApplyFail = ( error ) => {
 };
 
 export const postJobApply = ( data ) => {
-    const token = localStorage.getItem("token");
     const CID = localStorage.getItem("CID");
     return dispatch => {
         dispatch(postJobApplyLoading());
@@ -188,7 +186,6 @@ export const postJobApply = ( data ) => {
             params:{ CID }
         })
         .then(response => {
-            console.log(response);
             if (!(response.status === 200 || response.status === 201)){
                 throw new Error("Service not available now retry again after some period");
             }

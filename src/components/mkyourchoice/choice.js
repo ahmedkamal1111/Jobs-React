@@ -304,8 +304,12 @@ class MakeYourChoice extends Component {
                     { this.renderToggleButton( type ) }
                     { action }
                     { 
-                        this.props.response === true ? 
-                            <DataTable data={this.props.searchResults} columns={this.state.columns} flag={0}/> 
+                        
+                        this.props.response === true? 
+                            this.props.searchResults.length > 0 ? <DataTable data={this.props.searchResults} columns={this.state.columns} flag={0}/>:
+                            <div className="alert alert-info feedback" role="alert">
+                                not found data for search preferences.
+                            </div> 
                             :
                             this.props.error ?  
                             <div className="alert alert-danger feedback" role="alert">
@@ -317,6 +321,7 @@ class MakeYourChoice extends Component {
                             </div>
                     }
                 </Container>
+                { console.log(this.props.searchResults)}
             </main>          
         );
     }

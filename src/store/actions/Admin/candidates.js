@@ -98,13 +98,13 @@ export const filter = ( data ) => {
         dispatch(loadFiltering());
         axios.post("https://joblaravel.tbv.cloud/filter", data ,{
             params:{ CID },
-            headers: { Authorization: token }
+            headers: { 'Authorization' : token }
         })
         .then(response => {
             dispatch(filterSuccess(response.data));
         })
         .catch(error => {
             dispatch(filterFail(error));
-        })
+        });
     };
 };

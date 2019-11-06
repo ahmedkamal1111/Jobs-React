@@ -123,12 +123,17 @@ class DataTable extends Component {
                       </div>
                       
                       <div className={styles.cv}>  
-
-                        <FileViewer
-                          fileType={rowData.ext.replace(".","")}
-                          filePath={"http://joblaravel.tbv.cloud/tt/cvs/" + rowData.offline_cv}
-                        />
-                                        
+                        {
+                          rowData.offline_cv && rowData.ext ?
+                          <FileViewer
+                            fileType={rowData.ext ? rowData.ext.replace(".",""): "pdf"}
+                            filePath={"http://joblaravel.tbv.cloud/tt/cvs/" + rowData.offline_cv}
+                          />:
+                          <div className="alert alert-danger feedback" role="alert">
+                              CV not found
+                          </div>
+                        }
+                                      
                       </div>   
                     </div>
                   )
