@@ -12,8 +12,17 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import WorkIcon from '@material-ui/icons/Work';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import EditIcon from '@material-ui/icons/Edit';
+import BusinessIcon from '@material-ui/icons/Business';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import PeopleIcon from '@material-ui/icons/People';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -288,7 +297,7 @@ const  Dashboard = props => {
                link.text === "Candidates" ?  <div>
                <Link to={link.to} key={link.text + index}>
                <ListItem button onClick={handleClick} >
-                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"small"}/> : <MailIcon fontSize={"small"}/>}</ListItemIcon>
+                 <ListItemIcon> <PeopleIcon fontSize={"small"}/></ListItemIcon>
                  <ListItemText primary={link.text} />
                  {open1 ? <ExpandLess /> : <ExpandMore />}
                </ListItem>
@@ -301,7 +310,7 @@ const  Dashboard = props => {
         
               <ListItem button className={classes.nested}>
                 <ListItemIcon>
-                  <StarBorder fontSize={"small"}/>
+                  <ScheduleIcon fontSize={"small"}/>
                 </ListItemIcon>
         
                 <ListItemText primary={link.nested.text} />
@@ -318,7 +327,7 @@ const  Dashboard = props => {
            link.text === "Jobs" ?  <div>
            <Link to={link.to} key={link.text + index}>
            <ListItem button onClick={handleClick} >
-             <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"small"}/> : <MailIcon fontSize={"small"}/>}</ListItemIcon>
+             <ListItemIcon><WorkIcon fontSize={"small"}/></ListItemIcon>
              <ListItemText primary={link.text} />
              {open1 ? <ExpandLess /> : <ExpandMore />}
            </ListItem>
@@ -332,7 +341,7 @@ const  Dashboard = props => {
     
                     <ListItem button className={classes.nested}>
                       <ListItemIcon>
-                        <StarBorder fontSize={"small"}/>
+                        {item.text.includes("Add") ? <AddCircleIcon fontSize={"small"}/> : <VisibilityIcon fontSize={"small"} />}
                       </ListItemIcon>
               
                       <ListItemText primary={item.text} />
@@ -353,7 +362,7 @@ const  Dashboard = props => {
     
               <ListItem button >
               
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon fontSize={"small"}/> : <MailIcon fontSize={"small"}/>}</ListItemIcon>
+                <ListItemIcon><ListItemIcon ><AccountCircleIcon fontSize={"small"}/></ListItemIcon> </ListItemIcon>
               
                 <ListItemText primary={link.text} />
                           
@@ -394,7 +403,7 @@ const  Dashboard = props => {
             
               <ListItem button >
             
-                <ListItemIcon > {index % 2 === 0 ? <InboxIcon fontSize={"small"}/> : <MailIcon fontSize={"small"}/>}</ListItemIcon>
+                <ListItemIcon ><BusinessIcon fontSize={"small"}/></ListItemIcon>
             
                 <ListItemText primary={link.text} />
             
