@@ -69,6 +69,7 @@ export const createPassFail = ( error ) => {
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('name');
     return {
@@ -79,8 +80,8 @@ export const logout = () => {
 export const checkAuthTimeout = (expirationTime) => {
     return dispatch => {
         setTimeout(() => {
-            dispatch(logout());
-        }, expirationTime * 60 * 1000);
+            dispatch(checkAuthTimeout());
+        }, (expirationTime * 60 * 1000) - 60);
     };
 };
 
@@ -125,7 +126,7 @@ export const confirmLogin = (email, password) => {
                   throw new Error("Invalid email or Password");
                 }
 
-                const expirationDate = new Date(new Date().getTime() +  response.data.duration * 60 * 1000);
+                const expirationDate = new Date(new Date().getTime() + response.data.duration * 60 * 1000);
                 localStorage.setItem('token', response.data.tokenEncoded);
                 localStorage.setItem('refreshToken', response.data.refreshToken);
                 localStorage.setItem('expirationDate', expirationDate);
@@ -133,7 +134,7 @@ export const confirmLogin = (email, password) => {
                 localStorage.setItem('name', response.data.user.Name);
                 localStorage.setItem('userId', response.data.user.usr_id);
                 dispatch(confirmLoginSuccess(response.data.user));
-                dispatch(checkAuthTimeout(response.data.duration));
+                dispatch(checkAuthTimeout( response.data.duration ));
             }
         })
         .catch(error => {
@@ -198,17 +199,16 @@ export const authRedirectPath = ( path ) => {
     };
 };
 
-export const refresh =  () => {
-    const CID = localStorage.getItem("CID");
-    const refreshToken = localStorage.getItem("refreshToken");
+export const refresh =  ( refreshToken ) => {
+    console.log(refreshToken);
+    console.log("Refresh Load");
     return dispatch => {
-        axios.post("URL", {
-            params: { CID },
-            headers: {
-                Authorization: refreshToken
-            }
+        axios.post("https://joblaravel.tbv.cloud/refresh" , {}, {
+            headers: { 'Authorization' : refreshToken }
         })
         .then(response => {
+            console.log("Refresh Working");
+            console.log(response);
             if( response.status === 422 ) {
                 throw new Error("Validation Failed.");
             }
@@ -226,7 +226,6 @@ export const refresh =  () => {
             dispatch(checkAuthTimeout(response.data.duration));
         })
         .catch(error => {
-            localStorage.removeItem('refreshToken');
             dispatch(logout());
         });
     }  
@@ -236,12 +235,20 @@ export const checkAuthState = () => {
     return dispatch => {
         const token = localStorage.getItem('token');
         const expirationDate = new Date(localStorage.getItem('expirationDate'));
-        if (!token && expirationDate <= new Date()) {
-            dispatch(refresh());
+        if (!token) {
+            dispatch(logout());
         } else {
             const CID = localStorage.getItem('CID');
             const userId = localStorage.getItem('userId');
             const name = localStorage.getItem('name');
+            if ( expirationDate.getTime() - new Date().getTime() <= 60 ) {
+                const refreshToken = localStorage.getItem('refreshToken', userId, name);
+                if(refreshToken) {
+                    dispatch(refresh(refreshToken));
+                } else {
+                    dispatch(logout());
+                }
+            }
             const payload = {
                 usr_id: userId,
                 tokenEncoded: token,
