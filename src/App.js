@@ -3,7 +3,7 @@ import { Switch ,Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import LoginPage from './containers/Auth/Login';
-import ErrorHandler from './components/ErrorHandler/ErrorHandler';
+// import ErrorHandler from './components/ErrorHandler/ErrorHandler';
 import Backdrop from './components/Backdrop/Backdrop';
 import PinLogin from './containers/Auth/PinLogin';
 import ConfirmLogin from './containers/Auth/ConfirmLogin';
@@ -18,6 +18,9 @@ class App extends Component {
     super( props )
     this.state = {
       showBackdrop: false,
+      authError: null,
+      infoError: null,
+      candidatesError: null,
     };
   }
 
@@ -64,7 +67,7 @@ class App extends Component {
         </Switch>  
       );
     }
-  
+
     return (
       <Fragment>
 
@@ -72,7 +75,7 @@ class App extends Component {
           <Backdrop onClick={ this.backdropClickHandler } />
         )}
       
-        <ErrorHandler error={ this.props.error } handleError={ this.errorHandler } />
+        {/* <ErrorHandler error={ infoError ? null : authError ? authError : candidatesError } handleError={ this.errorHandler } /> */}
         
         {routes}
 
@@ -86,7 +89,9 @@ const mapStateToProps = state => {
     isAuth: state.auth.token !== null,
     authorize: state.auth.authorize,
     userId: state.auth.userId && true,
-    error: state.company.info.error
+    InfoError: state.company.error,
+    authError: state.auth.error,
+    candidatesError: state.jobs.error,
   };
 };
 

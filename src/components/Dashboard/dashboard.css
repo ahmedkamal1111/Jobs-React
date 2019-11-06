@@ -27,3 +27,13 @@
 .logout:hover {
   color: rgb(216, 213, 213);
 }
+
+.log { 
+  list-style: none;
+  display: flex;
+  margin: 0;
+  width: 215px;
+  padding: 0;
+  justify-content: space-between;
+  align-items: baseline;
+}
