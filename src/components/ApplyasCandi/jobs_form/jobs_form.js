@@ -434,7 +434,7 @@ class jobs_form extends Component {
 const mapStateToProps = state => {
   return {
     CID: state.company.info.cid,
-    jobs: state.jobs.filter(job => job.Job_Type !== 5),
+    jobs: state.jobs.jobs,
     universities: state.jobs.universities,
     locations: state.jobs.locations,
     genders: state.jobs.genders,

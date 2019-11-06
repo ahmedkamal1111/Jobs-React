@@ -165,7 +165,10 @@ const  Dashboard = props => {
 
         <Navbar.Collapse className="justify-content-end">
             <Navbar.Text className="float-right">
-              <p className="logout" onClick={handleLogout}>Logout</p>
+              <ul className="log">
+                <li><p> Welcome {props.name} </p></li>
+                <li><p className="logout" onClick={handleLogout}>Logout</p></li>
+              </ul>
             </Navbar.Text>
         </Navbar.Collapse>
 
@@ -338,6 +341,7 @@ const mapStateToProps = state => {
     param: state.company.param,
     isAuth: state.auth.token !== null,
     userId: state.auth.userId,
+    name: state.auth.name,
   };
 };
 

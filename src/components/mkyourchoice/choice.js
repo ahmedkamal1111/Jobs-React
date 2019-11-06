@@ -9,7 +9,6 @@ import {
     ToggleButton, 
     ButtonGroup 
 } from 'react-bootstrap';
-import axios from "axios";
 import DataTable from '../../containers/DataTable/Datatable';
 
 import './action.css';
@@ -19,10 +18,7 @@ class MakeYourChoice extends Component {
     constructor( props ) {
         super( props );
         this.state = {
-            isLoading: false,
             jobId: null,
-            searchResults:[],
-            response: false,
             search: {
                 type: '',
                 positionType: "disabled",
@@ -74,81 +70,41 @@ class MakeYourChoice extends Component {
                   filterPlaceholder: 'Location',
                   editable: 'never'  
                 }
-              ],
+            ],
         }
     }
 
     componentDidMount() {
-        this.onFetchJobTypes();
-        this.onFetchJobPositions();
+        if (this.props.jobType.length <= 1) {
+            this.props.onFetchJobTypes();
+            this.props.onFetchJobPositions();
+        }
     }
 
     handleSubmit(e) {
         e.stopPropagation();
         e.preventDefault();
-        
-        this.state.JobName.map((N, I) => {
+        this.props.jobName.map((N, I) => {
             if( this.state.search.positionName === N.Name) {    
                 this.state.jobId = N.Job_Type;
             }
             return true;
         })
-
+        
         // this.checkDate();
-        if(this.state.search.type === "job") {
-            axios.post("https://joblaravel.tbv.cloud/filter",{
-                jobType: this.state.jobId,
-                jobName: this.state.search.positionName,
-                startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
-                endDate: this.state.search.endDate ? this.state.search.endDate : this.state.search.customDate,
-
-            },{
-                params:{
-                    CID: "1",
-                }
-            })
-               .then(response => {
-                this.setState(prev => ({
-                    ...prev,
-                    searchResults: response.data,
-                    response: true,
-                    search:{
-                        ...prev.search,
-                        startDate: null,
-                        endDate: null,
-                        customDate: "disabled",
-                    },
-                }))
-            })
-            .catch (error=>{console.log(error.message)})
-            
-        }
-
-        if( this.state.search.type === "intern" ) {
-            axios.post("https://joblaravel.tbv.cloud/filter",{
-                jobType:  5,
-                jobName: this.state.search.intern,
-                startDate: this.state.search.startDate ?  this.state.search.startDate : null ,
-                endDate: this.state.search.endDate ? this.state.search.endDate: this.state.search.customDate,
-            },  {
-                params: {
-                    CID: "1",
-                }
-            })
-               .then(response => {
-                    this.setState(prev => ({
-                        ...prev,
-                        searchResults: response.data,
-                        response: true,
-                        search:{
-                            ...prev.search,
-                            startDate: null,
-                            endDate: null,
-                            customDate: "disabled",
-                        },
-                    }))
-            })
-            .catch (error=>{console.log(error.message)})            
+        let jobName;
+        let jobType;
+        const startDate = this.state.search.startDate ?  this.state.search.startDate : null;
+        const endDate = this.state.search.endDate ? this.state.search.endDate : this.state.search.customDate;
+        if ( this.state.search.type === "job") {
+            jobType = this.state.jobId;
+            jobName = this.state.search.positionName;
+            this.props.onFilter({jobType, jobName, startDate, endDate});
+        }   
+        if  ( this.state.search.type === "intern" ) {
+            jobType = 5;
+            jobName = this.state.search.intern;
+            this.props.onFilter({jobType, jobName, startDate, endDate});
         }
     } 
 
@@ -213,8 +169,9 @@ class MakeYourChoice extends Component {
 
         let v = false;
         
-        if ( ( (positionType !== "disabled" && positionName !== "disabled") || intern !== "disabled") && (customDate !== "disabled" || (endDate && startDate))) {
+        if ( ( (positionType !== "disabled" && positionName !== "disabled") || intern !== "disabled") && (customDate !== "disabled" || (endDate || startDate))) {
             v = true;
+            console.log(this.state.search);
         }
         
         return (
@@ -347,9 +304,14 @@ class MakeYourChoice extends Component {
                     { this.renderToggleButton( type ) }
                     { action }
                     { 
-                        this.state.response === true ? 
-                            <DataTable data={this.state.searchResults} columns={this.state.columns} flag={0}/> 
+                        this.props.response === true ? 
+                            <DataTable data={this.props.searchResults} columns={this.state.columns} flag={0}/> 
                             :
+                            this.props.error ?  
+                            <div className="alert alert-danger feedback" role="alert">
+                                { this.props.error }, service is not available now.
+                            </div>
+                            : 
                             <div className="alert alert-info feedback" role="alert">
                                 Choose your search preferences first.
                             </div>
@@ -362,10 +324,14 @@ class MakeYourChoice extends Component {
 
 const mapStateToProps = state => {
     return {
-        jobType: state.candidates.jobTypes.filter(jobType => jobType.id !== 5),
+        jobType: state.candidates.jobTypes,
         positions: state.candidates.positions,
         jobName: state.candidates.jobName,
         internPosition: state.candidates.internPosition,
+        searchResults: state.candidates.searchResults,
+        response: state.candidates.response,
+        loading: state.candidates.loading,
+        error: state.candidates.error,
     };
 };
 
@@ -373,6 +339,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onFetchJobTypes: () => dispatch(actions.fetchJobTypes()),
         onFetchJobPositions: () => dispatch(actions.fetchJobPositions()),
+        onFilter: (data) => dispatch(actions.filter(data)),
     };
 };
 

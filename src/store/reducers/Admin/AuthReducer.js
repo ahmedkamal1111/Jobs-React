@@ -7,6 +7,7 @@ const initialState = {
     token: null,
     refreshToken: null,
     userId: null,
+    name: null,
     priv: null,
     uprofile: null,
     error: null,
@@ -35,7 +36,7 @@ const loginSuccess = (state, action) => {
 const loginFail = ( state, action ) => {
     return {
         ...state,
-        error: action.error,
+        error: action.error.message,
         isLoading: false
     };
 };
@@ -47,6 +48,7 @@ const confirmLoginSuccess = (state, action) => {
         CID: action.payload.CID,
         token: action.payload.api_token,
         userId: action.payload.usr_id,
+        name: action.payload.Name,
         priv: action.payload.priv,
         uprofile: action.payload.uprofile,
         error: null,
@@ -70,6 +72,7 @@ const createPassSuccess = (state, action) => {
         CID: action.payload.CID,
         token: action.payload.api_token,
         userId: action.payload.user_id,
+        name: action.payload.name,
         priv: action.payload.priv,
         uprofile: action.payload.uprofile,
         error: null,
@@ -110,6 +113,7 @@ const authLogout = (state, action) => {
         authorize: null,
         CID: null,
         token: null,
+        name: null,
         userId: null,
         priv: null,
         uprofile: null,

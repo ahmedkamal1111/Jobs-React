@@ -32,7 +32,7 @@ const fetchJobsSuccess = (state, action) => ({
 
 const fetchJobsFail = (state, action) => ({
     ...state,
-    error: action.error,
+    error: action.error.message,
     isLoading: false
 });
 
@@ -54,7 +54,7 @@ const fetchJobDetailSuccess = (state, action) => ({
 
 const fetchJobDetailFail = (state, action) => ({
     ...state,
-    error: action.error,
+    error: action.error.message,
     isLoading: false
 });
 

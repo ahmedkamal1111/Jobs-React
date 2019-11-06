@@ -56,17 +56,55 @@ export const getJobsFail = error => {
 };
 
 export const fetchJobPositions = () => {
-    const CID = localStorage.getItem("CID");
+    const cid = localStorage.getItem("CID");
     return dispatch => {
         dispatch(loadJobPositions());
         axios.get("https://joblaravel.tbv.cloud/jobs", {
             params: {
-                CID
+                cid
             }
         }).then(response => {
             dispatch(getJobsSuccess(response.data));
         }).catch(error => {
             dispatch(getJobsFail(error));
+        })
+    };
+};
+
+export const loadFiltering = () => {
+    return {
+        type: actionTypes.FILTER_LOADING,
+    };
+};
+
+export const filterSuccess = ( candidates ) => {
+    return {
+        type: actionTypes.FILTER_SUCCESS,
+        candidates,
+    };
+};
+
+export const filterFail = ( error ) => {
+    return {
+        type: actionTypes.FILTER_FAIL,
+        error,
+    };
+};
+
+export const filter = ( data ) => {
+    const token = localStorage.getItem("token");
+    const CID = localStorage.getItem("CID");
+    return dispatch => {
+        dispatch(loadFiltering());
+        axios.post("https://joblaravel.tbv.cloud/filter", data ,{
+            params:{ CID },
+            headers: { Authorization: token }
+        })
+        .then(response => {
+            dispatch(filterSuccess(response.data));
+        })
+        .catch(error => {
+            dispatch(filterFail(error));
         })
     };
 };
