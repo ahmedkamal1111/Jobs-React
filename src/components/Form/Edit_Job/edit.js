@@ -52,7 +52,6 @@ import DataTable from '../../../containers/DataTable/Datatable'
                 }
             })
             .then(response => {
-                console.log(response.data)
                 this.setState({
                     data: response.data.filter(job => job.Job_Type !== 5)
                 })

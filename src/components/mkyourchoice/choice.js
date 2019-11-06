@@ -171,7 +171,6 @@ class MakeYourChoice extends Component {
         
         if ( ( (positionType !== "disabled" && positionName !== "disabled") || intern !== "disabled") && (customDate !== "disabled" || (endDate || startDate))) {
             v = true;
-            console.log(this.state.search);
         }
         
         return (
@@ -321,7 +320,6 @@ class MakeYourChoice extends Component {
                             </div>
                     }
                 </Container>
-                { console.log(this.props.searchResults)}
             </main>          
         );
     }
