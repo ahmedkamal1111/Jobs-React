@@ -6,9 +6,7 @@ export default class Interview extends Component {
     val: { type: "-1" }
   };
   handleSelect(event) {
-    console.log(event.target.name);
     if (event.target.name === "kind") {
-      console.log(event.target.options[event.target.selectedIndex].value);
       this.setState({
         val: { type: event.target.options[event.target.selectedIndex].value }
       });

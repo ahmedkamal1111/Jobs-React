@@ -3,14 +3,7 @@ import Axios from 'axios';
 import '../form.css';
 import {
     Heading,
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    FormHelperText,
-    Input,
-    Button
 } from "@chakra-ui/core";
-import Select from "react-select";
 
 export default class CreateInternship extends Component {
     constructor() {
@@ -22,7 +15,6 @@ export default class CreateInternship extends Component {
     componentDidMount() {
         Axios.get("https://joblaravel.tbv.cloud/jobtypes")
             .then(response => {
-                console.log(response.data.filter(i => i.id === 5))
                 const internship = response.data.filter(i => i.id === 5)
                 this.setState(prevState => ({
                     ...prevState,
@@ -50,9 +42,6 @@ export default class CreateInternship extends Component {
                         })}
                     </select>
                     <input type="text" placeholder="Speciality" className="form-control mt-3"></input>
-                  
-
-
                 </div>
             </div>
 

@@ -30,10 +30,8 @@ export default class AddJob extends Component {
       }
     componentDidMount() {
         axios.get("https://joblaravel.tbv.cloud/interview_status").then(response => {
-            console.log(response.data);
         });
             axios.get("https://joblaravel.tbv.cloud/jobtypes").then(response => {
-                console.log(response.data);
                 this.setState({
                     jobtype: response.data
                    })
@@ -44,7 +42,6 @@ export default class AddJob extends Component {
           const data= new FormData(document.getElementById("myForm"));
           axios.post("https://joblaravel.tbv.cloud/storeJob/1", data)
           .then(response => {
-            console.log(response.data);
             if(response.data)
             {
              

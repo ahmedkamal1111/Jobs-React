@@ -26,18 +26,6 @@ import DataTable from '../../../containers/DataTable/Datatable'
                       filterPlaceholder: 'Date',
                     //   editable: 'never',  
                     },
-                    // { 
-                    //   title: 'Responsibilities', 
-                    //   field: 'Respo', 
-                    //   filterPlaceholder: 'Status',
-                  
-                    // },
-                    // { 
-                    //   title: 'Skills', 
-                    //   field: 'Skills', 
-                    //   filterPlaceholder: 'Location',
-                    //   editable: true, 
-                    // }
                   ],
                   data: [],
             }
@@ -52,7 +40,6 @@ import DataTable from '../../../containers/DataTable/Datatable'
                 }
             })
             .then(response => {
-                console.log(response.data)
                 this.setState({
                     data: response.data.filter(job => job.Job_Type === 5)
                 })

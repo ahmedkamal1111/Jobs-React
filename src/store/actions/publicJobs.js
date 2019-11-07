@@ -104,7 +104,6 @@ export const fetchJobs = ( CID ) => {
 };
 
 export const fetchJobDetail = ( cid , jobId ) => {
-    console.log(cid, jobId);
     return dispatch => {
         dispatch(loadJobDetail());
         axios.get("https://joblaravel.tbv.cloud/job-detail", {

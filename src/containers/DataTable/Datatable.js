@@ -37,7 +37,6 @@ class DataTable extends Component {
   render () {
   
     let hide = false;
-    console.log( this.props.data )
     if ( this.state.selected ) {
       hide = true;
       
