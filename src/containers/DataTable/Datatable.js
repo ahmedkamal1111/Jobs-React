@@ -127,7 +127,7 @@ class DataTable extends Component {
                           rowData.offline_cv && rowData.ext ?
                           <FileViewer
                             fileType={rowData.ext ? rowData.ext.replace(".",""): "pdf"}
-                            filePath={"http://joblaravel.tbv.cloud/tt/cvs/" + rowData.offline_cv}
+                            filePath={"https://joblaravel.tbv.cloud/tt/cvs/" + rowData.offline_cv}
                           />:
                           <div className="alert alert-danger feedback" role="alert">
                               CV not found

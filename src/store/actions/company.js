@@ -26,7 +26,7 @@ export const companyInfoFail = ( error ) => {
 export const fetchCompanyInfo = ( param ) => {
     return dispatch => {
         dispatch(loadCompanyInfo());
-        axios.get(`http://joblaravel.tbv.cloud/aa/${param}`)
+        axios.get(`https://joblaravel.tbv.cloud/aa/${param}`)
         .then(response => {
             if(!response.data.success) {
                 throw new Error("Sorry, you are not subscribe");
