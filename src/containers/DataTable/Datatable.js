@@ -35,7 +35,6 @@ class DataTable extends Component {
   }
 
   render () {
-  
     let hide = false;
     if ( this.state.selected ) {
       hide = true;
@@ -110,6 +109,7 @@ class DataTable extends Component {
                 icon: 'description',
                 tooltip: 'Show CV',
                 render: rowData => {
+                  console.log(rowData.ext)
                   return (
                     <div className={styles.PDF}>
                       
@@ -123,9 +123,10 @@ class DataTable extends Component {
                       
                       <div className={styles.cv}>  
                         {
+                         
                           rowData.offline_cv && rowData.ext ?
                           <FileViewer
-                            fileType={rowData.ext ? rowData.ext.replace(".",""): "pdf"}
+                            fileType={rowData.ext.replace(".","")}
                             filePath={"https://joblaravel.tbv.cloud/tt/cvs/" + rowData.offline_cv}
                           />:
                           <div className="alert alert-danger feedback" role="alert">

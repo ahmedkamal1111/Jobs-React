@@ -7,11 +7,12 @@ import store from './store/configureStore';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
+import ReactNotifications from 'react-notifications-component';
 
 const Root = (
     <Provider store={store}>
         <Router>
+            <ReactNotifications />
             <App />
         </Router>
     </Provider>
