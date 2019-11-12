@@ -43,6 +43,7 @@ export default class CreateJob extends Component {
                     <input type="text" placeholder="Job Title" className="form-control mt-3"></input>
                     <input type="text" placeholder="Skills" className="form-control mt-3"></input>
                     <input type="text" placeholder="Responsibilities" className="form-control mt-3"></input>
+                    <input type="submit" className="btn btn-primary"></input>
                   
 
                 </div>

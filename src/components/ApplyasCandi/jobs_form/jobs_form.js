@@ -19,6 +19,9 @@ import "moment/locale/it.js";
 import "react-datepicker/dist/react-datepicker.css";
 import "moment/locale/fr.js";
 import "moment/locale/es.js";
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
 
 class jobs_form extends Component {
   constructor(props) {
@@ -178,6 +181,36 @@ class jobs_form extends Component {
     console.log(this.state.formData.Location);
     console.log(this.state.formData.ff);
     this.props.onPostJobApply(data);
+    this.setState(prevState =>({
+      ...prevState,
+      formData:{
+        Name: '',
+        Email: '',
+        Mobile: '',
+        LinkedIn: '',
+        Gender: "",
+        Location: "",
+        university: "",
+        Onlinecv: "",
+        Dateofbirth: "",
+        ff: "",
+        salary: '',
+      },
+    }))
+  
+    store.addNotification({
+      title: "Thanks",
+      message: "Date Sent Successfully",
+      width: 195,
+      type: "success",
+      container: "bottom-right",
+      animationIn: ["animated","fadeIn"],
+      animationOut: ["animated","fadeOut"],
+      dismiss:{
+        duration: 4000,
+        onScreen: true
+      }
+    })
   }
 
   render() {

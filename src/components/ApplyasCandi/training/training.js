@@ -12,6 +12,9 @@ import Footer from "../footer/footer";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import "./training.css";
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import 'animate.css';
 
 class Training extends Component {
   constructor(props) {
@@ -73,6 +76,34 @@ class Training extends Component {
     data.append('JobType',this.state.formData.jobType)
     data.append("ff", this.state.formData.ff)
     this.props.onPostJobApply( data );
+    this.setState(prevState =>({
+      ...prevState,
+      formData:{
+        Name: '',
+        Email: '',
+        Mobile: '',
+        LinkedIn: '',
+        Gender: "",
+        Location: "",
+        university: "",
+        Onlinecv: "",
+        Dateofbirth: "",
+        ff: "",
+      },
+    }))
+    store.addNotification({
+      title: "Thanks",
+      message: "Date Sent Successfully",
+      width: 195,
+      type: "success",
+      container: "bottom-right",
+      animationIn: ["animated","fadeIn"],
+      animationOut: ["animated","fadeOut"],
+      dismiss:{
+        duration: 4000,
+        onScreen: true
+      }
+    })
   }
 
   handleChange = (e) => {
