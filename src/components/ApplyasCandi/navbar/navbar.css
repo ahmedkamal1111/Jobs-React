@@ -42,4 +42,5 @@ html {
 
 a:hover {
   text-decoration: none !important;
+  color: rgb(221, 221, 221) !important;
 }
