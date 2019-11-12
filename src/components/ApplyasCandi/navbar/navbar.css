@@ -1,32 +1,37 @@
 .navitemcolor {
   color: white !important;
   font-weight: bold;
-  padding-right: 10px;
-  padding-left: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 .navbar {
   background-color: #484848;
   z-index: 1000;
   width: 100%;
   margin: auto;
+  padding-left: 60px;
   font-family: 'Graphik', sans-serif;
 }
 
 .logo {
   color: #fff;
   font-size: 30px;
+  width: 60px;
+  height: 60px;
   border: none;
   padding: 0;
   font-weight: 500;
   line-height: 1.7;
+  margin-top: 5px;
 }
 
+.subLogo {
+  display: inline;
+  padding: 5px 0 0;
+}
 .navbar-brand {
-  padding-left: 2%;
-  padding-top: 0;
-  padding-bottom: 0; 
-  margin-right: 0; 
-  font-size: 0;
+  padding-left: 20px; 
+  display: inline;
 }
 
 .navbar-collapse {

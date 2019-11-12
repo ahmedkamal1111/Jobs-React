@@ -1,12 +1,12 @@
 .gridCoverContainer {
     display: grid;
-    padding: 115px 80px 0 80px;
+    padding: 110px 42px 0 43px;
     background: rgb(69,93,111);
     background: linear-gradient(90deg, rgba(69,93,111,1) 0%, rgba(69,93,111,1) 35%, rgba(0,212,255,1) 100%);
     grid-template-columns: 1fr 2fr;
     grid-template-areas: "left right";
-    grid-template-rows: 42vh;
-    grid-column-gap: 75px;
+    grid-template-rows: 43vh;
+    grid-column-gap: 90px;
     font-family: Graphik, sans-serif;
 }
 

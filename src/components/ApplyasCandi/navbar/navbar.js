@@ -35,10 +35,15 @@ class CustomNav extends React.Component {
       <div>
         <Navbar id="navbar" expand="md" className="navstyle">
                
-              <h1 className="logo">
-                { this.props.CompanyName }
-              </h1> 
-      
+          <h1 className="logo">
+            <h2 className="subLogo">
+              LOGO
+            </h2>
+            <h5 className="navbar-brand">
+              { this.props.CompanyName }
+            </h5>  
+          </h1> 
+          
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto navitemsstyle" navbar>
               <NavItem>
@@ -56,7 +61,6 @@ class CustomNav extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    param: state.company.param,
     CompanyName: state.company.info.Name,
     url: state.company.info.homepage
   };
