@@ -46,7 +46,7 @@ class Joinus extends Component {
 
           <Tabs
             defaultActiveKey="JOBS"
-            className="nav-justified"
+            className="nav-justified tabs"
             id="uncontrolled-tab-example"
           >
           

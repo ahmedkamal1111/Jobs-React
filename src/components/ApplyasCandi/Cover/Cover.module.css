@@ -5,7 +5,7 @@
     background: linear-gradient(90deg, rgba(69,93,111,1) 0%, rgba(69,93,111,1) 35%, rgba(0,212,255,1) 100%);
     grid-template-columns: 1fr 2fr;
     grid-template-areas: "left right";
-    grid-template-rows: 42vh;
+    grid-template-rows: 30vh;
     grid-column-gap: 75px;
     font-family: Graphik, sans-serif;
 }
@@ -48,7 +48,6 @@
         padding-top: 45px;
         grid-template-columns: 1fr;
         grid-template-areas: "left" "right";
-        grid-template-rows: 28vh;
         grid-column-gap: 75px;
         font-family: Graphik, sans-serif;
     }
@@ -59,7 +58,6 @@
     .gridCoverContainer {
         grid-template-columns: 1fr;
         grid-template-areas: "left" "right";
-        grid-template-rows: 28vh;
         grid-column-gap: 75px;
         font-family: Graphik, sans-serif;
     }
@@ -67,6 +65,10 @@
     .gridLeftInfo h1 {
         font-size: 34px;
     }
-    
+
+    .gridRightInfo {
+        grid-area: right;
+        padding-top: 0;
+    }
     
   }
