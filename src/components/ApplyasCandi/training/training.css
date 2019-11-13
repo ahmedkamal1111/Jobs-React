@@ -1,7 +1,6 @@
 .titlestyle {
   color: #000;
   font-family: 'Graphik', sans-serif;
-  width: 800px !important;
   text-align: center;
   padding-bottom: 10px;
 }
@@ -36,4 +35,8 @@
 
 .sendbtn:hover {
   background-color: #040a44ed;
+}
+
+.container {
+  width: 100% !important;
 }
