@@ -11,6 +11,8 @@ import Dashboard from './components/Dashboard/dashboard';
 import Joinus from './components/ApplyasCandi/joinus/joinus';
 import JobDetails from './components/ApplyasCandi/JobDetails/JobDetails';
 import JobForm from './components/ApplyasCandi/jobs_form/jobs_form';
+import Intro from './components/ServiceIntro/Intro';
+
 
 class App extends Component {
   
@@ -38,6 +40,7 @@ class App extends Component {
         <Route path="/aa/:anything/dashboard" component={Dashboard} />
         {/* <Route path="/aa/:anything/confirmlogin" component={ConfirmLogin} /> */}
         <Route path="/aa/:anything" exact component={Joinus} />
+        <Route path="/" component={Intro} />
       </Switch>
     );
 
