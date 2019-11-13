@@ -4,23 +4,6 @@
   left: 600px;
 }
 
-.cover {
-  height: 46vh;
-}
-
 .tabstyle {
   padding: 6px 200px !important;
-}
-
-@media (max-width: 900px) {
-  .tabs {
-    margin-top: 10rem;
-  }
-}
-
-
-@media (max-width: 600px) {
-  .tabs {
-    margin-top: 8rem;
-  }
 }

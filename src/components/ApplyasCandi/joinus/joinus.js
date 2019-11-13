@@ -39,10 +39,8 @@ class Joinus extends Component {
         <React.Fragment>
           
           <Navbar />
-
-          <div className="cover" >
-            <Cover />
-          </div>
+          
+          <Cover />
 
           <Tabs
             defaultActiveKey="JOBS"
@@ -51,7 +49,7 @@ class Joinus extends Component {
           >
           
             <Tab eventKey="JOBS" title="JOBS">
-              <Jobs /> 
+              {/* <Jobs />  */}
             </Tab>
             
             <Tab eventKey="Hands on training" title="Training">

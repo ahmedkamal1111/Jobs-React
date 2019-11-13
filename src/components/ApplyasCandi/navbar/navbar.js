@@ -55,17 +55,7 @@ class CustomNav extends React.Component {
                   Services
                 </a>
               </NavItem>
-              <NavItem>
-                <a href="#projects" className="navitemcolor">
-                  Clients&Projects
-                </a>
-              </NavItem>
-
-              <NavItem>
-                <a href="#newscomponent" className="navitemcolor">
-                  News
-                </a>
-              </NavItem>
+            
               <NavItem>
                 <NavLink to={`/aa/${this.props.param}/contact-us`} className="navitemcolor">
                   Contact
