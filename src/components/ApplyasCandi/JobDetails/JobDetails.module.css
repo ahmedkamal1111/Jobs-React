@@ -7,7 +7,7 @@
 .gridDetailsContainer {
   display: grid;
   grid-template-columns: 100%;
-  grid-auto-rows: 60vh 220px auto 55px;
+  /* grid-auto-rows: 60vh 220px auto 55px; */
   grid-template-areas: "Navbar" "header" "main" "footer";
 }
 
@@ -21,7 +21,6 @@
 }
 
 .gridDetailsContainer .gridHeader .headCont {
-  width: 700px;
   margin-top: 60px;
   line-height: 1.5;
   font-family: 'Graphik', sans-serif;
@@ -57,9 +56,6 @@
   min-height: 385px;
 }
 
-.gridDetailsContainer .gridMain .mainCont {
-  width: 700px;
-}
 
 .gridDetailsContainer .gridMain .mainCont h3 {
   line-height: 1.5;
