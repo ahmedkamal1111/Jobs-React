@@ -162,6 +162,7 @@ class jobs_form extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    const param = this.props.match.params.anything;
     const data = new FormData()
     data.set('Name',this.state.formData.Name)
     data.append('Email',this.state.formData.Email)
@@ -201,16 +202,19 @@ class jobs_form extends Component {
     store.addNotification({
       title: "Thanks",
       message: "Date Sent Successfully",
-      width: 195,
+      width: 225,
       type: "success",
-      container: "bottom-right",
+      container: "top-right",
       animationIn: ["animated","fadeIn"],
       animationOut: ["animated","fadeOut"],
+      isMobile: true,
+   
       dismiss:{
-        duration: 4000,
-        onScreen: true
+        duration: 900,
+        click: true,
       }
     })
+    this.props.history.push(`/aa/${param}`)
   }
 
   render() {

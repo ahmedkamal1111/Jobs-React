@@ -42,6 +42,9 @@ class Training extends Component {
   }
   
   componentDidMount(){
+    // console.log(this.props)
+    // const param = this.props.match.params.anything;   
+    // this.props.onFetchCompanyInfo(param);
     if (this.props.CID) {
       this.props.onFetchJobApply();
     }
@@ -94,16 +97,18 @@ class Training extends Component {
     store.addNotification({
       title: "Thanks",
       message: "Date Sent Successfully",
-      width: 195,
+      width: 225,
       type: "success",
-      container: "bottom-right",
+      container: "top-right",
       animationIn: ["animated","fadeIn"],
       animationOut: ["animated","fadeOut"],
+      isMobile: true,
       dismiss:{
-        duration: 4000,
-        onScreen: true
+        duration: 900,
+        click: true,
       }
     })
+    // this.props.history.push('/aa/tq')
   }
 
   handleChange = (e) => {
@@ -215,7 +220,6 @@ class Training extends Component {
   render () {
 
     const { Gender, Location, university  } = this.state.formData;
-
     return (
 
       <React.Fragment>
@@ -449,7 +453,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
+  
   return {
+    onFetchCompanyInfo: (param) => dispatch(actions.fetchCompanyInfo(param)),
     onFetchJobApply: () => dispatch( actions.fetchJobApplyData() ),
     onPostJobApply: ( data ) => dispatch( actions.postJobApply( data ) ),
   };
