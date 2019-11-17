@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import {Link } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -36,9 +35,11 @@ class CustomNav extends React.Component {
         <Navbar id="navbar" expand="md" className="navstyle">
                
           <h1 className="logo">
-            <h2 className="subLogo">
-              LOGO
-            </h2>
+            <a href={this.props.url} className="linkLogo">
+              <h2 className="subLogo">
+                LOGO
+              </h2>
+            </a>
             <h5 className="navbar-brand">
               { this.props.CompanyName }
             </h5>  

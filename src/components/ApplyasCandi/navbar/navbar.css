@@ -13,6 +13,16 @@
   font-family: 'Graphik', sans-serif;
 }
 
+.logo .linkLogo {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.logo .linkLogo:hover {
+  color: white;
+}
+
 .logo {
   color: #fff;
   font-size: 30px;
