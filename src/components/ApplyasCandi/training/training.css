@@ -1,9 +1,9 @@
 .titlestyle {
   color: #000;
   font-family: 'Graphik', sans-serif;
-  width: 800px !important;
   text-align: center;
   padding-bottom: 10px;
+  width: 100% !important;
 }
 
 .descriptionParagraphStyle {
@@ -36,4 +36,8 @@
 
 .sendbtn:hover {
   background-color: #040a44ed;
+}
+
+.container {
+  width: 100% !important;
 }

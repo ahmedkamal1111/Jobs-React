@@ -19,7 +19,7 @@
 }
 
 .gridJobsContainer .gridHeader .headCont {
-  width: 920px;
+  width: 100%;
   padding-top: 50px;
 }
 
@@ -29,10 +29,9 @@
 }
 
 .gridJobsContainer .gridMain .flexContainer {
-  width : 920px;
   min-height: 400px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   flex-direction: row;
   align-content: center;
   flex-wrap: wrap;
@@ -93,7 +92,20 @@
   font-family: 'Graphik', sans-serif;
 }
 
-@media (max-width: 520px) {
+
+@media screen and (max-width: 1024px) {
+  
+}
+
+@media screen and (max-width: 768px) {
+  
+}
+
+@media screen and (max-width: 600px) {
+
+}
+
+/* @media (max-width: 520px) {
   .gridJobsContainer .gridHeader .headCont {
     width: 500px;
   }
@@ -120,4 +132,4 @@
   .gridJobsContainer .gridMain .flexContainer .detailLink {
     width: 55px;
   }      
-}
+} */

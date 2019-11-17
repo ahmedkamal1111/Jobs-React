@@ -40,13 +40,11 @@ class Joinus extends Component {
           
           <Navbar />
 
-          <div className="cover" >
-            <Cover />
-          </div>
+          <Cover />
 
           <Tabs
             defaultActiveKey="JOBS"
-            className="nav-justified"
+            className="nav-justified tabs"
             id="uncontrolled-tab-example"
           >
           
