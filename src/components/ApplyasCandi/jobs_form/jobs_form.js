@@ -204,7 +204,7 @@ class jobs_form extends Component {
       message: "Date Sent Successfully",
       width: 225,
       type: "success",
-      container: "top-right",
+      container: "bottom-right",
       animationIn: ["animated","fadeIn"],
       animationOut: ["animated","fadeOut"],
       isMobile: true,
