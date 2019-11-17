@@ -40,7 +40,7 @@ class App extends Component {
         <Route path="/aa/:anything/dashboard" component={Dashboard} />
         {/* <Route path="/aa/:anything/confirmlogin" component={ConfirmLogin} /> */}
         <Route path="/aa/:anything" exact component={Joinus} />
-        <Route path="/" component={Intro} />
+        {/* <Route path="/" component={Intro} /> */}
       </Switch>
     );
 
