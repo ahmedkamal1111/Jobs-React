@@ -6,6 +6,7 @@ import {
   Nav,
   NavItem
 } from "reactstrap";
+import { NavLink } from 'react-router-dom';
 
 import "./navbar.css";
 

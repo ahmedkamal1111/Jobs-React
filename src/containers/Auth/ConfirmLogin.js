@@ -79,13 +79,14 @@ class ConfirmLogin extends Component {
     }
 
     let authRedirect = null;
-    
+    const param = this.props.match.params.anything;
+
     if ( this.props.isAuth && this.props.userId  ) {
-      authRedirect = <Redirect to="/aa/tq/dashboard" />
+      authRedirect = <Redirect to={`/aa/${param}/dashboard`} />
     } else if ( this.props.isAuthorized ) {
-      authRedirect = <Redirect to="/aa/tq/new-password" />
+      authRedirect = <Redirect to={`/aa/${param}/new-password`} />
     } else if (this.props.authorize === -1) {
-      authRedirect = <Redirect to="/aa/tq/login" />
+      authRedirect = <Redirect to={`/aa/${param}/login`} />
     }
 
     return ( 

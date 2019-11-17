@@ -81,7 +81,6 @@ class Login extends Component {
     }
 
     let authRedirect = null;
-
     const param = this.props.match.params.anything;
 
     if ( this.props.isAuthorized ) {
