@@ -3,6 +3,7 @@
   font-family: 'Graphik', sans-serif;
   text-align: center;
   padding-bottom: 10px;
+  width: 100% !important;
 }
 
 .descriptionParagraphStyle {
