@@ -121,7 +121,7 @@ class JobDetails extends Component {
                    <Link to={`/aa/${this.props.param}`} className={style.detailLink}>
                       All jobs               
                    </Link>
-            </span>               
+                  </span>               
                 </Link>
               </div> 
               <div className={style.applyMainCont}>

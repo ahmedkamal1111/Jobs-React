@@ -33,3 +33,6 @@
 .sendbtn:hover {
   background-color: #040a44ed;
 }
+.detailLink {
+  color: #fff !important;
+}
