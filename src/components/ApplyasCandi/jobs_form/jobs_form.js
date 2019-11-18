@@ -5,11 +5,14 @@ import ScrollAnimation from "react-animate-on-scroll";
 import { Col, Form, Row, FormGroup, Label, Input } from "reactstrap";
 import Fieldset from "react-bootstrap-form";
 import Select from "react-select";
+import { Link } from "react-router-dom";
 
 import * as actions from "../../../store/actions/index";
 import Cover from "../Cover/Cover";
 import Nav1 from "../navbar/navbar";
 import Footer from "../footer/footer";
+import * as style from "../JobDetails/JobDetails.module.css";
+
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
@@ -220,7 +223,8 @@ class jobs_form extends Component {
   render() {
 
     const { Gender , university , Location } = this.state.formData;
-
+    const id =  this.props.match.params.id;
+    
     let comp = (
       <div className="loading">
         <div className="sweetLoading">
@@ -436,7 +440,32 @@ class jobs_form extends Component {
 
                   <FormGroup className="px-3">
                     <div className="row">
-                      <div className="col-md-10" />
+                      <div className="col-md-8" />
+                      <div className="col-md-2">
+                        <td>
+                            <button className="sendbtn">
+                              <h6> 
+                                <div className={style.applyMainCont}>
+                                  <Link 
+                                    to={{
+                                      pathname: `/aa/${this.props.param}/jobs/${id}/apply`,
+                                      state: {
+                                        jobType: this.props.jobType
+                                      }
+                                    }} 
+                                    className={style.detailLink}
+                                  >
+                                    <span className="btnWhite">             
+                                    <Link to={`/aa/${this.props.param}`} className={style.detailLink}>
+                                        All jobs               
+                                    </Link>
+                                    </span>               
+                                  </Link>
+                                </div> 
+                              </h6>
+                            </button>
+                        </td>
+                      </div>
                       <div className="col-md-2">
                         <td>
                           <Fieldset Label="">
@@ -470,6 +499,7 @@ class jobs_form extends Component {
 
 const mapStateToProps = state => {
   return {
+    param: state.company.param,
     CID: state.company.info.cid,
     jobs: state.jobs.jobs,
     universities: state.jobs.universities,
