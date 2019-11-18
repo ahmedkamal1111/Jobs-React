@@ -24,16 +24,19 @@ export const companyInfoFail = ( error ) => {
 }
 
 export const fetchCompanyInfo = ( param ) => {
+    console.log(param);
     return dispatch => {
         dispatch(loadCompanyInfo());
         axios.get(`https://joblaravel.tbv.cloud/aa/${param}`)
         .then(response => {
-            if(!response.data.success) {
+            console.log(response);
+            console.log(response.data.response.success);
+            if(!response.data.response.success) {
                 throw new Error("Sorry, you are not subscribe");
             }
-            localStorage.setItem('CID', response.data.company.cid);
-            localStorage.setItem('companyName', response.data.company.Name);
-            dispatch(companyInfoSuccess(param, response.data.company));
+            localStorage.setItem('CID', response.data.response.company.cid);
+            localStorage.setItem('companyName', response.data.response.company.Name);
+            dispatch(companyInfoSuccess(param, response.data.response.company));
         })
         .catch(error => {
             dispatch(companyInfoFail(error))

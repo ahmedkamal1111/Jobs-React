@@ -80,10 +80,12 @@ class ConfirmLogin extends Component {
 
     let authRedirect = null;
     const param = this.props.match.params.anything;
+    
+    console.log(this.props.isNew);
 
     if ( this.props.isAuth && this.props.userId  ) {
       authRedirect = <Redirect to={`/aa/${param}/dashboard`} />
-    } else if ( this.props.isAuthorized ) {
+    } else if ( this.props.isNew ) {
       authRedirect = <Redirect to={`/aa/${param}/new-password`} />
     } else if (this.props.authorize === -1) {
       authRedirect = <Redirect to={`/aa/${param}/login`} />
@@ -142,7 +144,7 @@ const mapStateToProps = state => {
     loading: state.auth.isLoading,
     isAuth: state.auth.token !== null,
     authorize: state.auth.authorize,
-    isAuthorized: state.auth.authorize === 2,
+    isNew: state.auth.authorize === 2,
   }
 };
 

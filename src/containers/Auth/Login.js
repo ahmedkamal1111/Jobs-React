@@ -55,11 +55,8 @@ class Login extends Component {
   };
 
   submitHandler = ( event ) => {
-    
     event.preventDefault();
-
     this.props.onLogin( this.state.loginForm.email.value );
-  
   }
 
   
@@ -89,6 +86,10 @@ class Login extends Component {
 
     if (this.props.isAuth) {
       authRedirect = <Redirect to={`/aa/${param}/dashboard`} />
+    }
+
+    if ( this.props.isNew ) {
+      authRedirect = <Redirect to={`/aa/${param}/new-password`} />
     }
 
     return (
@@ -140,7 +141,8 @@ const mapStateToProps = state => {
     isAuth: state.auth.token !== null,
     userId: state.auth.userId && true,
     isAuthorized: state.auth.authorize === 0 || state.auth.authorize === 1,
-    authRedirectPath: state.auth.authRedirectPath
+    authRedirectPath: state.auth.authRedirectPath,
+    isNew: state.auth.authorize === 2,
   };
 };
 

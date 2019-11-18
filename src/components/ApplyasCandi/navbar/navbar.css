@@ -26,22 +26,26 @@
 .logo {
   color: #fff;
   font-size: 30px;
-  width: 60px;
-  height: 60px;
+  width: 280px;
+  height: 35px;
   border: none;
   padding: 0;
   font-weight: 500;
   line-height: 1.7;
-  margin-top: 5px;
 }
 
 .subLogo {
-  display: inline;
-  padding: 5px 0 0;
+  display: inline !important;
 }
+
+img {
+  width: 114px;
+  height: 48px;
+}
+
 .navbar-brand {
-  padding-left: 20px; 
-  display: inline;
+  padding-left: 10px; 
+  display: inline !important;
 }
 
 .navbar-collapse {

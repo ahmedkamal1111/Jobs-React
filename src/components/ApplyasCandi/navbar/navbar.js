@@ -33,13 +33,12 @@ class CustomNav extends React.Component {
     return (
     
       <div>
+        
         <Navbar id="navbar" expand="md" className="navstyle">
                
           <h1 className="logo">
             <a href={this.props.url} className="linkLogo">
-              <h2 className="subLogo">
-                LOGO
-              </h2>
+              <img src={`https://joblaravel.tbv.cloud/tt/cvs/${this.props.logo}`} alt="Logo" class="subLogo" />
             </a>
             <h5 className="navbar-brand">
               { this.props.CompanyName }
@@ -75,7 +74,8 @@ class CustomNav extends React.Component {
 const mapStateToProps = state => {
   return {
     CompanyName: state.company.info.Name,
-    url: state.company.info.homepage
+    url: state.company.info.homepage,
+    logo: state.company.info.logo,
   };
 };
 

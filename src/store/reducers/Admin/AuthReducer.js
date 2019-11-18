@@ -66,13 +66,13 @@ const confirmLoginFail = (state, action) => {
 };
 
 const createPassSuccess = (state, action) => {
-    return {
+    return{
         ...state,
         authorize: action.payload.authorize,
         CID: action.payload.CID,
         token: action.payload.api_token,
-        userId: action.payload.user_id,
-        name: action.payload.name,
+        userId: action.payload.usr_id,
+        name: action.payload.Name,
         priv: action.payload.priv,
         uprofile: action.payload.uprofile,
         error: null,
@@ -92,7 +92,7 @@ const createPassFail = (state, action) => {
 const createPinSuccess = (state, action) => {
     return {
         ...state,
-        authorize: action.authorize,
+        authorize: action.payload,
         error: null,
         isLoading: false
     };

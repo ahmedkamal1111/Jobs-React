@@ -38,6 +38,7 @@ class App extends Component {
         <Route path="/aa/:anything/jobs/:id" component={JobDetails} />
         <Route path="/aa/:anything/login" component={LoginPage} />
         <Route path="/aa/:anything/dashboard" component={Dashboard} />
+        {/* <Route path="/aa/:anything/new-password" component={PinLogin} /> */}
         {/* <Route path="/aa/:anything/confirmlogin" component={ConfirmLogin} /> */}
         <Route path="/aa/:anything" exact component={Joinus} />
         {/* <Route path="/" component={Intro} /> */}
@@ -47,6 +48,7 @@ class App extends Component {
     if ( (!this.props.isAuth) && (this.props.authorize === 0 || this.props.authorize === 1 || this.props.authorize === -1)) {
       routes = (
         <Switch>
+          <Route path="/aa/:anything/new-password" component={PinLogin} />
           <Route path="/aa/:anything/confirmlogin" component={ConfirmLogin}/>
           <Route path="/aa/:anything/login" exact component={LoginPage} />
         </Switch>
@@ -55,6 +57,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path="/aa/:anything/new-password" component={PinLogin} />
+          <Route path="/aa/:anything/confirmlogin" component={ConfirmLogin}/>
           <Route path="/aa/:anything/login" exact component={LoginPage} />
           <Redirect to="/aa/:anything/login" />
         </Switch>

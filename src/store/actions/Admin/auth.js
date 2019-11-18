@@ -52,16 +52,16 @@ export const createPinFail = ( error ) => {
     };
 };
 
-export const createPassSuccess = ( authorize ) => {
+export const createPassSuccess = ( payload ) => {
     return {
-        type: actionTypes.CREATE_PIN_SUCCESS,
-        authorize
+        type: actionTypes.CREATE_PASS_SUCCESS,
+        payload
     };
 };
 
 export const createPassFail = ( error ) => {
     return {
-        type: actionTypes.CREATE_PIN_FAIL,
+        type: actionTypes.CREATE_PASS_FAIL,
         error
     };
 };
@@ -86,9 +86,10 @@ export const checkAuthTimeout = (expirationTime) => {
 };
 
 export const login = ( email ) => {
+    const cid = localStorage.getItem('CID');
     return dispatch => {
         dispatch(authLoading());
-        axios.post('https://joblaravel.tbv.cloud/entermail', {email})
+        axios.post('https://joblaravel.tbv.cloud/entermail', { email , CID: cid })
         .then(response => {
             
             //Handle Response Status
@@ -108,14 +109,15 @@ export const login = ( email ) => {
 };
 
 export const confirmLogin = (email, password) => {
+    const cid = localStorage.getItem('CID');
     return dispatch => {
         dispatch(authLoading());
         axios.post("https://joblaravel.tbv.cloud/login", { 
             email: email, 
-            pw: password 
+            pw: password,
+            CID: cid
         })
         .then(response => {
-            
             if( response.status === 422 ) {
                 throw new Error("Validation Failed.");
             }
@@ -144,15 +146,16 @@ export const confirmLogin = (email, password) => {
 }
 
 export const createNewPass = (email, pin, password) => {
+    const cid = localStorage.getItem('CID');
     return dispatch => {
         dispatch(authLoading());
         axios.post("https://joblaravel.tbv.cloud/ResetPassword", { 
             email: email,
             PIN: pin, 
-            pw: password
+            pw: password,
+            CID: cid
         })
         .then(response => {
-            
             if( response.status === 422 ) {
                 throw new Error("Validation Failed.");
             }
@@ -178,10 +181,12 @@ export const createNewPass = (email, pin, password) => {
 };
 
 export const createPin = ( email ) => {
+    const cid = localStorage.getItem('CID');
     return dispatch => {
         dispatch(authLoading());
         axios.post("https://joblaravel.tbv.cloud/createPin", {
-            email: email
+            email: email,
+            CID: cid
         })
         .then(response => {
             dispatch(createPinSuccess(response.data));

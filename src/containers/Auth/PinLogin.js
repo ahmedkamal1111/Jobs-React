@@ -122,7 +122,7 @@ class PinLogin extends Component {
     let authRedirect = null;
     const param = this.props.match.params.anything;
 
-    if ( this.props.isAuth && this.props.userId  ) {
+    if ( this.props.isAuth ) {
       authRedirect = <Redirect to={`/aa/${param}/dashboard`} />
     } else if (this.props.authorize === -1) {
       authRedirect = <Redirect to={`/aa/${param}/login`} />
@@ -207,11 +207,10 @@ class PinLogin extends Component {
 const mapStateToProps = state => {
   return {
     email: state.auth.email,
-    userId: true && state.auth.userId,
-    loading: state.auth.isLoading,
     isAuth: state.auth.token !== null,
+    userId: state.auth.userId && true,
+    loading: state.auth.isLoading,
     authorize: state.auth.authorize,
-    isAuthorized: state.auth.authorize === 2,
   };
 };
 

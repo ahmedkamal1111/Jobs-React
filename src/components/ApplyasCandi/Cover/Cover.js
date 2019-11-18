@@ -8,13 +8,10 @@ class Cover extends  Component {
             <div className={style.gridCoverContainer}>
                 <div className={style.gridLeftInfo}>
                     <h1> {this.props.info.Name}</h1>  
-                    <p>Join us — and help every create for the web</p> 
+                    <p> { this.props.company_job.jslogan } </p> 
                 </div>
                 <div className={style.gridRightInfo}>
-                    <p>We're on a mission to reinvent web, UX, product, and content design — by making it visual</p> 
-                    <p> If that sounds good to you, you should apply.
-                        (Yes, we are remote-friendly, thanks for asking).
-                    </p>
+                    <p> { this.props.company_job.jwelcome } </p>
                 </div>
             </div>
         )
@@ -23,8 +20,9 @@ class Cover extends  Component {
 
 const mapStateToProps = state => {
     return {
-        info: state.company.info
+        info: state.company.info,
+        company_job: state.company.info.company_job
     };
 };
 
-export default connect(mapStateToProps)( Cover );
+export default connect( mapStateToProps )( Cover );
