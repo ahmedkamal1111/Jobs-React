@@ -3,6 +3,7 @@ import Axios from 'axios';
 import {
     Heading,
 } from "@chakra-ui/core";
+import Skills from './skills/skills';
 
 export default class CreateJob extends Component {
     constructor() {
@@ -35,17 +36,14 @@ export default class CreateJob extends Component {
         return (
             <div className="content-form">
                 <div className="container">
-                    {/* <h1>hi</h1> */}
                     <Heading className="jobsHead">Add a job</Heading>
                     <select className="form-control">
                         {jobTypes}
                     </select>
                     <input type="text" placeholder="Job Title" className="form-control mt-3"></input>
-                    <input type="text" placeholder="Skills" className="form-control mt-3"></input>
+                    <Skills/>
                     <input type="text" placeholder="Responsibilities" className="form-control mt-3"></input>
                     <input type="submit" className="btn btn-primary"></input>
-                  
-
                 </div>
             </div>
         );

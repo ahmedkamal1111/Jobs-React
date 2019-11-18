@@ -63,8 +63,8 @@ export default class AddJob extends Component {
             <div className="content-form">
                 <div className="container">
                     <div className="row">
-                        <div className="col-sm-3"></div>
-                        <div className="col-sm-6">
+                        <div className="col-sm-2"></div>
+                        <div className="col-sm-8">
                         <div className="form-group">
                             <form  id="myForm" encType="multipart/form-data" className="form-container">
                             <select
@@ -92,7 +92,7 @@ export default class AddJob extends Component {
                                     placeholder="Name"
                                     name="Name"
                                     id="Name"
-                                    className="form-control mb-3"
+                                    className="form-control mb-2"
                                     type="text"
                                     onChange={this.handleSelect.bind(this)}
                                     required
