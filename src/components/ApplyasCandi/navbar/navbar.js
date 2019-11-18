@@ -6,6 +6,7 @@ import {
   Nav,
   NavItem
 } from "reactstrap";
+import { AiTwotoneHome } from 'react-icons/ai';
 import { NavLink } from 'react-router-dom';
 
 import "./navbar.css";
@@ -38,30 +39,16 @@ class CustomNav extends React.Component {
                
           <h1 className="logo">
             <a href={this.props.url} className="linkLogo">
-              <img src={`https://joblaravel.tbv.cloud/tt/cvs/${this.props.logo}`} alt="Logo" class="subLogo" />
+              <img src={`https://joblaravel.tbv.cloud/tt/cvs/${this.props.logo}`} alt={`${this.props.CompanyName} Logo`} class="subLogo" />
             </a>
-            <h5 className="navbar-brand">
-              { this.props.CompanyName }
-            </h5>  
           </h1> 
           
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto navitemsstyle" navbar>
               <NavItem>
                 <a href={this.props.url} className="navitemcolor">
-                  About Us
+                  <AiTwotoneHome size={30} />
                 </a>
-              </NavItem>
-              <NavItem>
-                <a href="#services" className="navitemcolor">
-                  Services
-                </a>
-              </NavItem>
-            
-              <NavItem>
-                <NavLink to={`/aa/${this.props.param}/contact-us`} className="navitemcolor">
-                  Contact
-                </NavLink>
               </NavItem>
             </Nav>
           </Collapse>

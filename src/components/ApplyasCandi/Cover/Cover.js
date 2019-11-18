@@ -7,7 +7,7 @@ class Cover extends  Component {
         return (
             <div className={style.gridCoverContainer}>
                 <div className={style.gridLeftInfo}>
-                    <h1> {this.props.info.Name}</h1>  
+                    <h1> {this.props.info.Name} </h1>  
                     <p> { this.props.company_job.jslogan } </p> 
                 </div>
                 <div className={style.gridRightInfo}>

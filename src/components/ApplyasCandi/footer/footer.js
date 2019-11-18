@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "react-share";
-import { FacebookIcon, TwitterIcon, LinkedinIcon } from "react-share";
-
+import { FaFacebook } from "react-icons/fa"; 
+import { AiFillTwitterCircle, AiFillLinkedin } from 'react-icons/ai';
 import "./footer.css";
 
 class Footer extends Component {
@@ -16,21 +15,15 @@ class Footer extends Component {
       <div className="row">
           <div className="col-md-6 text-left">
             Copyright <span dangerouslySetInnerHTML={{ __html: "&copy;" }} />
-            <a href={`${this.props.url}`} > { this.props.CompanyName } </a> 2019-20
+            <a href="https://www.teqneia.com/" > { this.props.CompanyName } </a> 2019-20
             
             </div>            
 
               <div className="col-md-6 text-right">
                 <div className="footericon">
-                  <FacebookShareButton url="https://www.facebook.com/TEQNEIA" className="i">
-                    <FacebookIcon size={25} round={true} />{" "}
-                  </FacebookShareButton>
-                  <TwitterShareButton url="https://twitter.com/Teqneia_ICT" className="i">
-                    <TwitterIcon size={25} round={true} />
-                  </TwitterShareButton>
-                  <LinkedinShareButton url="https://www.linkedin.com/company/teqneia" className="i">
-                    <LinkedinIcon size={25} round={true} />
-                  </LinkedinShareButton>
+                  <FaFacebook size={20} className="i" />
+                  <AiFillTwitterCircle size={22} className="i" />
+                  <AiFillLinkedin size={22} className="i" />
                 </div>
               </div>
             </div>

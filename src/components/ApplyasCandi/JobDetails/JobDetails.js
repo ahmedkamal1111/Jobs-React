@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import HashLoader from 'react-spinners/HashLoader';
+import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "react-share";
+import { FacebookIcon, TwitterIcon, LinkedinIcon } from "react-share";
 
 import * as actions from '../../../store/actions/index';
 import * as style from "./JobDetails.module.css";
@@ -93,18 +95,26 @@ class JobDetails extends Component {
             
             <span>At { companyName } </span>
             
-            <span>             
-              ( <Link to={`/aa/${this.props.param}`} className={style.jobLink}>
-                View all jobs               
-              </Link> )
-            </span>
-            
             <p className={style.location}> { this.props.location } </p>    
           </div>
         </header>
           <div className={style.mainCont}>
 
             { main }
+
+            <h4>Share</h4>
+
+            <div className={style.shares} >  
+                <FacebookShareButton url="https://www.facebook.com/TEQNEIA" className={style.i}>
+                  <FacebookIcon size={25} round={true} />
+                </FacebookShareButton>
+                <TwitterShareButton url="https://twitter.com/Teqneia_ICT" className={style.i}>
+                    <TwitterIcon size={25} round={true} />
+                  </TwitterShareButton>
+                  <LinkedinShareButton url="https://www.linkedin.com/company/teqneia" className={style.i}>
+                    <LinkedinIcon size={25} round={true} />
+                </LinkedinShareButton>  
+            </div>            
             
             <div className={style.applyMainCont}>
               <Link 
@@ -125,6 +135,7 @@ class JobDetails extends Component {
           <Footer />  
         </footer>
       </section>
+
     );
   }
 }

@@ -64,6 +64,17 @@
   font-family: 'Graphik', sans-serif;
 }
 
+.shares {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  padding-left: 15px;
+}
+
+.shares .i {
+  margin-right: 10px;
+}
+
 .gridDetailsContainer .gridMain .mainCont .applyMainCont {
   display: flex;
   justify-content: flex-end;
