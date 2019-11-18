@@ -105,13 +105,13 @@ class JobDetails extends Component {
             <h4>Share</h4>
 
             <div className={style.shares} >  
-                <FacebookShareButton url="https://www.facebook.com/TEQNEIA" className={style.i}>
+                <FacebookShareButton url={`https://jobs.tbv.cloud/aa/${this.props.param}/jobs/${id}`} className={style.i}>
                   <FacebookIcon size={25} round={true} />
                 </FacebookShareButton>
-                <TwitterShareButton url="https://twitter.com/Teqneia_ICT" className={style.i}>
+                <TwitterShareButton url={`https://jobs.tbv.cloud/aa/${this.props.param}/jobs/${id}`} className={style.i}>
                     <TwitterIcon size={25} round={true} />
                   </TwitterShareButton>
-                  <LinkedinShareButton url="https://www.linkedin.com/company/teqneia" className={style.i}>
+                  <LinkedinShareButton url={`https://jobs.tbv.cloud/aa/${this.props.param}/jobs/${id}`} className={style.i}>
                     <LinkedinIcon size={25} round={true} />
                 </LinkedinShareButton>  
             </div>            

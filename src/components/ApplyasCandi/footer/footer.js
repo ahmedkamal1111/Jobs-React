@@ -15,7 +15,7 @@ class Footer extends Component {
       <div className="row">
           <div className="col-md-6 text-left">
             Copyright <span dangerouslySetInnerHTML={{ __html: "&copy;" }} />
-            <a href="https://www.teqneia.com/" > { this.props.CompanyName } </a> 2019-20
+            <a href="https://www.teqneia.com/" > { this.props.CompanyName } </a> 2019-{ new Date().getFullYear() === 2019 ? 2020 : new Date().getFullYear()}
             
             </div>            
 
