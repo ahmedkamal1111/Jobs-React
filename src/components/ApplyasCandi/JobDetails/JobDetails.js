@@ -84,6 +84,7 @@ class JobDetails extends Component {
           <Cover />
         </div>
 
+        <main className={style.gridMain}>
         <header className={style.gridHeader} >          
           
           <div className={style.headCont} >
@@ -101,8 +102,6 @@ class JobDetails extends Component {
             <p className={style.location}> { this.props.location } </p>    
           </div>
         </header>
-
-        <main className={style.gridMain}>
           <div className={style.mainCont}>
 
             { main }

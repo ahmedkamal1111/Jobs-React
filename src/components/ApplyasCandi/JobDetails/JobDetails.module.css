@@ -7,7 +7,6 @@
 .gridDetailsContainer {
   display: grid;
   grid-template-columns: 100%;
-  /* grid-auto-rows: 60vh 220px auto 55px; */
   grid-template-areas: "Navbar" "header" "main" "footer";
 }
 
@@ -17,7 +16,6 @@
 
 .gridDetailsContainer .gridHeader {
   grid-area: header;
-  margin: auto;
 }
 
 .gridDetailsContainer .gridHeader .headCont {
@@ -49,7 +47,9 @@
   margin-top: 8px;
 }
 
-.gridDetailsContainer .gridMain {
+
+
+.gridDetailsContainer  .gridMain {
   grid-area: main;
   margin: auto;
   margin-bottom: 30px;
