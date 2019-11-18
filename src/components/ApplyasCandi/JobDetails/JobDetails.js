@@ -106,7 +106,25 @@ class JobDetails extends Component {
 
             { main }
             
-            <div className={style.applyMainCont}>
+            <div className={style.btnHolder}>
+              <div className={style.applyMainCont}>
+                <Link 
+                  to={{
+                    pathname: `/aa/${this.props.param}/jobs/${id}/apply`,
+                    state: {
+                      jobType: this.props.jobType
+                    }
+                  }} 
+                  className={style.detailLink}
+                >
+                  <span>             
+                   <Link to={`/aa/${this.props.param}`} className={style.detailLink}>
+                      All jobs               
+                   </Link>
+            </span>               
+                </Link>
+              </div> 
+              <div className={style.applyMainCont}>
               <Link 
                 to={{
                   pathname: `/aa/${this.props.param}/jobs/${id}/apply`,
@@ -118,7 +136,9 @@ class JobDetails extends Component {
               >
                 Apply Now               
               </Link>
-            </div>     
+            </div>       
+            </div> 
+
           </div>
         </main>
         <footer className={style.gridFooter}>

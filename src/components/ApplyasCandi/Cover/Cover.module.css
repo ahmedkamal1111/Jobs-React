@@ -4,9 +4,9 @@
     padding: 45px 80px 0 80px;
     background: rgb(69,93,111);
     background: linear-gradient(90deg, rgba(69,93,111,1) 0%, rgba(69,93,111,1) 35%, rgba(0,212,255,1) 100%);
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1.fr 2fr;
     grid-template-areas: "left right";
-    grid-template-rows: 43vh;
+    grid-template-rows: 30vh;
     grid-column-gap: 90px;
     grid-column-gap: 75px;
     font-family: Graphik, sans-serif;

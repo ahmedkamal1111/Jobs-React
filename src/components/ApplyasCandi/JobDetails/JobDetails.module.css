@@ -37,6 +37,7 @@
 
 .gridDetailsContainer .gridHeader .headCont .jobLink {
   font-size: 14px;
+  color: #fff;
 }
 
 .gridDetailsContainer .gridHeader .headCont .location {
@@ -66,9 +67,7 @@
 
 .gridDetailsContainer .gridMain .mainCont .applyMainCont {
   display: flex;
-  justify-content: flex-end;
-  flex-direction: row;
-  margin: 40px 0 0;
+  margin: 6px;
 }
 
 .gridDetailsContainer .gridMain .mainCont .applyMainCont .detailLink {
@@ -90,4 +89,9 @@
 
 .gridDetailsContainer .gridFooter {
   grid-area: footer;
+}
+
+.btnHolder {
+  display: flex;
+  justify-content: flex-end;
 }
