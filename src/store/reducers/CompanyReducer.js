@@ -16,6 +16,9 @@ const initialState = {
         support_email : "",
         welcome : "",
         company_job: {},
+        facebookLink: null,
+        linkedinLink: null,
+        twitterLink: null
     },
     isLoading: false,
     error: null
@@ -44,7 +47,10 @@ const fetchCompanyInfoSuccess = ( state, action ) => ({
         login_branding: action.payload.login_branding,
         support_email : action.payload.support_email,
         welcome : action.payload.welcome,
-        company_job: action.payload.company_job
+        company_job: action.payload.company_job,
+        facebookLink: action.payload.Facebook,
+        twitterLink: action.payload.Twitter,
+        linkedinLink: action.payload.LinkedIn,
     },
     error: null,
     isLoading: false
