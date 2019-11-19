@@ -47,6 +47,9 @@ class jobs_form extends Component {
         salary: null
       },
       checked: false,
+      fileSizeError: false,
+      fileExtError: false,
+      fileTypeOK: false,
     };
   }
 
@@ -113,18 +116,50 @@ class jobs_form extends Component {
       }
     }))
   }
-  
+
   getFile = (e) => {
     e.preventDefault()
-    let file = e.target.files[0];
-      this.setState(prevState =>({
-        ...prevState,
-        formData:{
-          ...prevState.formData,
-          ff: file,
+    if(e.target.files.length > 0) {
+      let file = e.target.files[0];
+      console.log(file)
+      if(file.type === "application/pdf" || file.type === "image/png" || file.type === "image/jpeg" || file.name.split('.')[1] === "docx"){
+        console.log('dtmam');
+        this.setState(prevState => ({
+          ...prevState,
+          fileTypeOK: true,
+          fileExtError: false,
+        }));
+        if(file.size < 2048000) {
+          console.log( this.state.fileTypeOK)
+            this.setState(prevState =>({
+            ...prevState,
+            fileSizeError: false,
+            formData:{
+              ...prevState.formData,
+              ff: file,
+            }
+          }));
         }
-    }));
-      
+        else if (file.size > 2048000){
+            console.log("sizeerr")
+          this.setState(prevState =>({
+            ...prevState,
+            fileSizeError: true,
+          }));
+        }
+        
+      }
+      else {
+        console.log("exterr")
+        this.setState(prevState => ({
+          ...prevState,
+          fileExtError: true,
+          fileTypeOK: false,
+          fileSizeError: file.size > 2048000 ? true : false,
+        }))
+      }
+    }
+
   }
 
   handleChange_1 = Gender => {
@@ -166,65 +201,70 @@ class jobs_form extends Component {
     e.preventDefault();
     e.stopPropagation();
     const param = this.props.match.params.anything;
-    const data = new FormData()
-    data.set('Name',this.state.formData.Name)
-    data.append('Email',this.state.formData.Email)
-    data.append('Mobile',this.state.formData.Mobile)
-    data.append('LinkedIn',this.state.formData.LinkedIn)
-    data.append('Gender',this.state.formData.Gender)
-    data.append('Location',this.state.formData.Location)
-    data.append('university',this.state.formData.university)
-    data.append('Onlinecv',this.state.formData.Onlinecv)
-    data.append('Dateofbirth',this.state.formData.Dateofbirth)
-    data.append('jobId',this.state.formData.jobId)
-    data.append('JobType',this.state.formData.jobType)
-    data.append('salary',this.state.formData.salary)
-    data.append("ff", this.state.formData.ff)
-    data.append("JobType",this.props.location.state.jobType)
-    data.append("jobId",this.props.match.params.id)
-    console.log(this.state.formData.Location);
-    console.log(this.state.formData.ff);
-    this.props.onPostJobApply(data);
-    this.setState(prevState =>({
-      ...prevState,
-      formData:{
-        Name: '',
-        Email: '',
-        Mobile: '',
-        LinkedIn: '',
-        Gender: "",
-        Location: "",
-        university: "",
-        Onlinecv: "",
-        Dateofbirth: "",
-        ff: "",
-        salary: '',
-      },
-    }))
-  
-    store.addNotification({
-      title: "Thanks",
-      message: "Date Sent Successfully",
-      width: 225,
-      type: "success",
-      container: "bottom-right",
-      animationIn: ["animated","fadeIn"],
-      animationOut: ["animated","fadeOut"],
-      isMobile: true,
+    if(!this.state.fileSizeError && !this.state.fileExtError) {
+      const data = new FormData()
+      data.set('Name',this.state.formData.Name)
+      data.append('Email',this.state.formData.Email)
+      data.append('Mobile',this.state.formData.Mobile)
+      data.append('LinkedIn',this.state.formData.LinkedIn)
+      data.append('Gender',this.state.formData.Gender)
+      data.append('Location',this.state.formData.Location)
+      data.append('university',this.state.formData.university)
+      data.append('Onlinecv',this.state.formData.Onlinecv)
+      data.append('Dateofbirth',this.state.formData.Dateofbirth)
+      data.append('jobId',this.state.formData.jobId)
+      data.append('JobType',this.state.formData.jobType)
+      data.append('salary',this.state.formData.salary)
+      data.append("ff", this.state.formData.ff)
+      data.append("JobType",this.props.location.state.jobType)
+      data.append("jobId",this.props.match.params.id)
+      console.log(this.state.formData.ff);
+      this.props.onPostJobApply(data);
+      this.setState(prevState =>({
+        ...prevState,
+        formData:{
+          Name: '',
+          Email: '',
+          Mobile: '',
+          LinkedIn: '',
+          Gender: "",
+          Location: "",
+          university: "",
+          Onlinecv: "",
+          Dateofbirth: "",
+          ff: "",
+          salary: '',
+        },
+      }))
+      store.addNotification({
+        title: "Thanks",
+        message: "Date Sent Successfully",
+        width: 225,
+        type: "success",
+        container: "bottom-right",
+        animationIn: ["animated","fadeIn"],
+        animationOut: ["animated","fadeOut"],
+        isMobile: true,
+     
+        dismiss:{
+          duration: 900,
+          click: true,
+        }
+      })
+      this.props.history.push(`/aa/${param}`)
+    }
+    
    
-      dismiss:{
-        duration: 900,
-        click: true,
-      }
-    })
-    this.props.history.push(`/aa/${param}`)
+    // console.log(this.state.formData.Location);
+ 
+  
+   
   }
 
   render() {
 
     const { Gender , university , Location } = this.state.formData;
-    const id =  this.props.match.params.id;
-    
+    const id =  this.props.match.params.id;    
     let comp = (
       <div className="loading">
         <div className="sweetLoading">
@@ -373,10 +413,21 @@ class jobs_form extends Component {
                         type="file"
                         name="ff"
                         onChange={this.getFile.bind(this)}
-                        className="form-control"
+                        className={`form-control ${this.state.fileExtError ? "Error" : this.state.fileSizeError ? "Error" : ""}`}
                         placeholder="Compulsory only if no link of online CV is not provided"
                         required="true"
                         />
+                        {this.state.fileSizeError && 
+                          // <div className="hintSize">Size must be smaller than 2MB</div>
+                          <div className="hintErr">Max size allowed: 2MB</div>
+                        }
+                        {this.state.fileExtError &&
+                        <React.Fragment>
+                            <div className="hintErr">Supported file extensions: (pdf, docx, jpeg, png)</div>
+                        </React.Fragment>
+                        
+                        }
+     
                       </FormGroup>
                     </Col>
 
@@ -401,7 +452,7 @@ class jobs_form extends Component {
                         <Label className="YourName">LinkedIn Profile</Label>
                         <Input
                         type="text"
-                        required="true"
+                        // required="true"
                         name="LinkedIn"
                         placeholder="your linkein profile"
                         value={this.state.formData.LinkedIn}

@@ -38,6 +38,9 @@ class Training extends Component {
         jobType: null,
       },
       checked: false,
+      fileSizeError: false,
+      fileExtError: false,
+      fileTypeOK: false,
     };
   }
   
@@ -65,49 +68,53 @@ class Training extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const data = new FormData()
-    data.set('Name',this.state.formData.Name)
-    data.append('Email',this.state.formData.Email)
-    data.append('Mobile',this.state.formData.Mobile)
-    data.append('LinkedIn',this.state.formData.LinkedIn)
-    data.append('Gender',this.state.formData.Gender)
-    data.append('Location',this.state.formData.Location)
-    data.append('university',this.state.formData.university)
-    data.append('Onlinecv',this.state.formData.Onlinecv)
-    data.append('Dateofbirth',this.state.formData.Dateofbirth)
-    data.append('jobId',this.state.formData.jobId)
-    data.append('JobType',this.state.formData.jobType)
-    data.append("ff", this.state.formData.ff)
-    this.props.onPostJobApply( data );
-    this.setState(prevState =>({
-      ...prevState,
-      formData:{
-        Name: '',
-        Email: '',
-        Mobile: '',
-        LinkedIn: '',
-        Gender: "",
-        Location: "",
-        university: "",
-        Onlinecv: "",
-        Dateofbirth: "",
-        ff: "",
-      },
-    }))
-    store.addNotification({
-      title: "Thanks",
-      message: "Date Sent Successfully",
-      width: 225,
-      type: "success",
-      container: "top-right",
-      animationIn: ["animated","fadeIn"],
-      animationOut: ["animated","fadeOut"],
-      isMobile: true,
-      dismiss:{
-        duration: 900,
-        click: true,
-      }
-    })
+    if(!this.state.fileSizeError && !this.state.fileExtError) {
+      const data = new FormData()
+      data.set('Name',this.state.formData.Name)
+      data.append('Email',this.state.formData.Email)
+      data.append('Mobile',this.state.formData.Mobile)
+      data.append('LinkedIn',this.state.formData.LinkedIn)
+      data.append('Gender',this.state.formData.Gender)
+      data.append('Location',this.state.formData.Location)
+      data.append('university',this.state.formData.university)
+      data.append('Onlinecv',this.state.formData.Onlinecv)
+      data.append('Dateofbirth',this.state.formData.Dateofbirth)
+      data.append('jobId',this.state.formData.jobId)
+      data.append('JobType',this.state.formData.jobType)
+      data.append("ff", this.state.formData.ff)
+      console.log(this.state.formData.ff);
+      this.props.onPostJobApply(data);
+      this.setState(prevState =>({
+        ...prevState,
+        formData:{
+          Name: '',
+          Email: '',
+          Mobile: '',
+          LinkedIn: '',
+          Gender: "",
+          Location: "",
+          university: "",
+          Onlinecv: "",
+          Dateofbirth: "",
+          ff: "",
+        },
+      }))
+      store.addNotification({
+        title: "Thanks",
+        message: "Date Sent Successfully",
+        width: 225,
+        type: "success",
+        container: "bottom-right",
+        animationIn: ["animated","fadeIn"],
+        animationOut: ["animated","fadeOut"],
+        isMobile: true,
+     
+        dismiss:{
+          duration: 900,
+          click: true,
+        }
+      })
+    }
     // this.props.history.push('/aa/tq')
   }
 
@@ -206,15 +213,47 @@ class Training extends Component {
 
   getFile = (e) => {
     e.preventDefault()
-    let file = e.target.files[0];
-    this.setState(prevState =>({
-      ...prevState,
-      formData:{
-        ...prevState.formData,
-        ff: file,
+    if(e.target.files.length > 0) {
+      let file = e.target.files[0];
+      console.log(file)
+      if(file.type === "application/pdf" || file.type === "image/png" || file.type === "image/jpeg" || file.name.split('.')[1] === "docx"){
+        console.log('dtmam');
+        this.setState(prevState => ({
+          ...prevState,
+          fileTypeOK: true,
+          fileExtError: false,
+        }));
+        if(file.size < 2048000) {
+          console.log( this.state.fileTypeOK)
+            this.setState(prevState =>({
+            ...prevState,
+            fileSizeError: false,
+            formData:{
+              ...prevState.formData,
+              ff: file,
+            }
+          }));
+        }
+        else if (file.size > 2048000){
+            console.log("sizeerr")
+          this.setState(prevState =>({
+            ...prevState,
+            fileSizeError: true,
+          }));
+        }
+        
       }
-    }));
-      
+      else {
+        console.log("exterr")
+        this.setState(prevState => ({
+          ...prevState,
+          fileExtError: true,
+          fileTypeOK: false,
+          fileSizeError: file.size > 2048000 ? true : false,
+        }))
+      }
+    }
+
   }
   
   render () {
@@ -333,20 +372,31 @@ class Training extends Component {
                 </Row>
 
                 <Row form>
-                  <Col md={8} className="formnamestlye">
-                    <FormGroup>
-                      <Label className="YourName">Upload cv</Label>
+                <Col md={8} className="formnamestlye">
+                      <FormGroup>
+                        <Label className="YourName">Upload cv</Label>
 
-                      <input
+                        <input
                         type="file"
                         name="ff"
                         onChange={this.getFile.bind(this)}
-                        className="form-control"
+                        className={`form-control ${this.state.fileExtError ? "Error" : this.state.fileSizeError ? "Error" : ""}`}
                         placeholder="Compulsory only if no link of online CV is not provided"
                         required="true"
-                      />
-                    </FormGroup>
-                  </Col>
+                        />
+                        {this.state.fileSizeError && 
+                          // <div className="hintSize">Size must be smaller than 2MB</div>
+                          <div className="hintErr">Max size allowed: 2MB</div>
+                        }
+                        {this.state.fileExtError &&
+                        <React.Fragment>
+                            <div className="hintErr">Supported file extensions: (pdf, docx, jpeg, png)</div>
+                        </React.Fragment>
+                        
+                        }
+     
+                      </FormGroup>
+                    </Col>
 
                   <Col md={4} className="formemailstlye">
                     <FormGroup>
