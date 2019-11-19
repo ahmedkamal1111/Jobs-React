@@ -43,3 +43,9 @@ img {
   text-decoration: none !important;
   color: #ffc107 !important;
 }
+
+@media (max-width: 500px) {
+  .logoJobs {
+    left: 20px;
+  } 
+}

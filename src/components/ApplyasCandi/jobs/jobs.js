@@ -32,7 +32,7 @@ class Jobs extends Component {
     if ( !this.props.isLoading ) {
 
       main = this.props.jobs.map((job, index) => (
-
+       
         <div className={style.jobcardstyle} key={`${index}-${new Date()}`}>
           
           <h4> { job.Name } </h4>          
@@ -49,6 +49,8 @@ class Jobs extends Component {
                       "Freelance":  null
             }
           </h5>
+
+          <p>Posted on : { job.d1 }</p>
           
           <Link
             to={{

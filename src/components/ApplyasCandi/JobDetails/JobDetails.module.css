@@ -1,6 +1,6 @@
 .sweetLoading {
   margin-top: 83px;
-  margin-left: 328px;
+  margin-left: 250px;
   margin-bottom: 100px;
 }
 
@@ -48,6 +48,11 @@
   margin-top: 8px;
 }
 
+.gridDetailsContainer .gridHeader .headCont .date {
+  font-size: 14px;
+  color: rgb(124, 124, 124);
+}
+
 
 
 .gridDetailsContainer  .gridMain {
@@ -55,6 +60,7 @@
   margin: auto;
   margin-bottom: 30px;
   min-height: 385px;
+  max-width: 800px;
 }
 
 
@@ -109,4 +115,19 @@
 
 .detailLink {
   color: #fff;
+}
+
+@media screen and (max-width: 800px) {
+  .gridDetailsContainer .gridMain {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .gridDetailsContainer .gridHeader .headCont h3 {
+    font-weight: 500;
+    font-size: 24px;
+    text-transform: capitalize;
+  }
 }
