@@ -21,14 +21,12 @@ class Footer extends Component {
 
           <div className="col-md-6 text-right">
             <div className="footericon">
-              <a href={this.props.facebook} ><FaFacebook size={20} className="i" /></a>
-              <a href={this.props.twitter}><AiFillTwitterCircle size={22} className="i" /></a>
-              <a href={this.props.linkedIn}><AiFillLinkedin size={22} className="i" /></a>
+              {this.props.facebook !== "" ? <a href={this.props.facebook} ><FaFacebook size={20} className="i" /></a> : null }
+              { this.props.twitter !== "" ? <a href={this.props.twitter}><AiFillTwitterCircle size={22} className="i" /></a> : null } 
+              {this.props.linkedIn !== "" ? <a href={this.props.linkedIn}><AiFillLinkedin size={22} className="i" /></a> : null }
             </div>
           </div>
-            
         </div>
-
       </div>
     );
   }
