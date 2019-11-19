@@ -4,13 +4,27 @@
   padding-right: 20px;
   padding-left: 20px;
 }
+
 .navbar {
   background-color: #484848;
   z-index: 1000;
   width: 100%;
   margin: auto;
-  padding-left: 60px;
-  font-family: 'Graphik', sans-serif;
+  padding: 13px 40px;
+}
+
+.logoJobs {
+  position: absolute;
+  color: #fff;
+  width: 150px;
+  height: 82px;
+  border: none;
+  top: 0px;
+  left: 75px;
+  z-index: 1000000;
+  padding: 12px;
+  background-color: #484848;
+  /* border-radius: 20px; */
 }
 
 .logo .linkLogo {
@@ -19,44 +33,19 @@
   cursor: pointer;
 }
 
-.logo .linkLogo:hover {
-  color: white;
-}
-
-.logo {
-  color: #fff;
-  font-size: 30px;
-  width: 116px;
-  height: 50px;
-  border: none;
-  padding: 0;
-  font-weight: 500;
-  line-height: 1.7;
-}
-
-.subLogo {
-  display: inline !important;
-}
-
 img {
-  width: 114px;
-  height: 48px;
+  width: 125px;
+  height: 60px;
+  margin: auto !important;
 }
 
-.navbar-brand {
-  padding-left: 10px; 
-  display: inline !important;
-}
-
-.navbar-collapse {
-  margin-right: 50px;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-a:hover {
+.navstyle a:hover {
   text-decoration: none !important;
-  color: rgb(221, 221, 221) !important;
+  color: #ffc107 !important;
+}
+
+@media (max-width: 500px) {
+  .logoJobs {
+    left: 20px;
+  } 
 }

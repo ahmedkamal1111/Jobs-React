@@ -10,13 +10,15 @@
   clear: both;
   display: inline-block;
   margin-right: 2%;
- 
 }
-.footericon i {
+
+.footericon .i {
   color: white;
   font-size: 20px;
   transition: all 0.5;
 }
-.footericon i:hover {
-  color: #ffc107;
+
+.footer a:hover,
+.footericon .i:hover {
+  color: #ffc107 !important;
 }

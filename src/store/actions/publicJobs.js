@@ -28,13 +28,14 @@ export const loadJobDetail = () => {
     };
 };
 
-export const fetchJobDetailSuccess = ( respons, skills, jobName, jobType ) => {
+export const fetchJobDetailSuccess = ( respons, skills, jobName, jobType, d1 ) => {
     return {
         type: actionTypes.FETCH_JOB_DETAIL_SCUCCESS,
         respons,
         skills,
         jobName,
         jobType,
+        d1
     };
 };
 
@@ -115,7 +116,7 @@ export const fetchJobDetail = ( cid , jobId ) => {
             
             let skills = response.data.Skills.split("*")
             skills.shift(skills[0]);
-            dispatch(fetchJobDetailSuccess(respo, skills, response.data.Name, response.data.Job_Type));
+            dispatch(fetchJobDetailSuccess(respo, skills, response.data.Name, response.data.Job_Type, response.data.d1));
         })
         .catch(error => {
             dispatch(fetchJobDetailFail(error));

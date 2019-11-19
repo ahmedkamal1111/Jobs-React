@@ -11,23 +11,23 @@ class Footer extends Component {
 
     return (
     
-    <div className="footer ">
-      <div className="row">
+      <div className="footer">
+        <div className="row">
           <div className="col-md-6 text-left">
             Copyright <span dangerouslySetInnerHTML={{ __html: "&copy;" }} />
             <a href="https://www.teqneia.com/" > { this.props.CompanyName } </a> 2019-{ new Date().getFullYear() === 2019 ? 2020 : new Date().getFullYear()}
             
-            </div>            
+          </div>            
 
-              <div className="col-md-6 text-right">
-                <div className="footericon">
-                  <FaFacebook size={20} className="i" />
-                  <AiFillTwitterCircle size={22} className="i" />
-                  <AiFillLinkedin size={22} className="i" />
-                </div>
-              </div>
+          <div className="col-md-6 text-right">
+            <div className="footericon">
+              {this.props.facebook !== "" ? <a href={this.props.facebook} ><FaFacebook size={20} className="i" /></a> : null }
+              { this.props.twitter !== "" ? <a href={this.props.twitter}><AiFillTwitterCircle size={22} className="i" /></a> : null } 
+              {this.props.linkedIn !== "" ? <a href={this.props.linkedIn}><AiFillLinkedin size={22} className="i" /></a> : null }
             </div>
+          </div>
         </div>
+      </div>
     );
   }
 }
@@ -35,7 +35,10 @@ class Footer extends Component {
 const mapStateToProps = state => {
   return {
     CompanyName: state.company.info.Name,
-    url: state.company.info.homepage
+    url: state.company.info.homepage,
+    linkedIn: state.company.info.linkedinLink,
+    facebook: state.company.info.facebookLink,
+    twitter: state.company.info.twitterLink,
   }
 }
 

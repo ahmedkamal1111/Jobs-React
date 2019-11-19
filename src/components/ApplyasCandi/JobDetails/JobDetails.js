@@ -95,7 +95,10 @@ class JobDetails extends Component {
             
             <span>At { companyName } </span>
             
-            <p className={style.location}> { this.props.location } </p>    
+            <p className={style.location}> { this.props.location } </p>
+
+            <p className={style.date}> Posted on: { this.props.d1 } </p>    
+          
           </div>
         </header>
           <div className={style.mainCont}>
@@ -166,6 +169,7 @@ const mapStateToProps = state => {
     CID: state.company.info.cid,
     companyName: state.company.info.Name,
     location: state.jobs.location,
+    d1: state.jobs.d1,
     name: state.jobs.jobName,
     jobType: state.jobs.jobType,
     respons: state.jobs.respons,

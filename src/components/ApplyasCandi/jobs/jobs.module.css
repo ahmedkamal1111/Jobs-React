@@ -59,6 +59,12 @@
 
 .gridJobsContainer .jobcardstyle h4 {
   text-transform: capitalize;
+  font-size: 23px;
+}
+
+.gridJobsContainer .jobcardstyle p {
+  font-size: 11px;
+  color: #dbdbdb; 
 }
 
 .gridJobsContainer .gridMain .flexContainer .detailLink {

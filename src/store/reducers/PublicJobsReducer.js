@@ -10,6 +10,7 @@ const initialState = {
     JobApplied: null,
     location: "Zayed, Giza",
     jobName: null,
+    d1: "",
     jobType: null,
     error: null,
     postMessage: "",
@@ -48,6 +49,7 @@ const fetchJobDetailSuccess = (state, action) => ({
     skills: action.skills,
     jobName: action.jobName,
     jobType: action.jobType,
+    d1: action.d1,
     error: null,
     isLoading: false
 });

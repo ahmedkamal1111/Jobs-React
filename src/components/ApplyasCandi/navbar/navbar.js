@@ -7,7 +7,6 @@ import {
   NavItem
 } from "reactstrap";
 import { AiTwotoneHome } from 'react-icons/ai';
-import { NavLink } from 'react-router-dom';
 
 import "./navbar.css";
 
@@ -15,19 +14,11 @@ class CustomNav extends React.Component {
   
   constructor(props) {
     super(props);
-
     this.toggle = this.toggle.bind(this);
-    
-    this.state = {
-      isOpen: false
-    };
+    this.state = { isOpen: false };
   }
 
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
+  toggle() { this.setState({ isOpen: !this.state.isOpen }); }
 
   render() {
 
@@ -35,24 +26,23 @@ class CustomNav extends React.Component {
     
       <div>
         
+        <h1 className="logoJobs">
+          <a href={this.props.url} className="linkLogo">
+            <img src={`https://joblaravel.tbv.cloud/tt/cvs/${this.props.logo}`} alt={`${this.props.CompanyName} Logo`} class="subLogo" />
+          </a>
+        </h1>
+
         <Navbar id="navbar" expand="md" className="navstyle">
-               
-          <h1 className="logo">
-            <a href={this.props.url} className="linkLogo">
-              <img src={`https://joblaravel.tbv.cloud/tt/cvs/${this.props.logo}`} alt={`${this.props.CompanyName} Logo`} class="subLogo" />
-            </a>
-          </h1> 
-          
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto navitemsstyle" navbar>
-              <NavItem>
-                <a href={this.props.url} className="navitemcolor">
-                  <AiTwotoneHome size={30} />
-                </a>
-              </NavItem>
-            </Nav>
-          </Collapse>
+          <Nav className="ml-auto navitemsstyle" navbar>
+            <NavItem>
+              <a href={this.props.url} className="navitemcolor">
+                <AiTwotoneHome size={30} className="i" />
+              </a>
+            </NavItem>
+          </Nav>
+
         </Navbar>
+
       </div>
     );
   }
