@@ -36,7 +36,7 @@ class CustomNav extends React.Component {
           <Nav className="ml-auto navitemsstyle" navbar>
             <NavItem>
               <a href={this.props.url} className="navitemcolor">
-                <AiTwotoneHome size={30} className="i" />
+                <AiTwotoneHome size={30} color="black" className="i" />
               </a>
             </NavItem>
           </Nav>

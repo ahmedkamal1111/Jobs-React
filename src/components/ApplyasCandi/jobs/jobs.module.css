@@ -15,12 +15,12 @@
 
 .gridJobsContainer .gridHeader {
   grid-area: header;
-  margin: auto;
+  margin: auto
 }
 
 .gridJobsContainer .gridHeader .headCont {
   width: 100%;
-  padding-top: 50px;
+  padding-top: 20px;
 }
 
 .gridJobsContainer .gridMain {
@@ -29,13 +29,12 @@
 }
 
 .gridJobsContainer .gridMain .flexContainer {
-  min-height: 400px;
+  min-height: 180px;
   display: flex;
   justify-content: center;
   flex-direction: row;
   align-content: center;
   flex-wrap: wrap;
-  padding: 30px 0;
 }
 
 .gridJobsContainer .gridFooter {
@@ -51,7 +50,7 @@
   flex-direction: column;
   justify-content: space-between;
   height: 150px;
-  margin: 20px 10px 20px 0;
+  margin: 0 10px 20px 0;
   background-color: #142194ed;
   border-radius: 6px;
   color: #ffffff;
